@@ -1,7 +1,7 @@
 {
-  "name": "全家換餐小幫手",
-  "short_name": "換餐小幫手",
-  "description": "計算全家便利商店優惠與主食門檻的實用工具",
+  "name": "2027神戶8天7夜",
+  "short_name": "2027神戶",
+  "description": "旅遊的實用工具，一起耍廢吧",
   "id": "/",
   "start_url": "./index.html",
   "scope": "./",
