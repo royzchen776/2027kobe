@@ -42,7 +42,7 @@
         ::-webkit-scrollbar-track { background: #1f2937; }
         ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
-        /* 隱藏預設 input date/number 小圖示 (讓深色模式更乾淨) */
+        /* 隱藏預設 input date/number 小圖示 */
         input[type="number"]::-webkit-inner-spin-button, 
         input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
@@ -65,21 +65,21 @@
                 <!-- Google 登入區塊 -->
                 <div class="flex items-center space-x-3">
                     <div id="auth-status" class="hidden text-xs font-mono text-gray-400">登入中...</div>
-                    <button id="login-btn" onclick="loginWithGoogle()" class="text-xs bg-brand-600 hover:bg-brand-500 text-white font-bold px-3 py-1.5 rounded transition-colors hidden shadow-sm flex items-center gap-1"><span class="text-sm">G</span> 登入</button>
+                    <button id="login-btn" onclick="loginWithGoogle()" class="text-xs bg-brand-600 hover:bg-brand-500 text-white font-bold px-3 py-1.5 rounded transition-colors shadow-sm flex items-center gap-1"><span class="text-sm">G</span> 登入</button>
                     <button id="logout-btn" onclick="logoutGoogle()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-colors hidden border border-gray-700">登出</button>
                 </div>
             </div>
 
-            <!-- 主分頁 Tab 導覽列 (自動換行設計) -->
-            <nav class="flex flex-wrap gap-2 pb-3 pt-2 text-sm font-medium border-t border-gray-800 justify-center">
-                <button id="tab-itinerary" onclick="switchTab('itinerary')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm bg-brand-600 text-white font-semibold shadow-sm border border-brand-500">📅 行程</button>
-                <button id="tab-navigation" onclick="switchTab('navigation')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🚗 導航</button>
-                <button id="tab-luggage" onclick="switchTab('luggage')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🏨 住宿</button>
-                <button id="tab-checklist" onclick="switchTab('checklist')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📌 清單</button>
-                <button id="tab-accounting" onclick="switchTab('accounting')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">💰 記帳</button>
-                <button id="tab-analytics" onclick="switchTab('analytics')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📊 數據</button>
-                <button id="tab-translator" onclick="switchTab('translator')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🗣️ 翻譯</button>
-                <button id="tab-snowplan" onclick="switchTab('snowplan')" class="flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">❄️ 應變</button>
+            <!-- 主分頁 Tab 導覽列 (Grid 雙排等寬設計) -->
+            <nav class="grid grid-cols-4 sm:flex sm:flex-wrap gap-2 pb-3 pt-2 border-t border-gray-800 justify-center">
+                <button id="tab-itinerary" onclick="switchTab('itinerary')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm bg-brand-600 text-white font-semibold shadow-sm border border-brand-500">📅 行程</button>
+                <button id="tab-navigation" onclick="switchTab('navigation')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🚗 導航</button>
+                <button id="tab-luggage" onclick="switchTab('luggage')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🏨 住宿</button>
+                <button id="tab-checklist" onclick="switchTab('checklist')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📌 清單</button>
+                <button id="tab-accounting" onclick="switchTab('accounting')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">💰 記帳</button>
+                <button id="tab-analytics" onclick="switchTab('analytics')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📊 數據</button>
+                <button id="tab-translator" onclick="switchTab('translator')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🗣️ 翻譯</button>
+                <button id="tab-snowplan" onclick="switchTab('snowplan')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">❄️ 應變</button>
             </nav>
         </div>
     </header>
@@ -99,7 +99,7 @@
                 <!-- 篩選按鈕列 -->
                 <div class="mt-4 flex flex-wrap gap-2 pt-3 border-t border-gray-800">
                     <span class="text-xs font-semibold text-gray-500 flex items-center">天數快選：</span>
-                    <button onclick="filterDay('all')" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-brand-600 text-white border border-brand-500" data-day="all">全部</button>
+                    <button onclick="filterDay('all')" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-brand-600 text-white border border-brand-500 shadow-sm" data-day="all">全部</button>
                     <button onclick="filterDay(1)" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="1">D1 神戶港</button>
                     <button onclick="filterDay(2)" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="2">D2 京都散策</button>
                     <button onclick="filterDay(3)" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="3">D3 城崎溫泉</button>
@@ -549,7 +549,7 @@
                 <!-- 記帳明細列表 -->
                 <div class="lg:col-span-2">
                     <div class="bg-cardbg rounded-xl p-0 sm:p-5 shadow-md border border-gray-800 overflow-hidden">
-                        <div class="p-4 sm:p-0 mb-2 flex justify-between items-end bg-gray-900">
+                        <div class="p-4 sm:p-0 mb-2 flex justify-between items-end bg-gray-900 sm:bg-transparent border-b border-gray-800 sm:border-0">
                             <h3 class="font-bold text-gray-200 text-base flex items-center gap-2"><span>🧾</span> 旅程花費明細</h3>
                             <span id="sync-status" class="text-xs font-medium px-2 py-1 bg-yellow-900/50 text-yellow-500 border border-yellow-800 rounded-full animate-pulse">連線中...</span>
                         </div>
@@ -704,6 +704,7 @@
                 title: "抵達神戶 ➔ 洋菓子午茶 ➔ 港灣夜景 ➔ 二宮溫泉",
                 keyPoint: "養足精神、輕鬆適應環境、享用神戶牛排與在地錢湯。",
                 stay: "東橫INN 神戶三宮站前",
+                stayMapQuery: "東横INN神戸三宮駅前",
                 items: [
                     { time: "12:15 - 13:30", icon: "✈️", text: "抵達神戶機場，搭乘 Port Liner 直達三宮站，前往東橫INN寄放行李。" },
                     { time: "13:30 - 15:00", icon: "☕", text: "周邊午茶小憩：南京町（中華街）吃熱包子或前往知名洋菓子店喝咖啡休息。", mapQuery: "神戶南京町" },
@@ -719,6 +720,7 @@
                 title: "平日京都！清水寺 ➔ 伏見夕陽 ➔ 晚餐後 mont-bell",
                 keyPoint: "啟用 JR Pass，平日暢遊京都，晚餐後採買禦寒衣物。",
                 stay: "RIHGA Place Kyoto Shijokarasuma (麗嘉廣場酒店)",
+                stayMapQuery: "RIHGA Place Kyoto Shijokarasuma",
                 items: [
                     { time: "08:30 - 09:30", icon: "🧳", text: "退房與寄物：東橫INN退房，大行李寄放櫃台，背小背包出發。" },
                     { time: "09:30 - 10:30", icon: "🚆", text: "啟程前往京都：啟用 JR Pass。搭「JR新快速」直達京都站。轉搭地下鐵至「地下鐵四條站」(也是阪急烏丸站所在位置)，先到飯店寄放背包。", mapQuery: "RIHGA Place Kyoto Shijokarasuma" },
@@ -735,6 +737,7 @@
                 title: "特急直達城崎 ➔ 大江戶 Premium ➔ 外湯巡禮",
                 keyPoint: "從古都直達溫泉鄉，換上浴衣木屐，享受 Premium 等級百匯晚餐。",
                 stay: "大江戶溫泉物語 Premium 城崎",
+                stayMapQuery: "大江戸温泉物語Premium 城崎",
                 items: [
                     { time: "09:30 - 10:30", icon: "☕", text: "京都早晨：悠閒退房後，搭乘地下鐵抵達 JR 京都車站準備搭車。" },
                     { time: "11:15 - 13:53", icon: "🚆", text: "直達溫泉鄉：搭乘「特急城崎號 (Kinosaki)」免換車直達城崎溫泉。" },
@@ -749,6 +752,7 @@
                 title: "慵懶退房 ➔ 返回神戶 ➔ 阪神百貨 B1 尋寶",
                 keyPoint: "睡到自然醒泡晨湯，午後返回神戶，晚餐後到百貨地下街撿便宜。",
                 stay: "東橫INN 神戶三宮站前 (領回大行李)",
+                stayMapQuery: "東横INN神戸三宮駅前",
                 items: [
                     { time: "08:00 - 11:00", icon: "♨️", text: "晨湯與慵懶退房：吃豐盛早餐與泡晨湯。享受 11 點退房的優勢從容收拾。" },
                     { time: "11:30 - 14:00", icon: "❄️", text: "外湯巡禮 第二彈：利用外湯通行證繼續泡「鴻之湯」或「曼陀羅湯」。" },
@@ -765,6 +769,7 @@
                 title: "淡路島自駕 ➔ 還車後 Yamada 電器與藥妝",
                 keyPoint: "跨越明石大橋自駕，晚間回神戶市區採買電器藥妝。",
                 stay: "東橫INN 神戶三宮站前",
+                stayMapQuery: "東横INN神戸三宮駅前",
                 items: [
                     { time: "09:00 - 09:30", icon: "🚗", text: "三宮取車：於豐田租車辦理手續並設定導航 (GPS: 078-222-0100)。" },
                     { time: "09:30 - 10:30", icon: "☕", text: "星巴克淡路SA下行線：開上明石大橋，停靠絕美海景星巴克拍攝大橋全景。" },
@@ -782,6 +787,7 @@
                 title: "異國風情深度遊 ➔ 提早赴大阪 ➔ 泳具採買與血拚",
                 keyPoint: "情人節！提早殺去大阪心齋橋買泳具，再吃喝血拚。",
                 stay: "東橫INN 神戶三宮站前",
+                stayMapQuery: "東横INN神戸三宮駅前",
                 items: [
                     { time: "09:30 - 12:00", icon: "🏛️", text: "北野異人館散策：造訪風見雞館。至星巴克吃「六甲牧場霜淇淋」。", mapQuery: "風見雞館" },
                     { time: "12:00 - 13:30", icon: "⛩️", text: "優雅午餐與生田神社：品嚐洋食蛋包飯，飯後參拜結緣聖地，體驗特色「水占卜」。", mapQuery: "生田神社" },
@@ -799,6 +805,7 @@
                 title: "三田 Outlet 痛快採買 ➔ 神戶市區補給 ➔ 二宮錢湯",
                 keyPoint: "平日逛 Outlet 品質最高！搭乘直達巴士輕鬆買滿買齊。",
                 stay: "東橫INN 神戶三宮站前",
+                stayMapQuery: "東横INN神戸三宮駅前",
                 items: [
                     { time: "09:30 - 10:30", icon: "🚌", text: "直達 Outlet：從三宮巴士總站搭乘「特急高速巴士」(單程約670日圓) 直達 Outlet。" },
                     { time: "10:30 - 16:00", icon: "🛍️", text: "Outlet 狂買與午餐：西日本最大 Outlet 痛快血拚，平日免排隊！午餐於園區享用。", mapQuery: "神戶三田 Premium Outlets" },
@@ -814,6 +821,7 @@
                 title: "神戶三宮 ➔ 神戶機場 ➔ 滿載賦歸",
                 keyPoint: "悠閒吃早餐、機場免稅店最後衝刺、平安返家。",
                 stay: "溫暖的家",
+                stayMapQuery: null,
                 items: [
                     { time: "08:30 - 10:00", icon: "🍳", text: "悠閒早晨：於飯店享用早餐，確認行李無遺漏後辦理退房手續。" },
                     { time: "10:15 - 10:45", icon: "🚝", text: "前往機場：從三宮站搭乘 Port Liner (約18分鐘) 直達神戶機場站 (UKB)。" },
@@ -847,6 +855,12 @@
                     `;
                 });
 
+                // 新增飯店專屬地圖連結
+                let stayMapBtn = '';
+                if (data.stayMapQuery) {
+                    stayMapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.stayMapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[11px] bg-blue-900/30 text-blue-400 border border-blue-800 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
+                }
+
                 card.innerHTML = `
                     <div class="bg-gray-800 text-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-700">
                         <div class="flex items-center gap-3">
@@ -861,7 +875,7 @@
                         </div>
                         <div class="space-y-1">${itemsHtml}</div>
                         <div class="pt-3 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
-                            <span class="flex items-center gap-1"><span class="text-brand-500">🛌 今晚住宿：</span> <strong class="text-gray-200">${data.stay}</strong></span>
+                            <span class="flex items-center gap-1 flex-wrap"><span class="text-brand-500">🛌 今晚住宿：</span> <strong class="text-gray-200">${data.stay}</strong>${stayMapBtn}</span>
                         </div>
                     </div>
                 `;
@@ -880,7 +894,7 @@
             renderItineraryCards(day);
         }
 
-        // 分頁 Tab 切換邏輯 (保留自動換行的 flex-auto 樣式)
+        // 分頁 Tab 切換邏輯 (改為等寬樣式)
         function switchTab(tabName) {
             const sections = ['itinerary', 'navigation', 'luggage', 'checklist', 'analytics', 'accounting', 'snowplan', 'translator'];
             sections.forEach(s => {
@@ -888,7 +902,8 @@
                 const tabBtn = document.getElementById(`tab-${s}`);
                 if (!secEl || !tabBtn) return;
                 
-                const baseClass = "flex-auto sm:flex-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm ";
+                // 這裡的 class 要配合 HTML 更新為 w-full 等寬設計
+                const baseClass = "w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm ";
                 
                 if (s === tabName) {
                     secEl.classList.remove('hidden');
