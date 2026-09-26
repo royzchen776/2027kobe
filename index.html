@@ -72,14 +72,14 @@
 
             <!-- 主分頁 Tab 導覽列 (Grid 雙排等寬設計) -->
             <nav class="grid grid-cols-4 sm:flex sm:flex-wrap gap-2 pb-3 pt-2 border-t border-gray-800 justify-center">
-                <button id="tab-itinerary" onclick="switchTab('itinerary')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm bg-brand-600 text-white font-semibold shadow-sm border border-brand-500">📅 行程</button>
-                <button id="tab-navigation" onclick="switchTab('navigation')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🚗 導航</button>
-                <button id="tab-luggage" onclick="switchTab('luggage')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🏨 住宿</button>
-                <button id="tab-checklist" onclick="switchTab('checklist')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📌 清單</button>
-                <button id="tab-accounting" onclick="switchTab('accounting')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">💰 記帳</button>
-                <button id="tab-analytics" onclick="switchTab('analytics')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📊 數據</button>
-                <button id="tab-translator" onclick="switchTab('translator')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🗣️ 翻譯</button>
-                <button id="tab-snowplan" onclick="switchTab('snowplan')" class="w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">❄️ 應變</button>
+                <button id="tab-itinerary" onclick="switchTab('itinerary')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm bg-brand-600 text-white font-semibold shadow-sm border border-brand-500">📅 行程</button>
+                <button id="tab-navigation" onclick="switchTab('navigation')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🚗 導航</button>
+                <button id="tab-luggage" onclick="switchTab('luggage')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🏨 住宿</button>
+                <button id="tab-checklist" onclick="switchTab('checklist')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📌 清單</button>
+                <button id="tab-accounting" onclick="switchTab('accounting')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">💰 記帳</button>
+                <button id="tab-analytics" onclick="switchTab('analytics')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">📊 數據</button>
+                <button id="tab-translator" onclick="switchTab('translator')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🗣️ 翻譯</button>
+                <button id="tab-snowplan" onclick="switchTab('snowplan')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">❄️ 應變</button>
             </nav>
         </div>
     </header>
@@ -902,8 +902,8 @@
                 const tabBtn = document.getElementById(`tab-${s}`);
                 if (!secEl || !tabBtn) return;
                 
-                // 這裡的 class 要配合 HTML 更新為 w-full 等寬設計
-                const baseClass = "w-full px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm ";
+                // 這裡的 class 要配合 HTML 更新為 w-full sm:w-auto 響應式設計
+                const baseClass = "w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm ";
                 
                 if (s === tabName) {
                     secEl.classList.remove('hidden');
