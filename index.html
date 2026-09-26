@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- 主分頁 Tab 導覽列 (Grid 雙排等寬設計) -->
+            <!-- 主分頁 Tab 導覽列 (Grid 雙排等寬設計 / 電腦版自動長度) -->
             <nav class="grid grid-cols-4 sm:flex sm:flex-wrap gap-2 pb-3 pt-2 border-t border-gray-800 justify-center">
                 <button id="tab-itinerary" onclick="switchTab('itinerary')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm bg-brand-600 text-white font-semibold shadow-sm border border-brand-500">📅 行程</button>
                 <button id="tab-navigation" onclick="switchTab('navigation')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🚗 導航</button>
@@ -133,7 +133,7 @@
                         <thead>
                             <tr class="bg-gray-800/80 text-gray-300 border-y border-gray-700 text-xs sm:text-sm">
                                 <th class="p-3 font-semibold w-1/3">停靠站點</th>
-                                <th class="p-3 font-semibold">導航 (電話 / MapCode)</th>
+                                <th class="p-3 font-semibold">導航 (MapCode / 電話)</th>
                                 <th class="p-3 font-semibold text-center w-28">操作</th>
                             </tr>
                         </thead>
@@ -141,48 +141,48 @@
                             <tr class="hover:bg-gray-800/40 transition-colors">
                                 <td class="p-3 font-bold text-brand-400">豐田租車 神戶三宮站前店<br><span class="text-xs font-normal text-gray-500">出發與還車定位點</span></td>
                                 <td class="p-3 font-mono">
-                                    <div class="text-xs text-gray-500 mb-0.5">TEL: 078-222-0100</div>
-                                    <div class="font-bold text-gray-200 text-base">MC: 12 398 469*02</div>
+                                    <div class="font-bold text-gray-200 text-base mb-0.5">MC: 12 398 469*02</div>
+                                    <div class="text-xs text-gray-500">TEL: 078-222-0100</div>
                                 </td>
                                 <td class="p-3 text-center"><a href="https://www.google.com/maps/search/?api=1&query=トヨタレンタカー+神戸三宮駅前店" target="_blank" class="inline-block px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-800 rounded-lg text-xs font-bold transition-colors">📍 導航</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/40 transition-colors">
                                 <td class="p-3 font-bold text-brand-400">星巴克 淡路SA (下行線)<br><span class="text-xs font-normal text-gray-500">拍攝明石大橋絕佳點</span></td>
                                 <td class="p-3 font-mono">
-                                    <div class="text-xs text-gray-500 mb-0.5">TEL: 0799-23-0333</div>
-                                    <div class="font-bold text-gray-200 text-base">MC: 946 872 613*71</div>
+                                    <div class="font-bold text-gray-200 text-base mb-0.5">MC: 946 872 613*71</div>
+                                    <div class="text-xs text-gray-500">TEL: 0799-23-0333</div>
                                 </td>
                                 <td class="p-3 text-center"><a href="https://www.google.com/maps/search/?api=1&query=スターバックスコーヒー+淡路サービスエリア（下り線）店" target="_blank" class="inline-block px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-800 rounded-lg text-xs font-bold transition-colors">📍 導航</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/40 transition-colors">
                                 <td class="p-3 font-bold text-brand-400">道の駅 うずしお (渦潮)<br><span class="text-xs font-normal text-gray-500">洋蔥牛肉漢堡午餐</span></td>
                                 <td class="p-3 font-mono">
-                                    <div class="text-xs text-gray-500 mb-0.5">TEL: 0799-52-1157</div>
-                                    <div class="font-bold text-gray-200 text-base">MC: 406 212 851*06</div>
+                                    <div class="font-bold text-gray-200 text-base mb-0.5">MC: 406 212 851*06</div>
+                                    <div class="text-xs text-gray-500">TEL: 0799-52-1157</div>
                                 </td>
                                 <td class="p-3 text-center"><a href="https://www.google.com/maps/search/?api=1&query=道の駅+うずしお" target="_blank" class="inline-block px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-800 rounded-lg text-xs font-bold transition-colors">📍 導航</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/40 transition-colors">
                                 <td class="p-3 font-bold text-brand-400">鳴門公園 (千疊敷/渦之道)<br><span class="text-xs font-normal text-gray-500">大漩渦觀景步道</span></td>
                                 <td class="p-3 font-mono">
-                                    <div class="text-xs text-gray-500 mb-0.5">TEL: 088-683-6262</div>
-                                    <div class="font-bold text-gray-200 text-base">MC: 406 244 564*22</div>
+                                    <div class="font-bold text-gray-200 text-base mb-0.5">MC: 406 244 564*22</div>
+                                    <div class="text-xs text-gray-500">TEL: 088-683-6262</div>
                                 </td>
                                 <td class="p-3 text-center"><a href="https://www.google.com/maps/search/?api=1&query=鳴門公園+渦の道" target="_blank" class="inline-block px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-800 rounded-lg text-xs font-bold transition-colors">📍 導航</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/40 transition-colors">
                                 <td class="p-3 font-bold text-brand-400">あわじ花さじき (花棧敷)<br><span class="text-xs font-normal text-gray-500">山丘無敵海景花海</span></td>
                                 <td class="p-3 font-mono">
-                                    <div class="text-xs text-gray-500 mb-0.5">TEL: 0799-74-6426</div>
-                                    <div class="font-bold text-gray-200 text-base">MC: 339 207 050*77</div>
+                                    <div class="font-bold text-gray-200 text-base mb-0.5">MC: 339 207 050*77</div>
+                                    <div class="text-xs text-gray-500">TEL: 0799-74-6426</div>
                                 </td>
                                 <td class="p-3 text-center"><a href="https://www.google.com/maps/search/?api=1&query=あわじ花さじき" target="_blank" class="inline-block px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-800 rounded-lg text-xs font-bold transition-colors">📍 導航</a></td>
                             </tr>
                             <tr class="hover:bg-gray-800/40 transition-colors">
                                 <td class="p-3 font-bold text-brand-400">舞子公園第一駐車場<br><span class="text-xs font-normal text-gray-500">回程短暫休息賞橋</span></td>
                                 <td class="p-3 font-mono">
-                                    <div class="text-xs text-gray-500 mb-0.5">TEL: 078-785-5090</div>
-                                    <div class="font-bold text-gray-200 text-base">MC: 31 169 344*60</div>
+                                    <div class="font-bold text-gray-200 text-base mb-0.5">MC: 31 169 344*60</div>
+                                    <div class="text-xs text-gray-500">TEL: 078-785-5090</div>
                                 </td>
                                 <td class="p-3 text-center"><a href="https://www.google.com/maps/search/?api=1&query=舞子公園第一駐車場" target="_blank" class="inline-block px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-800 rounded-lg text-xs font-bold transition-colors">📍 導航</a></td>
                             </tr>
@@ -1085,8 +1085,43 @@
             }
         }
 
+        // ================= 新增：時間自動判定與智慧預設 =================
+        function applySmartDefaults() {
+            const today = new Date();
+            const y = today.getFullYear();
+            const m = today.getMonth() + 1; // JavaScript 的月份是 1-12 (修正)
+            const d = today.getDate();
+
+            let targetItinerary = 'all'; // 預設顯示全部行程
+            let targetExpense = '行前';    // 預設記帳天別
+
+            // 判斷是否在 2027 年 2 月的旅途中
+            if (y === 2027 && m === 2) {
+                if (d >= 9 && d <= 16) {
+                    // 旅途中：2/9 是 D1，以此類推
+                    targetItinerary = d - 8; 
+                    targetExpense = 'D' + (d - 8);
+                } else if (d > 16) {
+                    // 旅途結束後
+                    targetExpense = 'D8';
+                }
+            } else if (y > 2027 || (y === 2027 && m > 2)) {
+                // 2027年3月以後
+                targetExpense = 'D8';
+            }
+
+            // 1. 自動切換行程表到對應天數
+            filterDay(targetItinerary);
+
+            // 2. 自動切換記帳下拉選單
+            const expSelect = document.getElementById('exp-day');
+            if (expSelect) {
+                expSelect.value = targetExpense;
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
-            renderItineraryCards();
+            applySmartDefaults();
             fetchExchangeRate();
         });
     </script>
