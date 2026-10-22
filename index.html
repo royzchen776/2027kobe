@@ -227,13 +227,13 @@
             <section id="section-checklist" class="space-y-6">
                 <div class="bg-gradient-to-r from-gray-900 to-japan-indigo rounded-xl p-5 shadow-md border border-gray-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="w-full sm:w-auto">
-                        <h3 class="font-bold text-brand-300 flex items-center gap-2 mb-2"><span class="text-xl">✈️</span> 星宇航空 (KHH-UKB)</h3>
+                        <h3 class="font-bold text-brand-300 flex items-center gap-2 mb-2"><span class="text-xl">✈️</span> 星宇航空航班資訊</h3>
                         <div class="bg-black/40 p-3 rounded-lg border border-gray-700 text-sm font-mono text-gray-200">
                             <p><span class="text-amber-400 font-bold">JX360 去程:</span> 02/09 (二) 08:25 ➔ 12:15</p>
                             <p class="mt-1"><span class="text-emerald-400 font-bold">JX361 回程:</span> 02/16 (二) 13:15 ➔ 16:00</p>
                         </div>
                     </div>
-                    <a href="https://www.vjw.digital.go.jp/" target="_blank" class="w-full sm:w-auto px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg flex justify-center gap-2 border border-blue-500">
+                    <a href="https://www.vjw.digital.go.jp/" target="_blank" class="w-full sm:w-auto px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg flex justify-center gap-2 border border-blue-500 transition-colors">
                         <span class="text-xl">📲</span> 開啟 Visit Japan Web
                     </a>
                 </div>
@@ -249,23 +249,34 @@
                         </div>
                     </div>
                     
-                    <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="bg-gray-800/30 p-4 rounded-lg border border-gray-800">
-                            <h3 class="font-bold text-gray-300 text-sm mb-3">🧳 必備證件與票券</h3>
+                            <h3 class="font-bold text-gray-300 text-sm mb-3 border-b border-gray-700 pb-2">🧳 必備證件與票券</h3>
                             <div class="space-y-2 text-sm text-gray-300">
                                 <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>護照 (效期6個月上)</span></label>
-                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>機票憑證 / VJW QR Code</span></label>
-                                <label class="flex items-center gap-3 bg-brand-900/20 p-1 -ml-1 rounded"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span class="font-bold text-brand-400">台灣駕照＆日文譯本 (自駕必備)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>機票憑證 / 登機證</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>VJW QR Code</span></label>
+                                <label class="flex items-center gap-3 bg-brand-900/20 p-1.5 -ml-1.5 rounded border border-brand-800/50"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span class="font-bold text-brand-400">台灣駕照＆日文譯本</span></label>
                                 <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>JR 關西廣域周遊券</span></label>
                             </div>
                         </div>
                         <div class="bg-gray-800/30 p-4 rounded-lg border border-gray-800">
-                            <h3 class="font-bold text-gray-300 text-sm mb-3">🧥 冬季與電子設備 (0~10°C)</h3>
+                            <h3 class="font-bold text-gray-300 text-sm mb-3 border-b border-gray-700 pb-2">📱 通訊與電子設備</h3>
                             <div class="space-y-2 text-sm text-gray-300">
-                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>旅遊 eSIM (確認開通) / 行動電源</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>旅遊 eSIM (確認開通)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>Type-A 充電線 (機上用)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>行動電源 (低溫掉電快)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>手機充電器與備用線</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>Garmin手錶線 / 刮鬍刀</span></label>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/30 p-4 rounded-lg border border-gray-800">
+                            <h3 class="font-bold text-gray-300 text-sm mb-3 border-b border-gray-700 pb-2">🧥 冬季打包 (0~10°C)</h3>
+                            <div class="space-y-2 text-sm text-gray-300">
                                 <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>保暖防風外套 / 發熱衣</span></label>
                                 <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>防水防滑好走鞋 (雪地)</span></label>
-                                <label class="flex items-center gap-3 bg-blue-900/20 p-1 -ml-1 rounded"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span class="font-bold text-blue-400">輕便後背包 (D2~D3 輕裝外宿用)</span></label>
+                                <label class="flex items-center gap-3 bg-blue-900/20 p-1.5 -ml-1.5 rounded border border-blue-800/50"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span class="font-bold text-blue-400">輕便後背包 (D2~D3 外宿)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>泡湯小物 (保濕乳液等)</span></label>
                             </div>
                         </div>
                     </div>
@@ -276,21 +287,36 @@
             <section id="section-snowplan" class="hidden space-y-6">
                 <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
                     <h2 class="text-xl font-bold text-gray-100 mb-2 flex items-center gap-2"><span class="text-brand-500">❄️</span> 城崎 2 月大雪應變決策</h2>
-                    <p class="text-sm text-gray-400 mb-4">導入「行前決策」與「當下應變」雙重保險機制。</p>
-                    <div class="bg-gray-900 rounded-xl p-4 border-2 border-red-900/50 mb-4">
-                        <h3 class="font-bold text-gray-200 text-lg mb-2 text-red-400">🛑 終極防線：2/3 決策點</h3>
-                        <p class="text-xs bg-red-900/30 p-2 rounded border border-red-800 text-red-300 font-bold mb-3">大江戶 Premium 在 2/3 23:59 前可免費取消！</p>
-                        <ul class="text-sm text-gray-300 space-y-3">
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">🟢</span><span><strong>2/3 預報小雪/晴天：</strong>完美！保留訂房。</span></li>
-                            <li class="flex items-start gap-2"><span class="text-red-500 mt-0.5">🔴</span><span><strong>2/3 預報大雪警報：</strong>23:59 前免費取消。啟動 Plan B，改訂京都或大阪市區，完全無金錢損失。</span></li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-900 rounded-xl p-4 border border-gray-700">
-                        <h3 class="font-bold text-gray-200 text-lg mb-3">🛡️ 當天突遇大雪對策</h3>
-                        <div class="space-y-3">
-                            <div class="p-3 bg-blue-900/20 rounded border border-blue-800/50"><strong class="text-blue-400 text-sm">🎒 善用小包包：</strong>大行李留神戶，遇延誤不需顧行李。</div>
-                            <div class="p-3 bg-amber-900/20 rounded border border-amber-800/50"><strong class="text-amber-500 text-sm">📱 關注 JR 情報：</strong>顯示延遲提早買好乾糧。</div>
-                            <div class="p-3 bg-emerald-900/20 rounded border border-emerald-800/50"><strong class="text-emerald-500 text-sm">🚌 改搭高速巴士：</strong>若 JR 停駛，改搭直達京都或神戶的「全但巴士」。</div>
+                    <p class="text-sm text-gray-400 mb-4">導入「行前決策」與「當下應變」雙保險機制，確保旅途順暢且不損失訂房費用。</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900 rounded-xl p-4 border-2 border-red-900/50">
+                            <h3 class="font-bold text-gray-200 text-base mb-2 text-red-400 flex items-center gap-2"><span>🛑</span> 終極防線：2/3 決策點</h3>
+                            <p class="text-xs bg-red-900/30 p-2 rounded border border-red-800 text-red-300 font-bold mb-3 shadow-inner">王牌優勢：大江戶 Premium 在 2/3 23:59 前可免費取消！</p>
+                            <ul class="text-sm text-gray-300 space-y-3">
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-0.5">📅</span><span><strong>1/31～2/2 觀察期：</strong>查看豐岡/城崎地區預報。</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">🟢</span><span><strong>2/3 預報小雪/晴天：</strong>完美！準備享受雪見溫泉，保留訂房。</span></li>
+                                <li class="flex items-start gap-2"><span class="text-red-500 mt-0.5">🔴</span><span><strong>2/3 預報大雪/暴風雪：</strong>23:59 前免費取消。啟動 Plan B (改訂京都/大阪)，無金錢損失。</span></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-gray-900 rounded-xl p-4 border border-gray-700">
+                                <h3 class="font-bold text-gray-200 text-base mb-2 flex items-center gap-2"><span>🚨</span> 大雪對 JR 影響評估</h3>
+                                <div class="space-y-2 text-sm text-gray-400">
+                                    <p><strong class="text-purple-400">Day 3 去程 (山陰本線)：</strong>沿日本海行駛，若積雪過深可能降速或停駛。</p>
+                                    <p><strong class="text-emerald-400">Day 4 回程 (濱風號)：</strong>往南穿越山脈回瀨戶內海側，全面停駛機率相對較低。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-900 rounded-xl p-4 border border-gray-700">
+                                <h3 class="font-bold text-gray-200 text-base mb-3 flex items-center gap-2"><span>🛡️</span> 當天突遇大雪 3 大對策</h3>
+                                <div class="space-y-2">
+                                    <div class="p-2.5 bg-blue-900/20 rounded border border-blue-800/50 text-sm"><strong class="text-blue-400">🎒 善用小包包：</strong>大行李留神戶，遇延誤機動性100分。</div>
+                                    <div class="p-2.5 bg-amber-900/20 rounded border border-amber-800/50 text-sm"><strong class="text-amber-500">📱 關注 JR 情報：</strong>顯示延遲就提早進站買好乾糧水。</div>
+                                    <div class="p-2.5 bg-emerald-900/20 rounded border border-emerald-800/50 text-sm"><strong class="text-emerald-500">🚌 改搭高速巴士：</strong>若 JR 停駛，改搭直達京都或神戶的「全但巴士」。</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -645,7 +671,7 @@
                 data.items.forEach(it => {
                     let mapBtn = '';
                     if (it.mapQuery) {
-                        mapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.mapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[10px] bg-blue-900/30 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
+                        mapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.mapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[11px] bg-blue-900/30 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
                     }
                     itemsHtml += `
                         <div class="flex items-start gap-2.5 text-xs py-2.5 border-b border-gray-700/50 last:border-0">
@@ -658,7 +684,7 @@
 
                 let stayMapBtn = '';
                 if (data.stayMapQuery) {
-                    stayMapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.stayMapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[10px] bg-blue-900/30 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
+                    stayMapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.stayMapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[11px] bg-blue-900/30 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
                 }
 
                 card.innerHTML = `
@@ -757,16 +783,14 @@
         function applySmartDefaults() {
             const today = new Date();
             const y = today.getFullYear(), m = today.getMonth() + 1, d = today.getDate();
-            let targetMain = 'group-pretrip';
+            let targetMain = 'group-itinerary'; 
             let targetItineraryDay = 'all';
             let targetExpense = '行前';
 
             if (y === 2027 && m === 2 && d >= 9 && d <= 16) {
-                targetMain = 'group-itinerary';
                 targetItineraryDay = d - 8; 
                 targetExpense = 'D' + (d - 8);
             } else if (y > 2027 || (y === 2027 && m > 2) || (y===2027 && m===2 && d>16)) {
-                targetMain = 'group-itinerary';
                 targetExpense = 'D8';
             }
 
@@ -967,6 +991,56 @@
             const rate = parseFloat(document.getElementById('current-rate').value) || 0; const total = twd + (jpy * rate);
             document.getElementById('consolidated-settlement').innerHTML = Math.abs(total)<1?'✅ 結清':(total>0?`<span class="text-xs text-gray-400">Ian給Roy </span><span class="text-amber-400">NT$ ${fmt(total)}</span>`:`<span class="text-xs text-gray-400">Roy給Ian </span><span class="text-emerald-400">NT$ ${fmt(Math.abs(total))}</span>`);
         }
+    </script>
+
+    <!-- PWA 動態生成與註冊 -->
+    <script>
+        (function() {
+            const manifest = {
+                "name": "2027關西黃金三角8天7夜",
+                "short_name": "關西黃金三角",
+                "start_url": ".",
+                "display": "standalone",
+                "background_color": "#000000",
+                "theme_color": "#0f172a",
+                "icons": [
+                    {
+                        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzBmMTEyYSIvPjx0ZXh0IHg9IjI1NiIgeT0iMjg1IiBmb250LXNpemU9IjIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pjwvc3ZnPg==",
+                        "sizes": "192x192",
+                        "type": "image/svg+xml"
+                    },
+                    {
+                        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzBmMTEyYSIvPjx0ZXh0IHg9IjI1NiIgeT0iMjg1IiBmb250LXNpemU9IjIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pjwvc3ZnPg==",
+                        "sizes": "512x512",
+                        "type": "image/svg+xml"
+                    }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const link = document.createElement('link');
+            link.rel = 'manifest';
+            link.href = manifestUrl;
+            document.head.appendChild(link);
+
+            const swCode = `
+                self.addEventListener('install', (e) => self.skipWaiting());
+                self.addEventListener('activate', (e) => self.clients.claim());
+                self.addEventListener('fetch', (e) => { });
+            `;
+            const swBlob = new Blob([swCode], { type: 'text/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register(swUrl).then((reg) => {
+                        console.log('✅ PWA 註冊成功!');
+                    }).catch((err) => {
+                        console.log('PWA 註冊失敗:', err);
+                    });
+                });
+            }
+        })();
     </script>
 </body>
 </html>
