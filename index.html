@@ -178,4 +178,611 @@
                     <div class="space-y-4">
                         <div class="p-4 rounded-xl border border-brand-700 bg-brand-900/20 shadow-inner">
                             <div class="flex justify-between items-center mb-2">
-                                <span class="bg-brand-700 text-white text-xs font-bold px
+                                <span class="bg-brand-700 text-white text-xs font-bold px-2.5 py-1 rounded">前段 (2/09 1晚)</span>
+                            </div>
+                            <h4 class="font-bold text-gray-200 mb-2">東橫INN 神戶三宮</h4>
+                            <p class="text-xs text-gray-400"><span class="text-emerald-400">🧳 大行李：</span>攜帶進房。會員可 15:00 提早進房休息。</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-gray-700 bg-gray-800/40">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-blue-700 text-white text-xs font-bold px-2.5 py-1 rounded">中段輕裝 (2/10 1晚)</span>
+                            </div>
+                            <h4 class="font-bold text-gray-200 mb-2">RIHGA Place 京都</h4>
+                            <p class="text-xs text-gray-400"><span class="text-amber-500 font-bold">🧳 大行李：</span>早上寄放神戶東橫。<br><span class="text-blue-400 font-bold">🎒 小背包：</span>輕裝帶至京都。</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-gray-700 bg-gray-800/40">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-purple-700 text-white text-xs font-bold px-2.5 py-1 rounded">中段輕裝 (2/11 1晚)</span>
+                            </div>
+                            <h4 class="font-bold text-gray-200 mb-2">大江戶 Premium</h4>
+                            <p class="text-xs text-gray-400"><span class="text-amber-500 font-bold">🧳 大行李：</span>續寄放神戶。<br><span class="text-blue-400 font-bold">🎒 小背包：</span>帶至城崎泡湯。</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-emerald-700 bg-emerald-900/20 shadow-inner">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-emerald-700 text-white text-xs font-bold px-2.5 py-1 rounded">後段大本營 (2/12-16 4晚)</span>
+                            </div>
+                            <h4 class="font-bold text-gray-200 mb-2">東橫INN 神戶三宮</h4>
+                            <p class="text-xs text-gray-400"><span class="text-emerald-400 font-bold">🧳 大行李：</span>返回神戶領回歸位！連住4晚。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= GROUP 2: 行前 (包含: 清單, 應變) ================= -->
+        <div id="group-pretrip" class="main-group hidden">
+            <!-- 第二層子選單 -->
+            <div class="flex bg-gray-900 p-1 rounded-lg border border-gray-800 mb-5 sticky top-0 z-30 shadow-md">
+                <button id="sub-checklist" onclick="switchSubTab('checklist', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-sm font-bold bg-gray-700 text-white shadow-sm transition-all">📌 行前清單</button>
+                <button id="sub-snowplan" onclick="switchSubTab('snowplan', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-sm font-bold text-gray-400 hover:text-gray-200 transition-all">❄️ 大雪應變</button>
+            </div>
+
+            <!-- 子頁面: 清單 -->
+            <section id="section-checklist" class="space-y-6">
+                <div class="bg-gradient-to-r from-gray-900 to-japan-indigo rounded-xl p-5 shadow-md border border-gray-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="w-full sm:w-auto">
+                        <h3 class="font-bold text-brand-300 flex items-center gap-2 mb-2"><span class="text-xl">✈️</span> 星宇航班 (KHH-UKB)</h3>
+                        <div class="bg-black/40 p-3 rounded-lg border border-gray-700 text-sm font-mono text-gray-200">
+                            <p><span class="text-amber-400 font-bold">去程</span> 02/09 (二) 08:25 ➔ 12:15</p>
+                            <p class="mt-1"><span class="text-emerald-400 font-bold">回程</span> 02/16 (二) 13:15 ➔ 16:00</p>
+                        </div>
+                    </div>
+                    <a href="https://www.vjw.digital.go.jp/" target="_blank" class="w-full sm:w-auto px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg flex justify-center gap-2 border border-blue-500">
+                        <span class="text-xl">📲</span> 開啟 Visit Japan Web
+                    </a>
+                </div>
+
+                <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <h2 class="text-xl font-bold text-gray-100 flex items-center gap-2"><span>📌</span> 打包檢查表</h2>
+                        <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 flex-grow max-w-sm">
+                            <div class="flex justify-between text-xs font-bold text-gray-400 mb-1">
+                                <span>準備進度</span><span id="checklist-progress-text" class="text-brand-400">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-900 h-2 rounded-full"><div id="checklist-progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-800/30 p-4 rounded-lg border border-gray-800">
+                            <h3 class="font-bold text-gray-300 text-sm mb-3">🧳 必備證件與票券</h3>
+                            <div class="space-y-2 text-sm text-gray-300">
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>護照 (效期6個月上)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>機票憑證 / VJW QR Code</span></label>
+                                <label class="flex items-center gap-3 bg-brand-900/20 p-1 -ml-1 rounded"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span class="font-bold text-brand-400">台灣駕照＆日文譯本 (自駕必備)</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>JR 關西廣域周遊券</span></label>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/30 p-4 rounded-lg border border-gray-800">
+                            <h3 class="font-bold text-gray-300 text-sm mb-3">🧥 冬季與電子設備 (0~10°C)</h3>
+                            <div class="space-y-2 text-sm text-gray-300">
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>旅遊 eSIM (確認開通) / 行動電源</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>保暖防風外套 / 發熱衣</span></label>
+                                <label class="flex items-center gap-3"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span>防水防滑好走鞋 (雪地)</span></label>
+                                <label class="flex items-center gap-3 bg-blue-900/20 p-1 -ml-1 rounded"><input type="checkbox" onchange="updateChecklistProgress()" class="chk-item w-4 h-4 rounded bg-gray-900 border-gray-600 text-brand-600 focus:ring-brand-500"><span class="font-bold text-blue-400">輕便後背包 (D2~D3 輕裝外宿用)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 子頁面: 應變 -->
+            <section id="section-snowplan" class="hidden space-y-6">
+                <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
+                    <h2 class="text-lg font-bold text-gray-100 mb-2">❄️ 城崎 2 月大雪應變決策</h2>
+                    <p class="text-xs text-gray-400 mb-4">導入「行前決策」與「當下應變」雙保險機制。</p>
+                    <div class="bg-gray-900 rounded-xl p-4 border-2 border-red-900/50 mb-4">
+                        <h3 class="font-bold text-gray-200 text-sm mb-2 text-red-400">🛑 終極防線：2/3 決策點</h3>
+                        <p class="text-xs text-gray-400 mb-2">大江戶 Premium 在 2/3 23:59 前可免費取消！</p>
+                        <ul class="text-xs text-gray-300 space-y-2">
+                            <li><span class="text-emerald-500">🟢 2/3 預報小雪/晴天：</span>完美！保留訂房。</li>
+                            <li><span class="text-red-500">🔴 2/3 預報大雪警報：</span>23:59 前免費取消。啟動 Plan B，改訂京都或大阪市區，完全無金錢損失。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-900 rounded-xl p-4 border border-gray-700">
+                        <h3 class="font-bold text-gray-200 text-sm mb-2">🛡️ 當天突遇大雪對策</h3>
+                        <ul class="text-xs text-gray-300 space-y-2">
+                            <li>🎒 大行李留神戶，只背小包，遇延誤不需顧行李。</li>
+                            <li>📱 隨時看 JR 情報，若顯示延遲提早買好乾糧。</li>
+                            <li>🚌 若 JR 停駛，改搭直達京都或神戶的「全但巴士」。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= GROUP 3: 記帳 ================= -->
+        <div id="group-accounting" class="main-group hidden space-y-6">
+            <!-- 結算儀表板 -->
+            <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl p-5 shadow-lg text-white border border-gray-800 relative">
+                <h2 class="text-lg font-bold mb-3 flex items-center gap-2 text-brand-400"><span>⚖️</span> 即時結算中心</h2>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
+                        <p class="text-[10px] text-gray-400 mb-1">🇯🇵 JPY 結算</p>
+                        <p id="jpy-settlement" class="text-lg font-bold text-emerald-400">計算中</p>
+                    </div>
+                    <div class="bg-gray-800/60 rounded-lg p-3 border border-gray-700">
+                        <p class="text-[10px] text-gray-400 mb-1">🇹🇼 TWD 結算</p>
+                        <p id="twd-settlement" class="text-lg font-bold text-amber-400">計算中</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 pt-3 flex flex-col gap-2">
+                    <div class="flex items-center text-xs">
+                        <span class="text-gray-400">匯率: 1 JPY = </span>
+                        <input type="number" id="current-rate" step="0.0001" class="w-16 px-1 ml-1 bg-black border border-gray-600 rounded text-gray-200" value="0.2150">
+                        <span class="text-gray-400 ml-1">TWD</span>
+                    </div>
+                    <div class="bg-gray-900 p-2 rounded-lg border border-gray-700 flex justify-between items-center">
+                        <span class="text-xs text-gray-400">👑 總結算(台幣)</span>
+                        <span id="consolidated-settlement" class="text-lg font-bold text-white">計算中</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新增記帳表單 -->
+            <div class="bg-cardbg rounded-xl p-4 shadow-md border border-gray-800">
+                <h3 class="font-bold text-gray-200 text-sm mb-3">✍️ 新增一筆花費</h3>
+                <form id="expense-form" class="space-y-3">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <select id="exp-day" class="w-full text-sm p-2 bg-black border border-gray-700 text-gray-200 rounded">
+                                <option value="D1">D1 (2/09)</option><option value="D2">D2 (2/10)</option><option value="D3">D3 (2/11)</option><option value="D4">D4 (2/12)</option><option value="D5">D5 (2/13)</option><option value="D6">D6 (2/14)</option><option value="D7">D7 (2/15)</option><option value="D8">D8 (2/16)</option><option value="行前">行前準備</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="exp-category" class="w-full text-sm p-2 bg-black border border-gray-700 text-gray-200 rounded">
+                                <option value="早餐">🍳 早餐</option><option value="午餐">🍱 午餐</option><option value="晚餐">🍽️ 晚餐</option><option value="宵夜">🍜 宵夜</option><option value="點心">🍡 點心</option><option value="飲品">🧋 飲品</option><option value="伴手禮">🛍️ 伴手禮</option><option value="住宿費">🏨 住宿費</option><option value="租車費">🚗 租車費</option><option value="過路費/油/停車">⛽ 交通/車資</option><option value="門票">🎟️ 門票</option><option value="藥妝">💊 藥妝</option><option value="其他">📝 其他</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="text" id="exp-desc" class="w-full text-sm p-2 bg-black border border-gray-700 text-gray-200 rounded" placeholder="備註 (如: 章魚燒)..." required>
+                    
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="col-span-2">
+                            <input type="number" id="exp-amount" min="1" class="w-full text-sm p-2 bg-black border border-gray-700 text-gray-200 rounded" placeholder="金額..." required>
+                        </div>
+                        <div class="flex bg-gray-800 p-1 rounded border border-gray-700">
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="JPY" class="peer hidden" checked onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">JPY</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="TWD" class="peer hidden" onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">TWD</div></label>
+                        </div>
+                        <input type="hidden" id="exp-currency" value="JPY">
+                    </div>
+
+                    <!-- 新增：付款方式選擇 -->
+                    <div class="pt-2 border-t border-gray-800">
+                        <label class="block text-[10px] font-semibold text-gray-500 mb-1">結帳付款方式</label>
+                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[34px]">
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Cash" class="peer hidden" checked onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-xs font-medium rounded text-gray-400 peer-checked:bg-blue-600 peer-checked:text-white">💵 現金</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Card" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-xs font-medium rounded text-gray-400 peer-checked:bg-blue-600 peer-checked:text-white">💳 刷卡</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="PayPay" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-xs font-medium rounded text-gray-400 peer-checked:bg-blue-600 peer-checked:text-white">📱 PayPay</div></label>
+                        </div>
+                        <input type="hidden" id="exp-paymethod" value="Cash">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-800">
+                        <div>
+                            <label class="block text-[10px] text-gray-500 mb-1">誰代墊？</label>
+                            <div class="flex bg-brand-900/30 p-1 rounded border border-brand-800/50"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-payer').value=this.value"><div class="text-xs py-1 rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-payer').value=this.value"><div class="text-xs py-1 rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white">Ian</div></label></div>
+                            <input type="hidden" id="exp-payer" value="Roy">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-500 mb-1">分攤方式</label>
+                            <div class="flex bg-emerald-900/30 p-1 rounded border border-emerald-800/50"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="shared" class="peer hidden" checked onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="text-xs py-1 rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white">均分</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="private" class="peer hidden" onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="text-xs py-1 rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white">私人</div></label></div>
+                            <input type="hidden" id="exp-split" value="shared">
+                        </div>
+                    </div>
+                    
+                    <div id="private-for-container" class="hidden bg-gray-800/80 p-2 rounded border border-gray-700 mt-2">
+                        <label class="block text-[10px] text-gray-500 mb-1">誰的私人花費？</label>
+                        <div class="flex bg-gray-900 p-1 rounded"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-private-for').value=this.value"><div class="text-xs py-1 rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-private-for').value=this.value"><div class="text-xs py-1 rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Ian</div></label></div>
+                        <input type="hidden" id="exp-private-for" value="Roy">
+                    </div>
+                    
+                    <button type="submit" id="exp-submit-btn" class="w-full mt-2 bg-brand-600 hover:bg-brand-500 text-white font-bold py-2 rounded shadow-md">➕ 寫入雲端</button>
+                </form>
+            </div>
+
+            <!-- 記帳明細列表 -->
+            <div class="bg-cardbg rounded-xl shadow-md border border-gray-800 overflow-hidden">
+                <div class="p-3 bg-gray-900 flex justify-between items-center">
+                    <h3 class="font-bold text-gray-200 text-sm">🧾 花費明細</h3>
+                    <span id="sync-status" class="text-[10px] px-2 py-1 bg-yellow-900/50 text-yellow-500 rounded-full animate-pulse">連線中...</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[500px]">
+                        <thead>
+                            <tr class="bg-gray-800/80 text-gray-400 border-y border-gray-700 text-[10px] uppercase">
+                                <th class="p-2 w-10">天別</th>
+                                <th class="p-2 w-16">分類</th>
+                                <th class="p-2">備註/方式</th>
+                                <th class="p-2 text-right w-20">金額</th>
+                                <th class="p-2 text-center w-12">代墊</th>
+                                <th class="p-2 text-center w-12">分攤</th>
+                                <th class="p-2 text-center w-8">刪</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenses-list" class="divide-y divide-gray-800 text-xs"></tbody>
+                    </table>
+                    <div id="empty-state" class="hidden p-6 text-center text-gray-500 text-xs">尚無紀錄</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= GROUP 4: 數據 ================= -->
+        <div id="group-analytics" class="main-group hidden space-y-6">
+            <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
+                <h2 class="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2"><span>📊</span> 數據分析</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-300 mb-2">💰 公費支出分類 (TWD)</h3>
+                        <div class="chart-container h-[220px]"><canvas id="expenseChart"></canvas></div>
+                    </div>
+                    <div class="border-t border-gray-800 pt-4">
+                        <h3 class="text-sm font-bold text-gray-300 mb-2">📈 體力消耗指數</h3>
+                        <div class="chart-container h-[200px]"><canvas id="intensityChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= GROUP 5: 翻譯 ================= -->
+        <div id="group-translator" class="main-group hidden space-y-6">
+            <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
+                <h2 class="text-xl font-bold text-gray-100 mb-2 flex items-center gap-2"><span class="text-brand-500">🗣️</span> 實用中日翻譯機</h2>
+                
+                <div class="mt-2 mb-4">
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="fillTranslator('請問可以寄放行李嗎？')" class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">寄放行李</button>
+                        <button onclick="fillTranslator('請問結帳可以分開算嗎？')" class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">分開結帳</button>
+                        <button onclick="fillTranslator('請幫我辦理免稅，謝謝。')" class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">辦理免稅</button>
+                        <button onclick="fillTranslator('這杯飲料請幫我做去冰。')" class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">飲料去冰</button>
+                        <button onclick="fillTranslator('不好意思，請幫我微波加熱這個。')" class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">微波加熱</button>
+                        <button onclick="fillTranslator('我們總共兩個人，沒有預約。')" class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">兩人沒預約</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <textarea id="trans-input" rows="3" class="w-full p-3 bg-black border border-gray-700 text-gray-200 rounded-lg text-sm focus:border-brand-500 outline-none" placeholder="輸入中文..."></textarea>
+                        <button onclick="doTranslate()" class="w-full mt-2 bg-brand-600 hover:bg-brand-500 text-white font-bold py-2 rounded-lg shadow-md border border-brand-500"><span id="trans-btn-text">🔄 翻譯成日文</span></button>
+                    </div>
+                    <div>
+                        <div id="trans-output" class="w-full min-h-[120px] p-4 bg-gray-800/80 border-2 border-brand-700 rounded-lg text-2xl sm:text-3xl font-bold text-gray-100 flex items-center justify-center text-center overflow-y-auto tracking-wide leading-relaxed shadow-inner">
+                            <span class="text-gray-500 text-xs font-normal">結果會顯示在這裡<br>(字體夠大，可直接拿給店員看)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 底部主選單 (Bottom Tab Bar) -->
+    <nav class="fixed bottom-0 w-full z-50 bg-gray-900 border-t border-gray-800 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)]">
+        <div class="flex justify-between items-center max-w-md mx-auto px-1 h-16">
+            <button id="nav-itinerary" onclick="switchMainTab('group-itinerary')" class="nav-main-btn flex-1 flex flex-col items-center justify-center gap-1 text-brand-400 transition-colors">
+                <span class="text-xl leading-none">📅</span><span class="text-[10px] font-bold">行程</span>
+            </button>
+            <button id="nav-pretrip" onclick="switchMainTab('group-pretrip')" class="nav-main-btn flex-1 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 transition-colors">
+                <span class="text-xl leading-none">📌</span><span class="text-[10px] font-bold">行前</span>
+            </button>
+            <button id="nav-accounting" onclick="switchMainTab('group-accounting')" class="nav-main-btn flex-1 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 transition-colors">
+                <span class="text-xl leading-none">💰</span><span class="text-[10px] font-bold">記帳</span>
+            </button>
+            <button id="nav-analytics" onclick="switchMainTab('group-analytics')" class="nav-main-btn flex-1 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 transition-colors">
+                <span class="text-xl leading-none">📊</span><span class="text-[10px] font-bold">數據</span>
+            </button>
+            <button id="nav-translator" onclick="switchMainTab('group-translator')" class="nav-main-btn flex-1 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 transition-colors">
+                <span class="text-xl leading-none">🗣️</span><span class="text-[10px] font-bold">翻譯</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- JavaScript 邏輯與互動資料庫 -->
+    <script>
+        // 行程資料庫 (精簡顯示)
+        const itineraryData = [
+            { day: 1, date: "2/09(二)", title: "抵達神戶 ➔ 港灣夜景", keyPoint: "養足精神、神戶牛排與錢湯。", stay: "東橫INN", stayMapQuery: "東横INN神戸三宮駅前", items: [{ time: "12:15", icon: "✈️", text: "抵達機場，Port Liner至三宮。" }, { time: "15:00", icon: "🛌", text: "Check-in 午睡充電。" }, { time: "17:00", icon: "🌉", text: "美利堅公園夜景。" }, { time: "晚餐", icon: "🥩", text: "神戶牛排鐵板燒。" }] },
+            { day: 2, date: "2/10(三)", title: "清水寺 ➔ 伏見夕陽", keyPoint: "平日暢遊京都，晚餐後買禦寒物。", stay: "RIHGA Place 京都", stayMapQuery: "RIHGA Place Kyoto Shijokarasuma", items: [{ time: "08:30", icon: "🧳", text: "寄大行李，帶小包赴京都。" }, { time: "10:30", icon: "⛩️", text: "清水寺至八坂神社散策。" }, { time: "15:30", icon: "🌅", text: "伏見稻荷千本鳥居夕陽。" }, { time: "18:00", icon: "🏮", text: "先斗町晚餐，後去 mont-bell。" }] },
+            { day: 3, date: "2/11(四)", title: "特急城崎 ➔ 外湯巡禮", keyPoint: "直達溫泉鄉，換浴衣吃百匯。", stay: "大江戶 Premium", stayMapQuery: "大江戸温泉物語Premium 城崎", items: [{ time: "11:15", icon: "🚆", text: "搭特急直達城崎溫泉。" }, { time: "14:00", icon: "👘", text: "抵達換浴衣，前往老街。" }, { time: "15:30", icon: "♨️", text: "外湯體驗(一之湯/御所之湯)。" }, { time: "晚餐", icon: "🦀", text: "Premium 豪華 Buffet。" }] },
+            { day: 4, date: "2/12(五)", title: "晨湯 ➔ 返回神戶", keyPoint: "11點退房，午後回神戶買消夜。", stay: "東橫INN", stayMapQuery: "東横INN神戸三宮駅前", items: [{ time: "08:00", icon: "♨️", text: "晨湯與豐盛早餐。" }, { time: "11:30", icon: "❄️", text: "外湯巡禮，但馬牛午餐。" }, { time: "14:14", icon: "🚆", text: "搭特急返回神戶三宮。" }, { time: "18:30", icon: "🍣", text: "阪神百貨B1買打折熟食。" }] },
+            { day: 5, date: "2/13(六)", title: "淡路島自駕 ➔ 鳴門", keyPoint: "明石大橋自駕，晚間採買電器。", stay: "東橫INN", stayMapQuery: "東横INN神戸三宮駅前", items: [{ time: "09:00", icon: "🚗", text: "三宮取車出發。" }, { time: "12:00", icon: "🍔", text: "道の駅 渦潮吃漢堡。" }, { time: "13:00", icon: "🌀", text: "鳴門公園千疊敷與渦之道。" }, { time: "18:00", icon: "🚘", text: "返回神戶三宮還車。" }] },
+            { day: 6, date: "2/14(日)", title: "北野異人館 ➔ 大阪夜", keyPoint: "提早殺去大阪心齋橋買泳具血拚。", stay: "東橫INN", stayMapQuery: "東横INN神戸三宮駅前", items: [{ time: "09:30", icon: "🏛️", text: "北野異人館散策。" }, { time: "13:30", icon: "🛍️", text: "舊居留地洋館區。" }, { time: "15:00", icon: "🚆", text: "提早搭新快速赴大阪。" }, { time: "18:00", icon: "🍡", text: "道頓堀晚餐，唐吉訶德血拚。" }] },
+            { day: 7, date: "2/15(一)", title: "三田Outlet ➔ 補給", keyPoint: "平日搭巴士直達Outlet爆買。", stay: "東橫INN", stayMapQuery: "東横INN神戸三宮駅前", items: [{ time: "09:30", icon: "🚌", text: "三宮搭特急巴士直達。" }, { time: "10:30", icon: "🛍️", text: "西日本最大 Outlet 血拚。" }, { time: "17:00", icon: "🍮", text: "神戶市區最後補給。" }, { time: "21:30", icon: "♨️", text: "二宮溫泉洗去疲勞。" }] },
+            { day: 8, date: "2/16(二)", title: "神戶機場 ➔ 賦歸", keyPoint: "悠閒吃早餐，平安返家。", stay: "溫暖的家", stayMapQuery: null, items: [{ time: "08:30", icon: "🍳", text: "悠閒早餐與退房。" }, { time: "10:15", icon: "🚝", text: "搭 Port Liner 赴機場。" }, { time: "13:15", icon: "✈️", text: "星宇 JX361 起飛返台。" }] }
+        ];
+
+        function renderItineraryCards(filteredDay = 'all') {
+            const container = document.getElementById('itinerary-cards-container');
+            container.innerHTML = '';
+            const list = filteredDay === 'all' ? itineraryData : itineraryData.filter(i => i.day == filteredDay);
+            list.forEach(data => {
+                const card = document.createElement('div');
+                card.className = "bg-gray-800/40 rounded-xl border border-gray-700 overflow-hidden";
+                let itemsHtml = data.items.map(it => `
+                    <div class="flex items-start gap-2 text-xs py-2 border-b border-gray-700/50 last:border-0">
+                        <span class="font-mono text-brand-400 min-w-[40px]">${it.time}</span>
+                        <span>${it.icon}</span><span class="text-gray-300 leading-tight">${it.text}</span>
+                    </div>
+                `).join('');
+                card.innerHTML = `
+                    <div class="bg-gray-800 p-3 flex justify-between items-center border-b border-gray-700">
+                        <div class="flex items-center gap-2"><span class="bg-brand-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">D${data.day}</span><h3 class="font-bold text-sm text-brand-300">${data.title}</h3></div>
+                        <span class="text-[10px] text-gray-400 font-mono">${data.date}</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                        <div class="bg-brand-900/20 border-l-2 border-brand-500 p-2 text-[11px] text-gray-300">${data.keyPoint}</div>
+                        <div>${itemsHtml}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterDay(day) {
+            document.querySelectorAll('.day-filter-btn').forEach(btn => {
+                btn.className = btn.getAttribute('data-day') == day 
+                    ? "day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-brand-600 text-white" 
+                    : "day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-400";
+            });
+            renderItineraryCards(day);
+        }
+
+        // ================= Tab 切換邏輯 (一二層) =================
+        function switchMainTab(groupId) {
+            // 隱藏所有 Group
+            document.querySelectorAll('.main-group').forEach(el => el.classList.add('hidden'));
+            document.getElementById(groupId).classList.remove('hidden');
+            
+            // 處理底部 Nav 樣式
+            document.querySelectorAll('.nav-main-btn').forEach(btn => {
+                btn.classList.remove('text-brand-400');
+                btn.classList.add('text-gray-500');
+            });
+            const activeNavBtnId = groupId.replace('group-', 'nav-');
+            const activeBtn = document.getElementById(activeNavBtnId);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-brand-400');
+            }
+
+            // 特殊處理：數據頁面圖表渲染
+            if (groupId === 'group-analytics') { setTimeout(() => { if(typeof renderCharts==='function') renderCharts(); }, 50); }
+            // 捲動到頂部
+            window.scrollTo(0, 0);
+        }
+
+        function switchSubTab(sectionId, groupId) {
+            // 隱藏該 Group 下的所有 Section
+            const groupEl = document.getElementById(groupId);
+            groupEl.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`section-${sectionId}`).classList.remove('hidden');
+
+            // 處理該 Group 下的 Subnav 按鈕樣式
+            groupEl.querySelectorAll('button[id^="sub-"]').forEach(btn => {
+                btn.className = "flex-1 text-center py-2 rounded-md text-sm font-bold text-gray-400 hover:text-gray-200 transition-all";
+            });
+            const activeBtn = document.getElementById(`sub-${sectionId}`);
+            if(activeBtn) {
+                activeBtn.className = "flex-1 text-center py-2 rounded-md text-sm font-bold bg-gray-700 text-white shadow-sm transition-all";
+            }
+        }
+
+        function togglePrivateFor() {
+            const splitType = document.getElementById('exp-split').value;
+            const container = document.getElementById('private-for-container');
+            if (splitType === 'private') container.classList.remove('hidden');
+            else container.classList.add('hidden');
+        }
+
+        function updateChecklistProgress() {
+            const checkboxes = document.querySelectorAll('.chk-item');
+            let checkedCount = 0; const states = [];
+            checkboxes.forEach(cb => { if (cb.checked) checkedCount++; states.push(cb.checked); });
+            const percent = checkboxes.length > 0 ? Math.round((checkedCount / checkboxes.length) * 100) : 0;
+            document.getElementById('checklist-progress-text').innerText = `${percent}%`;
+            document.getElementById('checklist-progress-bar').style.width = `${percent}%`;
+
+            if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseAppId) {
+                const docRef = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'checklist', 'shared');
+                window.firebaseSetDoc(docRef, { states: states }, { merge: true }).catch(e=>{});
+            }
+        }
+
+        // ================= 智慧預設邏輯 =================
+        function applySmartDefaults() {
+            const today = new Date();
+            const y = today.getFullYear(), m = today.getMonth() + 1, d = today.getDate();
+            let targetMain = 'group-pretrip';
+            let targetItineraryDay = 'all';
+            let targetExpense = '行前';
+
+            if (y === 2027 && m === 2 && d >= 9 && d <= 16) {
+                targetMain = 'group-itinerary';
+                targetItineraryDay = d - 8; 
+                targetExpense = 'D' + (d - 8);
+            } else if (y > 2027 || (y === 2027 && m > 2) || (y===2027 && m===2 && d>16)) {
+                targetMain = 'group-itinerary';
+                targetExpense = 'D8';
+            }
+
+            switchMainTab(targetMain);
+            filterDay(targetItineraryDay);
+            const expSelect = document.getElementById('exp-day');
+            if (expSelect) expSelect.value = targetExpense;
+        }
+
+        // 翻譯機
+        function fillTranslator(text) { document.getElementById('trans-input').value = text; }
+        async function doTranslate() {
+            const text = document.getElementById('trans-input').value.trim();
+            const outputEl = document.getElementById('trans-output');
+            const btnText = document.getElementById('trans-btn-text');
+            if (!text) { outputEl.innerHTML = '<span class="text-red-400 text-sm">請輸入中文</span>'; return; }
+            outputEl.innerHTML = '<span class="text-gray-400 text-sm animate-pulse">翻譯中...</span>';
+            btnText.innerHTML = '⏳...';
+            try {
+                const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=zh-TW|ja`);
+                const data = await res.json();
+                outputEl.innerHTML = data?.responseData?.translatedText || '<span class="text-red-400 text-sm">失敗</span>';
+            } catch (e) { outputEl.innerHTML = '<span class="text-red-400 text-sm">連線錯誤</span>'; }
+            btnText.innerHTML = '🔄 翻譯';
+        }
+
+        // 匯率
+        async function fetchExchangeRate() {
+            try {
+                const res = await fetch('https://open.er-api.com/v6/latest/JPY');
+                const data = await res.json();
+                if (data?.rates?.TWD) {
+                    document.getElementById('current-rate').value = data.rates.TWD.toFixed(4);
+                    if (typeof calculateSettlement === 'function') calculateSettlement();
+                }
+            } catch (e) {}
+        }
+        document.getElementById('current-rate').addEventListener('input', () => { if (typeof calculateSettlement === 'function') calculateSettlement(); });
+
+        let intensityChartInstance = null; let transportChartInstance = null; let expenseChartInstance = null;
+        function renderCharts() {
+            const ctx1 = document.getElementById('intensityChart');
+            if(ctx1) {
+                if (intensityChartInstance) intensityChartInstance.destroy();
+                intensityChartInstance = new Chart(ctx1.getContext('2d'), { type: 'line', data: { labels: ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'], datasets: [{ label: '體力消耗', data: [4, 9, 3, 4, 6, 8, 8, 3], borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false } });
+            }
+            const ctx3 = document.getElementById('expenseChart');
+            if(ctx3 && typeof currentExpenses !== 'undefined') {
+                if (expenseChartInstance) expenseChartInstance.destroy();
+                const rate = parseFloat(document.getElementById('current-rate').value) || 0.2150;
+                const cat = {}; let hasData = false;
+                currentExpenses.forEach(exp => { if (exp.split === 'shared') { hasData = true; cat[exp.category] = (cat[exp.category] || 0) + (exp.currency === 'JPY' ? exp.amount * rate : exp.amount); } });
+                expenseChartInstance = new Chart(ctx3.getContext('2d'), { type: 'pie', data: { labels: hasData ? Object.keys(cat) : ['無資料'], datasets: [{ data: hasData ? Object.values(cat) : [1], backgroundColor: hasData ? Object.keys(cat).map((_, i) => `hsl(${(i * 360 / Object.keys(cat).length) % 360}, 60%, 50%)`) : ['#374151'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } } });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applySmartDefaults();
+            fetchExchangeRate();
+        });
+    </script>
+
+    <!-- Firebase 邏輯 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDU7OIhhr1Yl8X7NjuyOOEPrD3TQgHLNfE",
+            authDomain: "kobe-trip-2027.firebaseapp.com",
+            projectId: "kobe-trip-2027",
+            appId: "1:411231460300:web:c2174d70b00ba41d525b69"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        
+        window.firebaseDB = db; window.firebaseDoc = doc; window.firebaseSetDoc = setDoc; window.firebaseAppId = 'roy-ian-kobe-trip-2027';
+        const appId = window.firebaseAppId;
+        const allowedEmails = ['wx9950a@gmail.com', 'coolyi19860311@gmail.com'];
+        
+        let currentUser = null; window.currentExpenses = [];
+
+        onAuthStateChanged(auth, (user) => {
+            const authEl = document.getElementById('auth-status'); const loginBtn = document.getElementById('login-btn'); const logoutBtn = document.getElementById('logout-btn');
+            if (user) {
+                if (user.email && !allowedEmails.includes(user.email)) { signOut(auth); return; }
+                currentUser = user; authEl.innerHTML = `<span class="text-emerald-400">🟢 ${user.email.split('@')[0]}</span>`;
+                authEl.classList.remove('hidden'); loginBtn.classList.add('hidden'); logoutBtn.classList.remove('hidden');
+                
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), (snapshot) => {
+                    document.getElementById('sync-status').textContent = "✅ 已同步";
+                    document.getElementById('sync-status').className = "text-[10px] px-2 py-1 bg-emerald-900/50 text-emerald-400 rounded-full";
+                    window.currentExpenses = [];
+                    snapshot.forEach((doc) => window.currentExpenses.push({ id: doc.id, ...doc.data() }));
+                    window.currentExpenses.sort((a, b) => b.timestamp - a.timestamp);
+                    renderExpenses(); calculateSettlement(); if(document.getElementById('group-analytics').classList.contains('block')) renderCharts();
+                });
+                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'checklist', 'shared'), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const states = docSnap.data().states || [];
+                        document.querySelectorAll('.chk-item').forEach((cb, idx) => { if(states[idx] !== undefined) cb.checked = states[idx]; });
+                        updateChecklistProgress();
+                    }
+                });
+            } else {
+                currentUser = null; authEl.innerHTML = `<span class="text-amber-500">🟡 未登入</span>`;
+                authEl.classList.remove('hidden'); loginBtn.classList.remove('hidden'); logoutBtn.classList.add('hidden');
+                window.currentExpenses = []; renderExpenses();
+            }
+        });
+
+        window.loginWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); } catch(e) {} };
+        window.logoutGoogle = () => signOut(auth);
+
+        document.getElementById('expense-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); if (!currentUser) return;
+            const btn = document.getElementById('exp-submit-btn'); btn.innerHTML = "寫入中..."; btn.disabled = true;
+            
+            const newExpense = {
+                day: document.getElementById('exp-day').value, category: document.getElementById('exp-category').value,
+                desc: document.getElementById('exp-desc').value, amount: parseFloat(document.getElementById('exp-amount').value),
+                currency: document.getElementById('exp-currency').value, payMethod: document.getElementById('exp-paymethod').value,
+                paidBy: document.getElementById('exp-payer').value, split: document.getElementById('exp-split').value,
+                privateFor: document.getElementById('exp-split').value === 'private' ? document.getElementById('exp-private-for').value : null,
+                timestamp: Date.now()
+            };
+
+            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), newExpense); } catch(e) {}
+            document.getElementById('exp-desc').value = ''; document.getElementById('exp-amount').value = '';
+            btn.innerHTML = "➕ 寫入雲端"; btn.disabled = false;
+        });
+
+        window.deleteExpenseRecord = async (id) => { if (currentUser) try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id)); } catch(e) {} };
+
+        function renderExpenses() {
+            const listEl = document.getElementById('expenses-list'); listEl.innerHTML = '';
+            if (window.currentExpenses.length === 0) { document.getElementById('empty-state').classList.remove('hidden'); return; }
+            document.getElementById('empty-state').classList.add('hidden');
+
+            const payIcons = { 'Cash': '💵', 'Card': '💳', 'PayPay': '📱' };
+
+            window.currentExpenses.forEach(exp => {
+                const typeHtml = exp.split === 'shared' ? `<span class="text-emerald-400">均分</span>` : `<div class="leading-tight"><span class="text-gray-400">私人</span><br><span class="text-[9px] text-gray-500">${exp.privateFor}</span></div>`;
+                const payIcon = payIcons[exp.payMethod] || '💵';
+                const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/50 hover:bg-gray-800";
+                tr.innerHTML = `
+                    <td class="p-2 text-gray-500">${exp.day}</td>
+                    <td class="p-2 text-gray-300 font-bold">${exp.category}</td>
+                    <td class="p-2 text-gray-200">${exp.desc} <span class="text-[10px] ml-1 bg-gray-800 px-1 rounded border border-gray-700">${payIcon}</span></td>
+                    <td class="p-2 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
+                    <td class="p-2 text-center text-${exp.paidBy==='Roy'?'blue':'purple'}-400">${exp.paidBy}</td>
+                    <td class="p-2 text-center">${typeHtml}</td>
+                    <td class="p-2 text-center"><button onclick="deleteExpenseRecord('${exp.id}')" class="text-red-500 text-sm">🗑️</button></td>
+                `;
+                listEl.appendChild(tr);
+            });
+        }
+
+        window.calculateSettlement = function() {
+            let jpy=0, twd=0;
+            window.currentExpenses.forEach(exp => {
+                let amt = exp.amount; let isJpy = exp.currency === 'JPY';
+                if (exp.split === 'shared') {
+                    if(exp.paidBy==='Roy'){ if(isJpy) jpy+=amt/2; else twd+=amt/2; } else { if(isJpy) jpy-=amt/2; else twd-=amt/2; }
+                } else {
+                    if(exp.paidBy==='Roy'&&exp.privateFor==='Ian'){ if(isJpy) jpy+=amt; else twd+=amt; }
+                    if(exp.paidBy==='Ian'&&exp.privateFor==='Roy'){ if(isJpy) jpy-=amt; else twd-=amt; }
+                }
+            });
+            const fmt = (val) => val.toLocaleString(undefined, {maximumFractionDigits:0});
+            document.getElementById('jpy-settlement').innerHTML = jpy===0?'✅清':(jpy>0?`<span class="text-[10px] font-normal">Ian給Roy:</span><br>¥${fmt(jpy)}`:`<span class="text-[10px] font-normal text-rose-400">Roy給Ian:</span><br><span class="text-rose-400">¥${fmt(Math.abs(jpy))}</span>`);
+            document.getElementById('twd-settlement').innerHTML = twd===0?'✅清':(twd>0?`<span class="text-[10px] font-normal">Ian給Roy:</span><br>$${fmt(twd)}`:`<span class="text-[10px] font-normal text-rose-400">Roy給Ian:</span><br><span class="text-rose-400">$${fmt(Math.abs(twd))}</span>`);
+            
+            const rate = parseFloat(document.getElementById('current-rate').value) || 0; const total = twd + (jpy * rate);
+            document.getElementById('consolidated-settlement').innerHTML = Math.abs(total)<1?'✅ 結清':(total>0?`<span class="text-xs text-gray-400">Ian給Roy </span><span class="text-amber-400">NT$ ${fmt(total)}</span>`:`<span class="text-xs text-gray-400">Roy給Ian </span><span class="text-emerald-400">NT$ ${fmt(Math.abs(total))}</span>`);
+        }
+    </script>
+</body>
+</html>
+```eof
