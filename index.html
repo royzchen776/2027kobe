@@ -325,33 +325,6 @@
 
         <!-- ================= GROUP 3: 記帳 ================= -->
         <div id="group-accounting" class="main-group hidden space-y-6">
-            <!-- 結算儀表板 -->
-            <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl p-5 shadow-lg text-white border border-gray-800 relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-600 rounded-full blur-[80px] opacity-30"></div>
-                <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-brand-400 relative z-10"><span>⚖️</span> 即時結算中心</h2>
-                <div class="grid grid-cols-2 gap-4 relative z-10">
-                    <div class="bg-gray-800/60 rounded-lg p-4 border border-gray-700">
-                        <p class="text-sm text-gray-400 mb-1">🇯🇵 日幣 (JPY)</p>
-                        <p id="jpy-settlement" class="text-xl font-bold text-emerald-400">計算中...</p>
-                    </div>
-                    <div class="bg-gray-800/60 rounded-lg p-4 border border-gray-700">
-                        <p class="text-sm text-gray-400 mb-1">🇹🇼 台幣 (TWD)</p>
-                        <p id="twd-settlement" class="text-xl font-bold text-amber-400">計算中...</p>
-                    </div>
-                    <div class="col-span-2 mt-2 pt-4 border-t border-gray-700 flex flex-col sm:flex-row justify-between gap-4">
-                        <div class="flex items-center text-sm">
-                            <span class="text-gray-400">匯率: 1 JPY = </span>
-                            <input type="number" id="current-rate" step="0.0001" class="w-20 px-2 py-1 mx-2 bg-black border border-gray-600 rounded text-gray-200 font-mono" value="0.2150">
-                            <span class="text-gray-400">TWD</span>
-                        </div>
-                        <div class="bg-gray-900 p-3 rounded-lg border border-gray-700 flex justify-between items-center">
-                            <span class="text-xs text-gray-500">👑 總結算(折合台幣)</span>
-                            <span id="consolidated-settlement" class="text-xl font-bold text-white ml-4">計算中</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- 新增記帳表單 -->
             <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
                 <h3 class="font-bold text-gray-200 text-sm mb-4">✍️ 新增一筆花費</h3>
@@ -374,9 +347,9 @@
                         <div class="col-span-2">
                             <input type="number" id="exp-amount" min="1" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500" placeholder="金額..." required>
                         </div>
-                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700">
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="JPY" class="peer hidden" checked onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">JPY</div></label>
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="TWD" class="peer hidden" onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">TWD</div></label>
+                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[44px]">
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="JPY" class="peer hidden" checked onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">JPY</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="TWD" class="peer hidden" onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">TWD</div></label>
                         </div>
                         <input type="hidden" id="exp-currency" value="JPY">
                     </div>
@@ -384,7 +357,7 @@
                     <!-- 付款方式選擇 -->
                     <div class="pt-2 border-t border-gray-800">
                         <label class="block text-[11px] font-semibold text-gray-500 mb-1.5">結帳付款方式</label>
-                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[38px]">
+                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[48px]">
                             <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Cash" class="peer hidden" checked onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">💵 現金</div></label>
                             <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Card" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">💳 刷卡</div></label>
                             <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="PayPay" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">📱 PayPay</div></label>
@@ -395,23 +368,23 @@
                     <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-800">
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-1.5">誰代墊？</label>
-                            <div class="flex bg-brand-900/30 p-1 rounded-md border border-brand-800/50 h-[36px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Ian</div></label></div>
+                            <div class="flex bg-brand-900/30 p-1 rounded-md border border-brand-800/50 h-[48px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Ian</div></label></div>
                             <input type="hidden" id="exp-payer" value="Roy">
                         </div>
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-1.5">分攤方式</label>
-                            <div class="flex bg-emerald-900/30 p-1 rounded-md border border-emerald-800/50 h-[36px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="shared" class="peer hidden" checked onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">均分</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="private" class="peer hidden" onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">私人</div></label></div>
+                            <div class="flex bg-emerald-900/30 p-1 rounded-md border border-emerald-800/50 h-[48px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="shared" class="peer hidden" checked onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">均分</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="private" class="peer hidden" onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">私人</div></label></div>
                             <input type="hidden" id="exp-split" value="shared">
                         </div>
                     </div>
                     
                     <div id="private-for-container" class="hidden bg-gray-800/80 p-3 rounded-lg border border-gray-700 mt-2">
                         <label class="block text-[11px] text-gray-400 mb-1.5">這筆是誰的私人花費？</label>
-                        <div class="flex bg-gray-900 p-1 rounded-md border border-gray-700 h-[36px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-xs font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Ian</div></label></div>
+                        <div class="flex bg-gray-900 p-1 rounded-md border border-gray-700 h-[48px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Ian</div></label></div>
                         <input type="hidden" id="exp-private-for" value="Roy">
                     </div>
                     
-                    <button type="submit" id="exp-submit-btn" class="w-full mt-4 bg-brand-600 hover:bg-brand-500 text-white font-bold py-2.5 rounded-lg shadow-md border border-brand-500 transition-colors">➕ 寫入雲端帳本</button>
+                    <button type="submit" id="exp-submit-btn" class="w-full mt-4 bg-brand-600 hover:bg-brand-500 text-white font-bold py-3 rounded-lg shadow-md border border-brand-500 transition-colors text-base">➕ 寫入雲端帳本</button>
                 </form>
             </div>
 
@@ -443,6 +416,33 @@
 
         <!-- ================= GROUP 4: 數據 ================= -->
         <div id="group-analytics" class="main-group hidden space-y-6">
+            <!-- 結算儀表板 (從記帳分頁移過來) -->
+            <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl p-5 shadow-lg text-white border border-gray-800 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-600 rounded-full blur-[80px] opacity-30"></div>
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-brand-400 relative z-10"><span>⚖️</span> 即時結算中心</h2>
+                <div class="grid grid-cols-2 gap-4 relative z-10">
+                    <div class="bg-gray-800/60 rounded-lg p-4 border border-gray-700">
+                        <p class="text-sm text-gray-400 mb-1">🇯🇵 日幣 (JPY)</p>
+                        <p id="jpy-settlement" class="text-xl font-bold text-emerald-400">計算中...</p>
+                    </div>
+                    <div class="bg-gray-800/60 rounded-lg p-4 border border-gray-700">
+                        <p class="text-sm text-gray-400 mb-1">🇹🇼 台幣 (TWD)</p>
+                        <p id="twd-settlement" class="text-xl font-bold text-amber-400">計算中...</p>
+                    </div>
+                    <div class="col-span-2 mt-2 pt-4 border-t border-gray-700 flex flex-col sm:flex-row justify-between gap-4">
+                        <div class="flex items-center text-sm">
+                            <span class="text-gray-400">匯率: 1 JPY = </span>
+                            <input type="number" id="current-rate" step="0.0001" class="w-20 px-2 py-1 mx-2 bg-black border border-gray-600 rounded text-gray-200 font-mono" value="0.2150">
+                            <span class="text-gray-400">TWD</span>
+                        </div>
+                        <div class="bg-gray-900 p-3 rounded-lg border border-gray-700 flex justify-between items-center">
+                            <span class="text-xs text-gray-500">👑 總結算(折合台幣)</span>
+                            <span id="consolidated-settlement" class="text-xl font-bold text-white ml-4">計算中</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
                 <h2 class="text-xl font-bold text-gray-100 mb-6 flex items-center gap-2"><span>📊</span> 數據分析</h2>
                 <div class="space-y-8">
