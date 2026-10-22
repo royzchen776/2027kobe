@@ -341,15 +341,15 @@
                             </select>
                         </div>
                     </div>
-                    <input type="text" id="exp-desc" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500" placeholder="備註 (如: 章魚燒)..." required>
+                    <input type="text" id="exp-desc" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500" placeholder="備註 (選填，如: 章魚燒)...">
                     
                     <div class="grid grid-cols-3 gap-3">
                         <div class="col-span-2">
                             <input type="number" id="exp-amount" min="1" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500" placeholder="金額..." required>
                         </div>
-                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[44px]">
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="JPY" class="peer hidden" checked onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">JPY</div></label>
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="TWD" class="peer hidden" onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">TWD</div></label>
+                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[52px]">
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="JPY" class="peer hidden" checked onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">JPY</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="curr_rad" value="TWD" class="peer hidden" onchange="document.getElementById('exp-currency').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-gray-400 peer-checked:bg-gray-600 peer-checked:text-white">TWD</div></label>
                         </div>
                         <input type="hidden" id="exp-currency" value="JPY">
                     </div>
@@ -357,10 +357,10 @@
                     <!-- 付款方式選擇 -->
                     <div class="pt-2 border-t border-gray-800">
                         <label class="block text-[11px] font-semibold text-gray-500 mb-1.5">結帳付款方式</label>
-                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[48px]">
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Cash" class="peer hidden" checked onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">💵 現金</div></label>
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Card" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">💳 刷卡</div></label>
-                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="PayPay" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">📱 PayPay</div></label>
+                        <div class="flex bg-gray-800 p-1 rounded-md border border-gray-700 h-[52px]">
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Cash" class="peer hidden" checked onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">💵 現金</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="Card" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">💳 刷卡</div></label>
+                            <label class="flex-1 text-center cursor-pointer"><input type="radio" name="paymethod_rad" value="PayPay" class="peer hidden" onchange="document.getElementById('exp-paymethod').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-medium rounded text-gray-400 peer-checked:bg-blue-600/50 peer-checked:text-white peer-checked:border peer-checked:border-blue-500 transition-all">📱 PayPay</div></label>
                         </div>
                         <input type="hidden" id="exp-paymethod" value="Cash">
                     </div>
@@ -368,23 +368,26 @@
                     <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-800">
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-1.5">誰代墊？</label>
-                            <div class="flex bg-brand-900/30 p-1 rounded-md border border-brand-800/50 h-[48px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Ian</div></label></div>
+                            <div class="flex bg-brand-900/30 p-1 rounded-md border border-brand-800/50 h-[52px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="payer_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-payer').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-brand-500 peer-checked:bg-brand-600 peer-checked:text-white transition-all">Ian</div></label></div>
                             <input type="hidden" id="exp-payer" value="Roy">
                         </div>
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-1.5">分攤方式</label>
-                            <div class="flex bg-emerald-900/30 p-1 rounded-md border border-emerald-800/50 h-[48px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="shared" class="peer hidden" checked onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">均分</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="private" class="peer hidden" onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">私人</div></label></div>
+                            <div class="flex bg-emerald-900/30 p-1 rounded-md border border-emerald-800/50 h-[52px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="shared" class="peer hidden" checked onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">均分</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="split_rad" value="private" class="peer hidden" onchange="document.getElementById('exp-split').value=this.value; togglePrivateFor()"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-emerald-500 peer-checked:bg-emerald-600 peer-checked:text-white transition-all">私人</div></label></div>
                             <input type="hidden" id="exp-split" value="shared">
                         </div>
                     </div>
                     
                     <div id="private-for-container" class="hidden bg-gray-800/80 p-3 rounded-lg border border-gray-700 mt-2">
                         <label class="block text-[11px] text-gray-400 mb-1.5">這筆是誰的私人花費？</label>
-                        <div class="flex bg-gray-900 p-1 rounded-md border border-gray-700 h-[48px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-sm font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Ian</div></label></div>
+                        <div class="flex bg-gray-900 p-1 rounded-md border border-gray-700 h-[52px]"><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Roy" class="peer hidden" checked onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Roy</div></label><label class="flex-1 text-center cursor-pointer"><input type="radio" name="private_rad" value="Ian" class="peer hidden" onchange="document.getElementById('exp-private-for').value=this.value"><div class="h-full flex items-center justify-center text-sm sm:text-base font-bold rounded text-gray-500 peer-checked:bg-gray-700 peer-checked:text-white">Ian</div></label></div>
                         <input type="hidden" id="exp-private-for" value="Roy">
                     </div>
                     
-                    <button type="submit" id="exp-submit-btn" class="w-full mt-4 bg-brand-600 hover:bg-brand-500 text-white font-bold py-3 rounded-lg shadow-md border border-brand-500 transition-colors text-base">➕ 寫入雲端帳本</button>
+                    <div class="flex gap-2 mt-4">
+                        <button type="button" id="exp-cancel-btn" onclick="cancelEditExpense()" class="hidden w-1/3 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg shadow-md border border-gray-600 transition-colors text-sm sm:text-base">❌ 取消</button>
+                        <button type="submit" id="exp-submit-btn" class="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-bold py-3 rounded-lg shadow-md border border-brand-500 transition-colors text-sm sm:text-base">➕ 寫入雲端帳本</button>
+                    </div>
                 </form>
             </div>
 
@@ -404,7 +407,7 @@
                                 <th class="p-3 text-right w-24">金額</th>
                                 <th class="p-3 text-center w-12">代墊</th>
                                 <th class="p-3 text-center w-12">分攤</th>
-                                <th class="p-3 text-center w-8">刪</th>
+                                <th class="p-3 text-center w-16">操作</th>
                             </tr>
                         </thead>
                         <tbody id="expenses-list" class="divide-y divide-gray-800 text-xs"></tbody>
@@ -929,22 +932,99 @@
         };
         window.logoutGoogle = () => signOut(auth);
 
+        let editingExpenseId = null;
+
+        window.editExpenseRecord = (id) => {
+            const exp = window.currentExpenses.find(e => e.id === id);
+            if (!exp) return;
+            
+            document.getElementById('exp-day').value = exp.day;
+            document.getElementById('exp-category').value = exp.category;
+            document.getElementById('exp-desc').value = exp.desc || '';
+            document.getElementById('exp-amount').value = exp.amount;
+            
+            document.querySelector(`input[name="curr_rad"][value="${exp.currency}"]`).checked = true;
+            document.getElementById('exp-currency').value = exp.currency;
+            
+            const payMethod = exp.payMethod || 'Cash';
+            const payMethodEl = document.querySelector(`input[name="paymethod_rad"][value="${payMethod}"]`);
+            if(payMethodEl) payMethodEl.checked = true;
+            document.getElementById('exp-paymethod').value = payMethod;
+            
+            document.querySelector(`input[name="payer_rad"][value="${exp.paidBy}"]`).checked = true;
+            document.getElementById('exp-payer').value = exp.paidBy;
+            
+            document.querySelector(`input[name="split_rad"][value="${exp.split}"]`).checked = true;
+            document.getElementById('exp-split').value = exp.split;
+            togglePrivateFor();
+            
+            if(exp.split === 'private' && exp.privateFor) {
+                document.querySelector(`input[name="private_rad"][value="${exp.privateFor}"]`).checked = true;
+                document.getElementById('exp-private-for').value = exp.privateFor;
+            }
+
+            editingExpenseId = id;
+            
+            const btn = document.getElementById('exp-submit-btn');
+            btn.innerHTML = "💾 儲存修改";
+            btn.classList.remove('bg-brand-600', 'hover:bg-brand-500', 'border-brand-500');
+            btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500', 'border-emerald-500');
+            
+            document.getElementById('exp-cancel-btn').classList.remove('hidden');
+            
+            // 自動滾動回到表單填寫區
+            document.getElementById('expense-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.cancelEditExpense = () => {
+            editingExpenseId = null;
+            document.getElementById('expense-form').reset();
+            
+            // 恢復預設值
+            document.getElementById('exp-currency').value = 'JPY';
+            document.getElementById('exp-paymethod').value = 'Cash';
+            document.getElementById('exp-payer').value = 'Roy';
+            document.getElementById('exp-split').value = 'shared';
+            document.getElementById('exp-private-for').value = 'Roy';
+            togglePrivateFor();
+            
+            const btn = document.getElementById('exp-submit-btn');
+            btn.innerHTML = "➕ 寫入雲端帳本";
+            btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500', 'border-emerald-500');
+            btn.classList.add('bg-brand-600', 'hover:bg-brand-500', 'border-brand-500');
+            
+            document.getElementById('exp-cancel-btn').classList.add('hidden');
+        };
+
         document.getElementById('expense-form').addEventListener('submit', async (e) => {
             e.preventDefault(); if (!currentUser) return;
-            const btn = document.getElementById('exp-submit-btn'); btn.innerHTML = "寫入中..."; btn.disabled = true;
+            const btn = document.getElementById('exp-submit-btn'); 
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "處理中..."; btn.disabled = true;
             
             const newExpense = {
                 day: document.getElementById('exp-day').value, category: document.getElementById('exp-category').value,
                 desc: document.getElementById('exp-desc').value, amount: parseFloat(document.getElementById('exp-amount').value),
                 currency: document.getElementById('exp-currency').value, payMethod: document.getElementById('exp-paymethod').value,
                 paidBy: document.getElementById('exp-payer').value, split: document.getElementById('exp-split').value,
-                privateFor: document.getElementById('exp-split').value === 'private' ? document.getElementById('exp-private-for').value : null,
-                timestamp: Date.now()
+                privateFor: document.getElementById('exp-split').value === 'private' ? document.getElementById('exp-private-for').value : null
             };
 
-            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), newExpense); } catch(e) {}
-            document.getElementById('exp-desc').value = ''; document.getElementById('exp-amount').value = '';
-            btn.innerHTML = "➕ 寫入雲端帳本"; btn.disabled = false;
+            try { 
+                if (editingExpenseId) {
+                    await window.firebaseSetDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', editingExpenseId), newExpense, { merge: true });
+                    window.cancelEditExpense();
+                } else {
+                    newExpense.timestamp = Date.now();
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), newExpense);
+                    document.getElementById('exp-desc').value = ''; document.getElementById('exp-amount').value = '';
+                    btn.innerHTML = "➕ 寫入雲端帳本"; 
+                }
+            } catch(e) {
+                console.error(e);
+                btn.innerHTML = originalText;
+            }
+            btn.disabled = false;
         });
 
         window.deleteExpenseRecord = async (id) => { if (currentUser) try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id)); } catch(e) {} };
@@ -967,7 +1047,10 @@
                     <td class="p-3 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount.toLocaleString()} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
                     <td class="p-3 text-center text-${exp.paidBy==='Roy'?'blue':'purple'}-400 font-bold">${exp.paidBy}</td>
                     <td class="p-3 text-center">${typeHtml}</td>
-                    <td class="p-3 text-center"><button onclick="deleteExpenseRecord('${exp.id}')" class="text-red-400 hover:text-red-500 text-sm">🗑️</button></td>
+                    <td class="p-3 text-center whitespace-nowrap">
+                        <button onclick="editExpenseRecord('${exp.id}')" class="text-emerald-400 hover:text-emerald-500 text-sm mr-2 transition-colors">✏️</button>
+                        <button onclick="deleteExpenseRecord('${exp.id}')" class="text-red-400 hover:text-red-500 text-sm transition-colors">🗑️</button>
+                    </td>
                 `;
                 listEl.appendChild(tr);
             });
