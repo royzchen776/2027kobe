@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- 主分頁 Tab 導覽列 (Grid 雙排等寬設計 / 電腦版自動長度) -->
+            <!-- 主分頁 Tab 導覽列 (Grid 雙排等寬設計 / 電腦版單排) -->
             <nav class="grid grid-cols-4 sm:flex sm:flex-wrap gap-2 pb-3 pt-2 border-t border-gray-800 justify-center">
                 <button id="tab-itinerary" onclick="switchTab('itinerary')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm bg-brand-600 text-white font-semibold shadow-sm border border-brand-500">📅 行程</button>
                 <button id="tab-navigation" onclick="switchTab('navigation')" class="w-full sm:w-auto px-0 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors text-center text-xs sm:text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50">🚗 導航</button>
@@ -1089,7 +1089,7 @@
         function applySmartDefaults() {
             const today = new Date();
             const y = today.getFullYear();
-            const m = today.getMonth() + 1; // JavaScript 的月份是 1-12 (修正)
+            const m = today.getMonth() + 1; // JavaScript 的月份是 0-11
             const d = today.getDate();
 
             let targetItinerary = 'all'; // 預設顯示全部行程
@@ -1128,8 +1128,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // 修正：使用 signInWithRedirect 解決手機版 PWA 閃退問題
-        import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // 改回使用 Popup 登入，避開跨網域 sessionStorage 阻擋問題
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // === 你的專屬 Firebase 金鑰 ===
@@ -1211,12 +1211,16 @@
         window.loginWithGoogle = async () => {
             try {
                 loginBtn.innerHTML = '連線中...';
-                // 使用 Redirect 解決手機 PWA 閃退問題
-                await signInWithRedirect(auth, googleProvider);
+                // 改用 Popup 登入，完美避開跨網域跳轉的 sessionStorage 清除問題
+                await signInWithPopup(auth, googleProvider);
             } catch (error) {
-                console.error("登入跳轉失敗", error);
+                console.error("登入失敗", error);
                 loginBtn.innerHTML = '<span class="text-sm">G</span> 登入';
-                alert("登入失敗，請確認網址是否已加入 Firebase 授權網域。");
+                
+                // 排除使用者自己關閉視窗的錯誤提示
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    alert("登入遇到問題，請確認沒有使用無痕模式，或瀏覽器允許彈出視窗！");
+                }
             }
         };
 
@@ -1415,3 +1419,4 @@
     </script>
 </body>
 </html>
+```eof
