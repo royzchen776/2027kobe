@@ -2,7 +2,11 @@
 <html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.svg">
     <title>2027 關西神戶・京都・城崎 8天7夜 黃金三角之旅</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,7 +49,7 @@
     </style>
 </head>
 
-<body class="bg-warmbg text-gray-200 font-sans antialiased flex flex-col selection:bg-brand-900 selection:text-brand-100 h-screen overflow-hidden">
+<body class="bg-warmbg text-gray-200 font-sans antialiased flex flex-col selection:bg-brand-900 selection:text-brand-100 h-[100dvh] overflow-hidden">
 
     <!-- 頂部 Header -->
     <header class="bg-japan-indigo text-white flex-none border-b border-gray-800 shadow-md z-40">
@@ -395,7 +399,10 @@
             <div class="bg-cardbg rounded-xl shadow-md border border-gray-800 overflow-hidden">
                 <div class="p-4 bg-gray-900 flex justify-between items-center border-b border-gray-800">
                     <h3 class="font-bold text-gray-200 text-sm">🧾 花費明細</h3>
-                    <span id="sync-status" class="text-[10px] px-2 py-1 bg-yellow-900/50 text-yellow-500 border border-yellow-800 rounded-full animate-pulse">連線中...</span>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="exportExpensesCSV()" class="text-[11px] px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded transition-colors">⬇️ 匯出 CSV</button>
+                        <span id="sync-status" class="text-[10px] px-2 py-1 bg-gray-800 text-gray-400 border border-gray-700 rounded-full">未登入</span>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[500px]">
@@ -452,6 +459,16 @@
                     <div>
                         <h3 class="text-sm font-bold text-gray-300 mb-3">💰 公費支出分類比例 (TWD)</h3>
                         <div class="chart-container h-[250px]"><canvas id="expenseChart"></canvas></div>
+                    </div>
+                    <div class="border-t border-gray-800 pt-6">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <h3 class="text-sm font-bold text-gray-300">📅 每日花費 vs 預算 (TWD，全部花費)</h3>
+                            <label class="text-xs text-gray-400 flex items-center gap-2">每日預算
+                                <input type="number" id="daily-budget" min="0" step="100" class="w-24 px-2 py-1 bg-black border border-gray-600 rounded text-gray-200 font-mono" placeholder="例 5000">
+                            </label>
+                        </div>
+                        <div class="chart-container h-[250px]"><canvas id="dailyChart"></canvas></div>
+                        <div id="daily-summary" class="mt-3 grid grid-cols-3 gap-2 text-center text-xs"></div>
                     </div>
                     <div class="border-t border-gray-800 pt-6">
                         <h3 class="text-sm font-bold text-gray-300 mb-3">📈 每日體力消耗預估指數 (1-10分)</h3>
@@ -677,8 +694,8 @@
                         mapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.mapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[11px] bg-blue-900/30 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
                     }
                     itemsHtml += `
-                        <div class="flex items-start gap-2.5 text-xs py-2.5 border-b border-gray-700/50 last:border-0">
-                            <span class="font-mono font-semibold text-brand-400 bg-gray-900/50 px-1.5 py-0.5 rounded min-w-[85px] text-center">${it.time}</span>
+                        <div class="flex items-start gap-2.5 text-sm py-2.5 border-b border-gray-700/50 last:border-0">
+                            <span class="font-mono text-xs font-semibold text-brand-400 bg-gray-900/50 px-1.5 py-0.5 rounded min-w-[92px] text-center">${it.time}</span>
                             <span class="text-sm leading-none mt-0.5">${it.icon}</span>
                             <span class="text-gray-300 leading-relaxed flex-grow">${it.text}${mapBtn}</span>
                         </div>
@@ -699,10 +716,14 @@
                         <span class="text-[10px] text-gray-400 font-mono">${data.date}</span>
                     </div>
                     <div class="p-3 space-y-3">
-                        <div class="bg-brand-900/20 border-l-2 border-brand-500 p-2 text-xs text-gray-300 flex items-start gap-1">
+                        <div class="bg-brand-900/20 border-l-2 border-brand-500 p-2 text-sm text-gray-300 flex items-start gap-1">
                             <span class="font-bold text-brand-400 whitespace-nowrap">📌 重點：</span><span>${data.keyPoint}</span>
                         </div>
                         <div>${itemsHtml}</div>
+                        <div>
+                            <label for="note-${data.day}" class="block text-[11px] font-semibold text-gray-500 mb-1">📝 D${data.day} 備註（預約代號、集合時間、提醒…）</label>
+                            <textarea id="note-${data.day}" rows="2" data-note-day="${data.day}" oninput="onNoteInput(${data.day}, this.value)" class="w-full p-2 bg-black border border-gray-700 text-gray-200 rounded-lg text-sm focus:border-brand-500 outline-none" placeholder="輸入後自動儲存；登入後會與同行者同步"></textarea>
+                        </div>
                         <div class="pt-2 border-t border-gray-700/50 flex items-center justify-between text-[11px] text-gray-400">
                             <span class="flex items-center gap-1 flex-wrap"><span class="text-brand-500">🛌 住宿：</span> <strong class="text-gray-200">${data.stay}</strong>${stayMapBtn}</span>
                         </div>
@@ -710,6 +731,32 @@
                 `;
                 container.appendChild(card);
             });
+            applyNotesToUI();
+        }
+
+        // ================= 每日行程備註 =================
+        window.tripNotes = {};
+        try { window.tripNotes = JSON.parse(localStorage.getItem('kobe-notes') || '{}') || {}; } catch (e) { window.tripNotes = {}; }
+
+        function applyNotesToUI() {
+            document.querySelectorAll('textarea[data-note-day]').forEach(ta => {
+                if (document.activeElement === ta) return; // 正在輸入時不要被雲端覆蓋
+                const v = window.tripNotes[ta.getAttribute('data-note-day')] || '';
+                if (ta.value !== v) ta.value = v;
+            });
+        }
+
+        let noteSaveTimer = null;
+        function onNoteInput(day, value) {
+            window.tripNotes[day] = value;
+            try { localStorage.setItem('kobe-notes', JSON.stringify(window.tripNotes)); } catch (e) {}
+            clearTimeout(noteSaveTimer);
+            noteSaveTimer = setTimeout(() => {
+                if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseUser) {
+                    const ref = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'notes', 'shared');
+                    window.firebaseSetDoc(ref, { ['d' + day]: value }, { merge: true }).catch(() => {});
+                }
+            }, 800);
         }
 
         function filterDay(day) {
@@ -768,18 +815,34 @@
             else container.classList.add('hidden');
         }
 
-        function updateChecklistProgress() {
+        // 只更新畫面（雲端快照回來時呼叫，避免寫回雲端造成迴圈）
+        function renderChecklistProgress() {
             const checkboxes = document.querySelectorAll('.chk-item');
-            let checkedCount = 0; const states = [];
-            checkboxes.forEach(cb => { if (cb.checked) checkedCount++; states.push(cb.checked); });
+            let checkedCount = 0;
+            checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });
             const percent = checkboxes.length > 0 ? Math.round((checkedCount / checkboxes.length) * 100) : 0;
             document.getElementById('checklist-progress-text').innerText = `${percent}%`;
             document.getElementById('checklist-progress-bar').style.width = `${percent}%`;
+        }
 
-            if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseAppId) {
+        // 使用者勾選時呼叫：更新畫面 + 存本機 + 同步雲端
+        function updateChecklistProgress() {
+            renderChecklistProgress();
+            const states = Array.from(document.querySelectorAll('.chk-item')).map(cb => cb.checked);
+            try { localStorage.setItem('kobe-checklist', JSON.stringify(states)); } catch (e) {}
+            if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseAppId && window.firebaseUser) {
                 const docRef = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'checklist', 'shared');
-                window.firebaseSetDoc(docRef, { states: states }, { merge: true }).catch(e=>{});
+                window.firebaseSetDoc(docRef, { states: states }, { merge: true }).catch(() => {});
             }
+        }
+
+        // 開啟時先讀本機（離線也能看到打包進度）
+        function restoreLocalChecklist() {
+            try {
+                const states = JSON.parse(localStorage.getItem('kobe-checklist') || '[]');
+                document.querySelectorAll('.chk-item').forEach((cb, i) => { if (states[i] !== undefined) cb.checked = states[i]; });
+            } catch (e) {}
+            renderChecklistProgress();
         }
 
         // ================= 智慧預設邏輯 =================
@@ -833,8 +896,75 @@
         }
         document.getElementById('current-rate').addEventListener('input', () => { if (typeof calculateSettlement === 'function') calculateSettlement(); });
 
+        // ================= 每日花費 vs 預算 =================
+        const DAY_KEYS = ['行前', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'];
+        let dailyChartInstance = null;
+
+        function getDailyBudget() {
+            const el = document.getElementById('daily-budget');
+            const v = el ? parseFloat(el.value) : NaN;
+            return isNaN(v) || v <= 0 ? 0 : v;
+        }
+
+        function renderDailyChart() {
+            const canvas = document.getElementById('dailyChart');
+            if (!canvas) return;
+            const rate = parseFloat(document.getElementById('current-rate').value) || 0.2150;
+            const totals = {}; DAY_KEYS.forEach(k => totals[k] = 0);
+            (window.currentExpenses || []).forEach(exp => {
+                const twd = exp.currency === 'JPY' ? exp.amount * rate : exp.amount;
+                if (totals[exp.day] === undefined) totals[exp.day] = 0;
+                totals[exp.day] += twd;
+            });
+            const budget = getDailyBudget();
+            const tripDays = DAY_KEYS.filter(k => k !== '行前');
+            const labels = DAY_KEYS;
+            const data = labels.map(k => Math.round(totals[k]));
+            const colors = labels.map(k => (budget && k !== '行前' && totals[k] > budget) ? '#ef4444' : '#f59e0b');
+
+            if (dailyChartInstance) dailyChartInstance.destroy();
+            const datasets = [{ type: 'bar', label: '當日花費', data, backgroundColor: colors, borderRadius: 4 }];
+            if (budget) datasets.push({ type: 'line', label: '每日預算', data: labels.map(k => k === '行前' ? null : budget), borderColor: '#10b981', borderDash: [6, 4], pointRadius: 0, spanGaps: true });
+            dailyChartInstance = new Chart(canvas.getContext('2d'), {
+                type: 'bar',
+                data: { labels, datasets },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+            });
+
+            const tripTotal = tripDays.reduce((s, k) => s + totals[k], 0);
+            const spentDays = tripDays.filter(k => totals[k] > 0).length;
+            const avg = spentDays ? tripTotal / spentDays : 0;
+            const over = budget ? tripDays.filter(k => totals[k] > budget).length : 0;
+            const box = (label, val, cls) => `<div class="bg-gray-800/60 rounded-lg p-2 border border-gray-700"><div class="text-gray-500 mb-0.5">${label}</div><div class="font-bold ${cls}">${val}</div></div>`;
+            const fmt = n => 'NT$ ' + Math.round(n).toLocaleString();
+            document.getElementById('daily-summary').innerHTML =
+                box('旅程總花費', fmt(tripTotal), 'text-amber-400') +
+                box('有花費日均', fmt(avg), 'text-gray-200') +
+                box('超出預算天數', budget ? over + ' 天' : '未設定', over ? 'text-red-400' : 'text-emerald-400');
+        }
+
+        // ================= 匯出 CSV =================
+        function exportExpensesCSV() {
+            const list = window.currentExpenses || [];
+            if (!list.length) { alert('目前沒有可匯出的記帳紀錄'); return; }
+            const esc = v => { const s = String(v ?? ''); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+            const header = ['時間', '天別', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'];
+            const rows = list.slice().sort((a, b) => a.timestamp - b.timestamp).map(e => [
+                e.timestamp ? new Date(e.timestamp).toLocaleString('zh-TW', { hour12: false }) : '',
+                e.day, e.category, e.desc || '', e.amount, e.currency, e.payMethod || 'Cash', e.paidBy,
+                e.split === 'shared' ? '均分' : '私人', e.privateFor || ''
+            ]);
+            const csv = '\ufeff' + [header, ...rows].map(r => r.map(esc).join(',')).join('\r\n'); // BOM 讓 Excel 正確顯示中文
+            const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+            const a = document.createElement('a');
+            a.href = url; a.download = `kobe-trip-expenses-${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
         let intensityChartInstance = null; let transportChartInstance = null; let expenseChartInstance = null;
         function renderCharts() {
+            renderDailyChart();
             const ctx1 = document.getElementById('intensityChart');
             if(ctx1) {
                 if (intensityChartInstance) intensityChartInstance.destroy();
@@ -861,7 +991,19 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             applySmartDefaults();
+            restoreLocalChecklist();
             fetchExchangeRate();
+
+            // 每日預算：存在本機，變動時重畫圖表
+            const budgetEl = document.getElementById('daily-budget');
+            try { budgetEl.value = localStorage.getItem('kobe-daily-budget') || ''; } catch (e) {}
+            budgetEl.addEventListener('input', () => {
+                try { localStorage.setItem('kobe-daily-budget', budgetEl.value); } catch (e) {}
+                renderDailyChart();
+            });
+            document.getElementById('current-rate').addEventListener('input', () => {
+                if (!document.getElementById('group-analytics').classList.contains('hidden')) renderCharts();
+            });
         });
     </script>
 
@@ -870,7 +1012,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         // 使用 Popup 登入，避開跨網域 sessionStorage 阻擋問題
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, addDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDU7OIhhr1Yl8X7NjuyOOEPrD3TQgHLNfE",
@@ -879,7 +1021,14 @@
             appId: "1:411231460300:web:c2174d70b00ba41d525b69"
         };
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // 啟用 Firestore 離線持久化：沒網路時仍可讀取先前同步過的帳本，恢復連線後自動補送
+        let db;
+        try {
+            db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+        } catch (e) {
+            console.warn('離線快取初始化失敗，改用一般模式', e);
+            db = initializeFirestore(app, {});
+        }
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
         
@@ -887,48 +1036,92 @@
         const appId = window.firebaseAppId;
         const allowedEmails = ['wx9950a@gmail.com', 'coolyi19860311@gmail.com'];
         
-        let currentUser = null; window.currentExpenses = [];
+        let currentUser = null; window.currentExpenses = []; window.firebaseUser = null;
+        let unsubscribers = [];
+        const LOGIN_BTN_HTML = '<span class="text-sm">G</span> 登入';
+
+        // HTML 跳脫：備註等使用者輸入內容放進 innerHTML 前一律處理，避免 XSS
+        const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        function setSyncStatus(text, cls) {
+            const el = document.getElementById('sync-status');
+            el.textContent = text;
+            el.className = "text-[10px] px-2 py-1 rounded-full border " + cls;
+        }
+
+        function stopListeners() { unsubscribers.forEach(fn => { try { fn(); } catch (e) {} }); unsubscribers = []; }
 
         onAuthStateChanged(auth, (user) => {
             const authEl = document.getElementById('auth-status'); const loginBtn = document.getElementById('login-btn'); const logoutBtn = document.getElementById('logout-btn');
+            stopListeners(); // 重新登入時先關掉舊監聽，避免重複訂閱
+
             if (user) {
-                if (user.email && !allowedEmails.includes(user.email)) { signOut(auth); return; }
-                currentUser = user; authEl.innerHTML = `<span class="text-emerald-400">🟢 ${user.email.split('@')[0]}</span>`;
+                if (!user.email || !allowedEmails.includes(user.email)) {
+                    alert('此 Google 帳號未被授權使用本行程 App。');
+                    signOut(auth);
+                    return;
+                }
+                currentUser = user; window.firebaseUser = user;
+                authEl.innerHTML = `<span class="text-emerald-400">🟢 ${escapeHtml(user.email.split('@')[0])}</span>`;
                 authEl.classList.remove('hidden'); loginBtn.classList.add('hidden'); logoutBtn.classList.remove('hidden');
-                
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), (snapshot) => {
-                    document.getElementById('sync-status').textContent = "✅ 已同步";
-                    document.getElementById('sync-status').className = "text-[10px] px-2 py-1 bg-emerald-900/50 text-emerald-400 rounded-full";
+                loginBtn.innerHTML = LOGIN_BTN_HTML;
+                setSyncStatus('連線中...', 'bg-yellow-900/50 text-yellow-500 border-yellow-800 animate-pulse');
+
+                unsubscribers.push(onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), (snapshot) => {
+                    const offline = snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites;
+                    setSyncStatus(offline ? '📴 離線資料' : '✅ 已同步', offline ? 'bg-gray-800 text-gray-300 border-gray-600' : 'bg-emerald-900/50 text-emerald-400 border-emerald-800');
                     window.currentExpenses = [];
-                    snapshot.forEach((doc) => window.currentExpenses.push({ id: doc.id, ...doc.data() }));
-                    window.currentExpenses.sort((a, b) => b.timestamp - a.timestamp);
-                    renderExpenses(); calculateSettlement(); if(document.getElementById('group-analytics').classList.contains('block')) renderCharts();
-                });
-                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'checklist', 'shared'), (docSnap) => {
+                    snapshot.forEach((d) => window.currentExpenses.push({ id: d.id, ...d.data() }));
+                    window.currentExpenses.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    renderExpenses(); calculateSettlement();
+                    if (!document.getElementById('group-analytics').classList.contains('hidden')) renderCharts();
+                }, (err) => {
+                    console.error('帳本同步失敗', err);
+                    setSyncStatus('⚠️ 同步失敗', 'bg-red-900/50 text-red-400 border-red-800');
+                }));
+
+                unsubscribers.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'checklist', 'shared'), (docSnap) => {
                     if (docSnap.exists()) {
                         const states = docSnap.data().states || [];
-                        document.querySelectorAll('.chk-item').forEach((cb, idx) => { if(states[idx] !== undefined) cb.checked = states[idx]; });
-                        updateChecklistProgress();
+                        document.querySelectorAll('.chk-item').forEach((cb, idx) => { if (states[idx] !== undefined) cb.checked = states[idx]; });
+                        renderChecklistProgress(); // 只更新畫面，不再寫回雲端（避免無限迴圈）
+                        try { localStorage.setItem('kobe-checklist', JSON.stringify(Array.from(document.querySelectorAll('.chk-item')).map(cb => cb.checked))); } catch (e) {}
                     }
-                });
+                }, (err) => console.error('清單同步失敗', err)));
+
+                unsubscribers.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'notes', 'shared'), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        for (let d = 1; d <= 8; d++) { if (typeof data['d' + d] === 'string') window.tripNotes[d] = data['d' + d]; }
+                        try { localStorage.setItem('kobe-notes', JSON.stringify(window.tripNotes)); } catch (e) {}
+                        applyNotesToUI();
+                    }
+                }, (err) => console.error('備註同步失敗', err)));
             } else {
-                currentUser = null; authEl.innerHTML = `<span class="text-amber-500">🟡 未登入</span>`;
+                currentUser = null; window.firebaseUser = null;
+                authEl.innerHTML = `<span class="text-amber-500">🟡 未登入</span>`;
                 authEl.classList.remove('hidden'); loginBtn.classList.remove('hidden'); logoutBtn.classList.add('hidden');
-                window.currentExpenses = []; renderExpenses();
+                loginBtn.innerHTML = LOGIN_BTN_HTML;
+                setSyncStatus('未登入', 'bg-gray-800 text-gray-400 border-gray-700');
+                window.currentExpenses = []; renderExpenses(); calculateSettlement();
             }
         });
 
-        window.loginWithGoogle = async () => { 
-            try { 
+        window.loginWithGoogle = async () => {
+            const loginBtn = document.getElementById('login-btn'); // 原本漏了這行，loginBtn 在 module 作用域是未定義變數
+            try {
+                loginBtn.disabled = true;
                 loginBtn.innerHTML = '連線中...';
-                await signInWithPopup(auth, googleProvider); 
-            } catch(error) {
+                await signInWithPopup(auth, googleProvider);
+            } catch (error) {
                 console.error("登入失敗", error);
-                loginBtn.innerHTML = '<span class="text-sm">G</span> 登入';
-                if (error.code !== 'auth/popup-closed-by-user') {
+                loginBtn.innerHTML = LOGIN_BTN_HTML;
+                if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
                     alert("登入遇到問題，請確認沒有使用無痕模式，或瀏覽器允許彈出視窗！");
                 }
-            } 
+            } finally {
+                loginBtn.disabled = false;
+            }
         };
         window.logoutGoogle = () => signOut(auth);
 
@@ -978,7 +1171,9 @@
 
         window.cancelEditExpense = () => {
             editingExpenseId = null;
+            const keepDay = document.getElementById('exp-day').value; // reset() 會把天別打回 D1，先記下來
             document.getElementById('expense-form').reset();
+            document.getElementById('exp-day').value = keepDay;
             
             // 恢復預設值
             document.getElementById('exp-currency').value = 'JPY';
@@ -997,7 +1192,8 @@
         };
 
         document.getElementById('expense-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); if (!currentUser) return;
+            e.preventDefault();
+            if (!currentUser) { alert('請先按右上角「登入」才能寫入雲端帳本。'); return; }
             const btn = document.getElementById('exp-submit-btn'); 
             const originalText = btn.innerHTML;
             btn.innerHTML = "處理中..."; btn.disabled = true;
@@ -1022,6 +1218,7 @@
                 }
             } catch(e) {
                 console.error(e);
+                alert('儲存失敗，請稍後再試（若為權限問題，請確認 Firestore 規則與登入帳號）。');
                 btn.innerHTML = originalText;
             }
             btn.disabled = false;
@@ -1037,13 +1234,13 @@
             const payIcons = { 'Cash': '💵', 'Card': '💳', 'PayPay': '📱' };
 
             window.currentExpenses.forEach(exp => {
-                const typeHtml = exp.split === 'shared' ? `<span class="text-emerald-400">均分</span>` : `<div class="leading-tight"><span class="text-gray-400">私人</span><br><span class="text-[9px] text-gray-500">${exp.privateFor}</span></div>`;
+                const typeHtml = exp.split === 'shared' ? `<span class="text-emerald-400">均分</span>` : `<div class="leading-tight"><span class="text-gray-400">私人</span><br><span class="text-[9px] text-gray-500">${escapeHtml(exp.privateFor)}</span></div>`;
                 const payIcon = payIcons[exp.payMethod] || '💵';
                 const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/50 hover:bg-gray-800 transition-colors";
                 tr.innerHTML = `
-                    <td class="p-3 text-gray-500">${exp.day}</td>
-                    <td class="p-3 text-gray-300 font-bold">${exp.category}</td>
-                    <td class="p-3 text-gray-200 leading-tight">${exp.desc} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></td>
+                    <td class="p-3 text-gray-500">${escapeHtml(exp.day)}</td>
+                    <td class="p-3 text-gray-300 font-bold">${escapeHtml(exp.category)}</td>
+                    <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></td>
                     <td class="p-3 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount.toLocaleString()} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
                     <td class="p-3 text-center text-${exp.paidBy==='Roy'?'blue':'purple'}-400 font-bold">${exp.paidBy}</td>
                     <td class="p-3 text-center">${typeHtml}</td>
@@ -1076,54 +1273,13 @@
         }
     </script>
 
-    <!-- PWA 動態生成與註冊 -->
+    <!-- PWA：使用真實的 manifest.webmanifest 與 sw.js（blob: 網址無法註冊 Service Worker，舊寫法實際不會生效） -->
     <script>
-        (function() {
-            const manifest = {
-                "name": "2027關西黃金三角8天7夜",
-                "short_name": "關西黃金三角",
-                "start_url": ".",
-                "display": "standalone",
-                "background_color": "#000000",
-                "theme_color": "#0f172a",
-                "icons": [
-                    {
-                        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzBmMTEyYSIvPjx0ZXh0IHg9IjI1NiIgeT0iMjg1IiBmb250LXNpemU9IjIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pjwvc3ZnPg==",
-                        "sizes": "192x192",
-                        "type": "image/svg+xml"
-                    },
-                    {
-                        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzBmMTEyYSIvPjx0ZXh0IHg9IjI1NiIgeT0iMjg1IiBmb250LXNpemU9IjIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pjwvc3ZnPg==",
-                        "sizes": "512x512",
-                        "type": "image/svg+xml"
-                    }
-                ]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            const link = document.createElement('link');
-            link.rel = 'manifest';
-            link.href = manifestUrl;
-            document.head.appendChild(link);
-
-            const swCode = `
-                self.addEventListener('install', (e) => self.skipWaiting());
-                self.addEventListener('activate', (e) => self.clients.claim());
-                self.addEventListener('fetch', (e) => { });
-            `;
-            const swBlob = new Blob([swCode], { type: 'text/javascript' });
-            const swUrl = URL.createObjectURL(swBlob);
-
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register(swUrl).then((reg) => {
-                        console.log('✅ PWA 註冊成功!');
-                    }).catch((err) => {
-                        console.log('PWA 註冊失敗:', err);
-                    });
-                });
-            }
-        })();
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch((err) => console.log('PWA 註冊失敗:', err));
+            });
+        }
     </script>
 </body>
 </html>
