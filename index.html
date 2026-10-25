@@ -541,14 +541,14 @@
                         <summary class="text-xs text-gray-300 cursor-pointer select-none">⚙️ AI 設定 <span id="rcpt-key-state" class="text-[10px] text-amber-400 ml-1">尚未設定金鑰</span></summary>
                         <div class="mt-3 space-y-2">
                             <div>
-                                <label class="text-[11px] text-gray-500">Gemini API Key（僅存在這支手機/瀏覽器，不會上傳 Firebase，也不會寫進程式碼）</label>
+                                <label class="text-[11px] text-gray-500">Gemini API Key（一人設定，透過 Firebase 自動同步給同行者）</label>
                                 <input id="rcpt-key" type="password" autocomplete="off" class="fl-input" placeholder="AIza..." oninput="saveRcptSettings()">
                             </div>
                             <div>
                                 <label class="text-[11px] text-gray-500">模型名稱</label>
                                 <input id="rcpt-model" class="fl-input" placeholder="gemini-3.8-flash" oninput="saveRcptSettings()">
                             </div>
-                            <p class="text-[10px] text-gray-500 leading-relaxed">建議到 Google AI Studio 建立專屬金鑰，並在 Google Cloud Console 將金鑰限制為你的網站網域（HTTP referrer）。兩位成員各自在自己的裝置填入即可。注意：收據圖片會傳送到 Google Gemini API 處理，免費方案的資料可能用於改善產品，請避開含個資的收據欄位（如信用卡號）。</p>
+                            <p class="text-[10px] text-gray-500 leading-relaxed">金鑰將儲存於受白名單保護的 Firestore 安全路徑。一人輸入後，兩人的手機登入都會自動同步生效，免去重複設定。</p>
                         </div>
                     </details>
 
@@ -1605,6 +1605,7 @@
                         const data = docSnap.data();
                         for (let d = 1; d <= 8; d++) { if (typeof data['d' + d] === 'string') window.tripNotes[d] = data['d' + d]; }
                         if (window.applyFlightFromCloud) window.applyFlightFromCloud(data);
+                        if (window.applyAiSettingsFromCloud) window.applyAiSettingsFromCloud(data);
                         try { localStorage.setItem('kobe-notes', JSON.stringify(window.tripNotes)); } catch (e) {}
                         applyNotesToUI();
                     }
@@ -1771,18 +1772,45 @@
                 refreshRcptKeyState();
             } catch (e) {}
         }
+        window.applyAiSettingsFromCloud = function(data) {
+            if (data && typeof data.gemini_key === 'string' && data.gemini_key) {
+                const k = document.getElementById('rcpt-key');
+                if (k) k.value = data.gemini_key;
+                try { localStorage.setItem('kobe-gemini-key', data.gemini_key); } catch (e) {}
+            }
+            if (data && typeof data.gemini_model === 'string' && data.gemini_model) {
+                const m = document.getElementById('rcpt-model');
+                if (m) m.value = data.gemini_model;
+                try { localStorage.setItem('kobe-gemini-model', data.gemini_model); } catch (e) {}
+            }
+            refreshRcptKeyState();
+        };
         function refreshRcptKeyState() {
             const st = document.getElementById('rcpt-key-state'); if (!st) return;
             const has = !!(localStorage.getItem('kobe-gemini-key'));
-            st.textContent = has ? '✅ 已設定' : '尚未設定金鑰';
+            st.textContent = has ? '✅ 已同步設定' : '尚未設定金鑰';
             st.className = 'text-[10px] ml-1 ' + (has ? 'text-emerald-400' : 'text-amber-400');
         }
+        let rcptSaveTimer = null;
         window.saveRcptSettings = () => {
+            const kVal = (document.getElementById('rcpt-key').value || '').trim();
+            const mVal = (document.getElementById('rcpt-model').value || '').trim() || DEFAULT_MODEL;
             try {
-                localStorage.setItem('kobe-gemini-key', document.getElementById('rcpt-key').value.trim());
-                localStorage.setItem('kobe-gemini-model', document.getElementById('rcpt-model').value.trim() || DEFAULT_MODEL);
+                localStorage.setItem('kobe-gemini-key', kVal);
+                localStorage.setItem('kobe-gemini-model', mVal);
             } catch (e) {}
             refreshRcptKeyState();
+
+            clearTimeout(rcptSaveTimer);
+            rcptSaveTimer = setTimeout(() => {
+                if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseAppId && window.firebaseUser) {
+                    const ref = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'notes', 'shared');
+                    window.firebaseSetDoc(ref, {
+                        gemini_key: kVal,
+                        gemini_model: mVal
+                    }, { merge: true }).catch((err) => console.error('AI 設定同步至 Firebase 失敗', err));
+                }
+            }, 800);
         };
 
         // 縮圖壓縮：降低上傳量與費用，並統一轉成 JPEG
