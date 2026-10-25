@@ -8,6 +8,7 @@
     <link rel="icon" href="icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icon.svg">
     <title>2027 關西神戶・京都・城崎 8天7夜 黃金三角之旅</title>
+    <script>try{document.documentElement.setAttribute('data-theme', localStorage.getItem('kobe-theme') || 'sakura');}catch(e){}</script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -18,14 +19,15 @@
                 extend: {
                     colors: {
                         warmbg: '#000000',
-                        cardbg: '#111827',
+                        cardbg: 'rgba(255,255,255,0.045)',
+                        /* 極光綠色階 (取代原本琥珀色，全站強調色自動換色) */
                         brand: {
-                            50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d',
-                            400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309',
-                            800: '#92400e', 900: '#78350f',
+                            50: 'rgb(var(--b100) / <alpha-value>)', 100: 'rgb(var(--b100) / <alpha-value>)', 200: 'rgb(var(--b200) / <alpha-value>)', 300: 'rgb(var(--b300) / <alpha-value>)',
+                            400: 'rgb(var(--b400) / <alpha-value>)', 500: 'rgb(var(--b500) / <alpha-value>)', 600: 'rgb(var(--b600) / <alpha-value>)', 700: 'rgb(var(--b700) / <alpha-value>)',
+                            800: 'rgb(var(--b800) / <alpha-value>)', 900: 'rgb(var(--b900) / <alpha-value>)',
                         },
                         japan: {
-                            indigo: '#0f172a',
+                            indigo: 'rgba(0,0,0,0.55)',
                         }
                     }
                 }
@@ -46,6 +48,89 @@
         
         /* 防止底部選單被 iPhone Home 橫條遮擋 */
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+        /* ===== 極光綠科技感 × 玻璃擬態主題 ===== */
+        :root { --glass-bg: rgba(255,255,255,0.045); --glass-border: rgba(var(--acc),0.2); }
+        body {
+            background-color: #000 !important;
+            background-image:
+                radial-gradient(60% 40% at 15% 0%, rgba(var(--acc),0.20), transparent 70%),
+                radial-gradient(50% 35% at 100% 15%, rgba(var(--acc2),0.14), transparent 70%),
+                radial-gradient(60% 40% at 50% 100%, rgba(var(--acc3),0.14), transparent 70%) !important;
+            background-attachment: fixed !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+        header { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom-color: var(--glass-border) !important; }
+        header h1 { background: linear-gradient(90deg, rgb(var(--b300)), rgb(var(--acc2c)), rgb(var(--acc3c))); -webkit-background-clip: text; background-clip: text; color: transparent !important; }
+        /* 玻璃卡片：所有圓角卡片、下拉選單與底部導覽 */
+        main .rounded-xl, .glass {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        main .rounded-xl .rounded-xl { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); background: rgba(255,255,255,0.03) !important; }
+        .border-gray-800, .border-gray-700 { border-color: var(--glass-border) !important; }
+        .sticky.bg-gray-900 { background: rgba(0,0,0,0.55) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+        nav.fixed { background: rgba(5,10,10,0.72) !important; backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); border-top-color: var(--glass-border) !important; }
+        .bg-black { background: rgba(0,0,0,0.55) !important; }
+        input, select, textarea { color-scheme: dark; }
+        .bg-brand-600 { background-image: linear-gradient(135deg, rgb(var(--b600)), rgb(var(--b700))); }
+        .aurora-text { background: linear-gradient(90deg, rgb(var(--b300)), rgb(var(--acc2c))); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .glow-ring { box-shadow: 0 0 0 1px rgba(var(--acc),0.35), 0 0 24px rgba(var(--acc),0.18); }
+
+        /* 倒數計日器 */
+        .cd-box { background: rgba(0,0,0,0.45); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px 4px; text-align: center; }
+        .cd-num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.6rem; font-weight: 800; line-height: 1.1; background: linear-gradient(180deg,rgb(var(--b200)),rgb(var(--b400))); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        @media (min-width: 640px) { .cd-num { font-size: 2.2rem; } }
+        .cd-label { font-size: 10px; color: #9ca3af; margin-top: 2px; }
+
+        /* 提醒標籤與預約清單 */
+        .alert-chip { display:flex; gap:8px; align-items:flex-start; font-size: 12px; line-height: 1.5; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #d1d5db; }
+        .alert-chip.warn { border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.07); }
+        .alert-chip.danger { border-color: rgba(248,113,113,0.45); background: rgba(248,113,113,0.08); }
+        .alert-chip.info { border-color: rgba(var(--acc2),0.35); background: rgba(var(--acc2),0.06); }
+        .alert-chip a, .bk-link { color: rgb(var(--b300)); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+        .bk-item { display:flex; gap:10px; align-items:flex-start; padding: 12px; border-radius: 12px; border:1px solid var(--glass-border); background: rgba(255,255,255,0.03); }
+        .bk-item.done { opacity: .5; }
+        .bk-item.done .bk-title { text-decoration: line-through; }
+        .bk-item input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; accent-color: rgb(var(--b500)); flex: none; }
+        .days-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; border: 1px solid transparent; }
+        .days-ok { color:rgb(var(--b300)); background: rgba(var(--acc),.1); border-color: rgba(var(--acc),.35); }
+        .days-soon { color:#fbbf24; background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.4); }
+        .days-urgent { color:#fca5a5; background: rgba(248,113,113,.12); border-color: rgba(248,113,113,.45); }
+        .days-past { color:#9ca3af; background: rgba(156,163,175,.1); border-color: rgba(156,163,175,.3); }
+    
+        /* ===== 日系配色主題 (黑底)：data-theme 切換 ===== */
+        :root, [data-theme="sakura"] { /* 櫻 × 藤：桜色、藤色 */
+            --b100: 252 231 236; --b200: 248 205 215; --b300: 244 182 194; --b400: 238 155 175; --b500: 217 119 148;
+            --b600: 176 78 108; --b700: 138 58 85; --b800: 95 40 60; --b900: 58 25 38;
+            --acc: 238,155,175; --acc2: 184,161,217; --acc3: 233,190,140;
+            --acc2c: 184 161 217; --acc3c: 233 190 140;
+        }
+        [data-theme="matcha"] { /* 抹茶 × 金茶 */
+            --b100: 236 243 224; --b200: 215 230 190; --b300: 190 214 150; --b400: 168 198 120; --b500: 130 164 88;
+            --b600: 92 124 60; --b700: 70 96 46; --b800: 48 66 32; --b900: 30 42 20;
+            --acc: 168,198,120; --acc2: 212,168,90; --acc3: 120,170,160;
+            --acc2c: 212 168 90; --acc3c: 120 170 160;
+        }
+        [data-theme="shukin"] { /* 朱 × 金：朱色、金糸 */
+            --b100: 253 236 220; --b200: 248 210 175; --b300: 240 180 130; --b400: 232 120 80; --b500: 212 90 55;
+            --b600: 176 62 36; --b700: 138 48 30; --b800: 96 34 22; --b900: 56 22 15;
+            --acc: 232,120,80; --acc2: 217,178,111; --acc3: 180,90,90;
+            --acc2c: 217 178 111; --acc3c: 180 90 90;
+        }
+        [data-theme="ai"] { /* 浅葱 × 藍鼠 */
+            --b100: 224 240 242; --b200: 190 224 228; --b300: 150 205 212; --b400: 110 185 196; --b500: 70 150 165;
+            --b600: 40 110 128; --b700: 30 84 100; --b800: 22 58 70; --b900: 14 38 46;
+            --acc: 110,185,196; --acc2: 200,184,140; --acc3: 150,160,210;
+            --acc2c: 200 184 140; --acc3c: 150 160 210;
+        }
+        .theme-btn { font-size: 11px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.06); color: rgb(var(--b300)); }
+        .flight-leg { border: 1px solid var(--glass-border); border-radius: 14px; background: rgba(0,0,0,0.35); padding: 14px; }
+        .flight-line { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, rgba(var(--acc),0.6) 0 6px, transparent 6px 12px); position: relative; margin: 0 8px; }
+        .flight-line::after { content: '✈'; position: absolute; left: 50%; top: -9px; transform: translateX(-50%); font-size: 14px; background: #0b0b0b; padding: 0 4px; color: rgb(var(--b300)); }
+        .fl-input { width: 100%; padding: 8px 10px; font-size: 13px; background: rgba(0,0,0,0.55); border: 1px solid var(--glass-border); border-radius: 8px; color: #e5e7eb; outline: none; }
+        .fl-input:focus { border-color: rgb(var(--b400)); }
     </style>
 </head>
 
@@ -64,7 +149,8 @@
                 </div>
                 
                 <!-- Google 登入區塊 -->
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2">
+                    <button id="theme-btn" onclick="cycleTheme()" class="theme-btn" title="切換日系配色">🎨 櫻</button>
                     <div id="auth-status" class="hidden text-xs font-mono text-gray-400">登入中...</div>
                     <button id="login-btn" onclick="loginWithGoogle()" class="text-xs bg-brand-600 hover:bg-brand-500 text-white font-bold px-3 py-1.5 rounded transition-colors shadow-sm flex items-center gap-1"><span class="text-sm">G</span> 登入</button>
                     <button id="logout-btn" onclick="logoutGoogle()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-colors hidden border border-gray-700">登出</button>
@@ -87,11 +173,87 @@
 
             <!-- 子頁面: 行程表 -->
             <section id="section-itinerary" class="space-y-6">
+                <!-- 航班資訊 -->
+                <div id="flight-card" class="hidden rounded-xl p-4 border border-gray-800 glow-ring">
+                    <h2 class="text-lg font-bold text-gray-100 mb-1 flex items-center gap-2"><span>✈️</span> 星宇航空 · 高雄 ⇄ 神戶</h2>
+                    <p class="text-[11px] text-gray-500 mb-3">時間皆為當地時間（日本比台灣快 1 小時）。機型 A321neo，每日直飛。座位與訂位代號以訂位憑證為準。</p>
+                    <div class="space-y-3">
+                        <!-- 去程 -->
+                        <div class="flight-leg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold px-2 py-0.5 rounded bg-brand-600 text-white">去程 · JX360</span>
+                                <span class="text-xs text-gray-400 font-mono">2027/02/09 (二) · D1</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div><div class="text-2xl font-extrabold aurora-text font-mono">08:25</div><div class="text-xs text-gray-300">高雄 KHH</div><div class="text-[10px] text-gray-500">小港國際機場</div></div>
+                                <div class="flight-line"></div>
+                                <div class="text-right"><div class="text-2xl font-extrabold aurora-text font-mono">12:15</div><div class="text-xs text-gray-300">神戶 UKB</div><div class="text-[10px] text-gray-500">神戶機場</div></div>
+                            </div>
+                            <div class="mt-3 grid gap-2">
+                                <div class="alert-chip info"><span>🚕</span><span><strong>04:00 橋頭住家搭計程車出發 ➔ 約 04:40~04:50 抵達高雄小港機場</strong>（依上次預估車程約 40~50 分）。春節與深夜叫車加成較多，建議前一天預約車行並確認上車地址與時間。</span></div>
+                                <div class="alert-chip warn"><span>⏳</span><span><strong>注意櫃台尚未開放：</strong>星宇人工櫃台約於起飛前 2.5~2 小時（約 05:55~06:25）才開始報到，最遲起飛前 1 小時（07:25）截止；實際以機場當日公告為準。04:40 抵達會有約 1 小時多空檔。若不趕時間，可延後到 04:30~05:00 出發。</span></div>
+                                <div class="alert-chip info"><span>🛋️</span><span><strong>U.First 貴賓室</strong>：高雄機場合作貴賓室為「南苑國際商務中心」，位於國際航廈 3 樓出境安檢後；表定約 05:00 或 05:30 開始營業（會依航班調整）。需先報到取得登機證並通關後才能進入，請攜帶登機證、護照與 U.First 電子票卡。出發前建議向發卡銀行確認早班開放時間與剩餘次數／攜伴費用。</span></div>
+                                <div class="alert-chip warn"><span>🧧</span><span><strong>2/9 為農曆春節期間（初四，台灣連假 2/4~2/10）</strong>：機場報到櫃台、安檢人潮多，建議先完成網路報到與線上選位，行李直接到櫃台託運。</span></div>
+                                <div class="alert-chip"><span>🧳</span><span>託運：每人 23kg × 1 件（出發前先用磅秤秤好，超重要加價；鋰電池、行動電源須隨身）。託運櫃台最遲於起飛前 60 分鐘截止。</span></div>
+                                <div class="alert-chip"><span>🛬</span><span>12:15 抵達後：入境審查（出示 VJW QR Code）➔ 領行李 ➔ 海關，約 45~60 分鐘；接著搭 Port Liner 約 18 分鐘到三宮，與 D1 行程 13:30 前寄放行李相符。</span></div>
+                                <div class="alert-chip warn"><span>⚠️</span><span>神戶機場規模小，入境動線短但尖峰時可能排隊；Port Liner 三宮站在「三宮」站（非 JR 三之宮），請留意站名。</span></div>
+                            </div>
+                        </div>
+                        <!-- 回程 -->
+                        <div class="flight-leg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold px-2 py-0.5 rounded bg-brand-600 text-white">回程 · JX361</span>
+                                <span class="text-xs text-gray-400 font-mono">2027/02/16 (二) · D8</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div><div class="text-2xl font-extrabold aurora-text font-mono">13:15</div><div class="text-xs text-gray-300">神戶 UKB</div><div class="text-[10px] text-gray-500">神戶機場</div></div>
+                                <div class="flight-line"></div>
+                                <div class="text-right"><div class="text-2xl font-extrabold aurora-text font-mono">16:00</div><div class="text-xs text-gray-300">高雄 KHH</div><div class="text-[10px] text-gray-500">小港國際機場</div></div>
+                            </div>
+                            <div class="mt-3 grid gap-2">
+                                <div class="alert-chip info"><span>🕙</span><span><strong>三宮 10:15 前出發</strong>搭 Port Liner，約 10:45 抵達機場，預留報到、託運、退稅（若有）與安檢時間；建議 11:15 前完成報到。</span></div>
+                                <div class="alert-chip warn"><span>🛍️</span><span>神戶機場國際線免稅店規模小，伴手禮、藥妝請在 D5~D7 買齊；離境前請確認免稅品封袋規定。</span></div>
+                                <div class="alert-chip"><span>🔋</span><span>行動電源、鋰電池須隨身攜帶，不可託運；機上使用規定請以星宇最新公告為準。液體限 100ml/容器。</span></div>
+                            </div>
+                        </div>
+                        <!-- 可編輯的訂位資訊 -->
+                        <div class="flight-leg">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-bold text-gray-200">🎟️ 私人訂位資訊</h3>
+                                <span class="text-[10px] text-gray-400">🔒 需登入授權</span>
+                            </div>
+                            <!-- 未登入遮罩提示 -->
+                            <div id="flight-auth-locked" class="p-3.5 rounded-lg bg-black/60 border border-amber-900/40 text-xs text-amber-300/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base">🔒</span>
+                                    <span>訂位代號 (PNR)、機位與行李額度屬私密個資，已自動鎖定保護。</span>
+                                </div>
+                                <button onclick="loginWithGoogle()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs font-bold whitespace-nowrap shadow-sm">登入解鎖</button>
+                            </div>
+                            <!-- 登入後顯示的編輯表單 -->
+                            <div id="flight-auth-fields" class="hidden space-y-2">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><label class="text-[11px] text-gray-500">訂位代號 (PNR)</label><input class="fl-input" data-fl="pnr" oninput="onFlightInput('pnr', this.value)" placeholder="例 ABC123"></div>
+                                    <div><label class="text-[11px] text-gray-500">託運行李額度</label><input class="fl-input" data-fl="bag" oninput="onFlightInput('bag', this.value)" placeholder="例 23kg x 1"></div>
+                                    <div><label class="text-[11px] text-gray-500">去程座位</label><input class="fl-input" data-fl="seat_out" oninput="onFlightInput('seat_out', this.value)" placeholder="例 12A / 12B"></div>
+                                    <div><label class="text-[11px] text-gray-500">回程座位</label><input class="fl-input" data-fl="seat_back" oninput="onFlightInput('seat_back', this.value)" placeholder="例 14A / 14B"></div>
+                                </div>
+                                <p class="text-[10px] text-gray-500">✨ 輸入後自動儲存並即時加密同步給同行成員。</p>
+                            </div>
+                            <div class="mt-3 flex flex-wrap gap-2 text-[11px] pt-2 border-t border-gray-800">
+                                <a class="bk-link" href="https://www.google.com/search?q=JX360+%E8%88%AA%E7%8F%AD%E5%8B%95%E6%85%8B" target="_blank" rel="noopener">JX360 航班動態 ↗</a>
+                                <a class="bk-link" href="https://www.google.com/search?q=JX361+%E8%88%AA%E7%8F%AD%E5%8B%95%E6%85%8B" target="_blank" rel="noopener">JX361 航班動態 ↗</a>
+                                <a class="bk-link" href="https://www.google.com/search?q=%E6%98%9F%E5%AE%87%E8%88%AA%E7%A9%BA+%E7%B6%B2%E8%B7%AF%E5%A0%B1%E5%88%B0" target="_blank" rel="noopener">網路報到 ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
                     <h2 class="text-xl font-bold text-gray-100 mb-2 flex items-center gap-2"><span class="text-brand-500">📅</span> 8天7夜 互動行程表</h2>
                     <p class="text-sm text-gray-400 leading-relaxed">利用週三平日暢遊京都避開人潮，順時針前往城崎溫泉，最後返回神戶。全程不走回頭路，完美發揮 JR Pass 的價值。</p>
                     <div class="mt-4 flex flex-wrap gap-2 pt-3 border-t border-gray-800">
                         <button onclick="filterDay('all')" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-brand-600 text-white border border-brand-500 shadow-sm" data-day="all">全部</button>
+                        <button onclick="filterDay('flight')" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="flight">✈️ 航班</button>
                         <button onclick="filterDay(1)" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="1">D1</button>
                         <button onclick="filterDay(2)" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="2">D2</button>
                         <button onclick="filterDay(3)" class="day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700" data-day="3">D3</button>
@@ -221,21 +383,47 @@
 
         <!-- ================= GROUP 2: 行前 (包含: 清單, 應變) ================= -->
         <div id="group-pretrip" class="main-group hidden">
+            <!-- 倒數計日器 -->
+            <div class="rounded-xl p-4 mb-4 border border-gray-800 glow-ring">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm aurora-text">🛫 距離出發 · 2027/02/09 08:25 (JX360)</h3>
+                    <span id="cd-phase" class="text-[10px] text-gray-400"></span>
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    <div class="cd-box"><div id="cd-d" class="cd-num">--</div><div class="cd-label">天</div></div>
+                    <div class="cd-box"><div id="cd-h" class="cd-num">--</div><div class="cd-label">時</div></div>
+                    <div class="cd-box"><div id="cd-m" class="cd-num">--</div><div class="cd-label">分</div></div>
+                    <div class="cd-box"><div id="cd-s" class="cd-num">--</div><div class="cd-label">秒</div></div>
+                </div>
+                <div id="cd-next" class="mt-3 text-xs text-gray-300 bg-black/40 border border-gray-800 rounded-lg px-3 py-2"></div>
+            </div>
             <!-- 第二層子選單 -->
             <div class="flex bg-gray-900 p-1 rounded-lg border border-gray-800 mb-5 sticky top-0 z-30 shadow-md">
-                <button id="sub-checklist" onclick="switchSubTab('checklist', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-sm font-bold bg-gray-700 text-white shadow-sm transition-all">📌 行前清單</button>
-                <button id="sub-snowplan" onclick="switchSubTab('snowplan', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-sm font-bold text-gray-400 hover:text-gray-200 transition-all">❄️ 大雪應變</button>
+                <button id="sub-booking" onclick="switchSubTab('booking', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-xs sm:text-sm font-bold bg-gray-700 text-white shadow-sm transition-all">🗓️ 預約查詢</button>
+                <button id="sub-checklist" onclick="switchSubTab('checklist', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-xs sm:text-sm font-bold text-gray-400 hover:text-gray-200 transition-all">📌 行前清單</button>
+                <button id="sub-snowplan" onclick="switchSubTab('snowplan', 'group-pretrip')" class="flex-1 text-center py-2 rounded-md text-xs sm:text-sm font-bold text-gray-400 hover:text-gray-200 transition-all">❄️ 大雪應變</button>
             </div>
 
+            <!-- 子頁面: 預約與查詢事項 (集中管理) -->
+            <section id="section-booking" class="space-y-4">
+                <div class="rounded-xl p-4 border border-gray-800">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-lg font-bold text-gray-100 flex items-center gap-2"><span>🗓️</span> 行前預約 / 查詢事項</h2>
+                        <span id="bk-progress" class="text-xs font-bold text-brand-400">0/0</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">依截止日排序，勾選完成後會同步給同行者。公休日、班次、潮汐等為行前整理資訊，出發前請再以官方公告為準。</p>
+                    <div class="w-full bg-gray-900 h-2 rounded-full border border-gray-700 mt-3"><div id="bk-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div></div>
+                </div>
+                <div id="booking-list" class="space-y-3"></div>
+            </section>
+
             <!-- 子頁面: 清單 -->
-            <section id="section-checklist" class="space-y-6">
+            <section id="section-checklist" class="hidden space-y-6">
                 <div class="bg-gradient-to-r from-gray-900 to-japan-indigo rounded-xl p-5 shadow-md border border-gray-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="w-full sm:w-auto">
-                        <h3 class="font-bold text-brand-300 flex items-center gap-2 mb-2"><span class="text-xl">✈️</span> 星宇航空航班資訊</h3>
-                        <div class="bg-black/40 p-3 rounded-lg border border-gray-700 text-sm font-mono text-gray-200">
-                            <p><span class="text-amber-400 font-bold">JX360 去程:</span> 02/09 (二) 08:25 ➔ 12:15</p>
-                            <p class="mt-1"><span class="text-emerald-400 font-bold">JX361 回程:</span> 02/16 (二) 13:15 ➔ 16:00</p>
-                        </div>
+                        <h3 class="font-bold text-brand-300 flex items-center gap-2 mb-2"><span class="text-xl">📲</span> 入境手續</h3>
+                        <p class="text-xs text-gray-400">航班資訊已移至「行程」頁面最上方。</p>
+                        <button onclick="goFlights()" class="mt-2 text-xs px-3 py-1.5 rounded-lg border border-gray-700 text-brand-300 bg-black/30">✈️ 前往查看航班</button>
                     </div>
                     <a href="https://www.vjw.digital.go.jp/" target="_blank" class="w-full sm:w-auto px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg flex justify-center gap-2 border border-blue-500 transition-colors">
                         <span class="text-xl">📲</span> 開啟 Visit Japan Web
@@ -329,8 +517,60 @@
 
         <!-- ================= GROUP 3: 記帳 ================= -->
         <div id="group-accounting" class="main-group hidden space-y-6">
-            <!-- 新增記帳表單 -->
-            <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800">
+            <!-- 未登入鎖定提示 -->
+            <div id="accounting-auth-locked" class="bg-cardbg rounded-xl p-8 shadow-md border border-gray-800 text-center space-y-3">
+                <div class="text-4xl">🔒</div>
+                <h3 class="text-base font-bold text-gray-100">共同帳本已受保護</h3>
+                <p class="text-xs text-gray-400 max-w-md mx-auto leading-relaxed">旅程公費記帳、代墊分攤紀錄與即時結算數據具備私密性，僅授權之同行成員登入後方可查閱與新增花費。</p>
+                <button onclick="loginWithGoogle()" class="mt-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg shadow-md inline-flex items-center gap-2 transition-all">
+                    <span class="text-sm">G</span> 登入 Google 帳號解鎖
+                </button>
+            </div>
+
+            <!-- 登入後可見區域 -->
+            <div id="accounting-auth-content" class="hidden space-y-6">
+                <!-- 📷 收據掃描自動記帳 (Gemini 多模態辨識) -->
+                <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800 glow-ring">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-bold text-sm aurora-text">📷 掃描收據自動記帳</h3>
+                        <span id="rcpt-user-badge" class="text-[10px] px-2 py-0.5 rounded-full border border-gray-700 text-gray-300"></span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-3">拍下或選擇日本收據，AI 會辨識店名、日期、品項（日翻中）、內外稅與折扣，並自動帶入下方記帳表單；確認後再寫入雲端帳本。</p>
+
+                    <details id="rcpt-settings" class="mb-3 rounded-lg border border-gray-700 bg-black/30 px-3 py-2">
+                        <summary class="text-xs text-gray-300 cursor-pointer select-none">⚙️ AI 設定 <span id="rcpt-key-state" class="text-[10px] text-amber-400 ml-1">尚未設定金鑰</span></summary>
+                        <div class="mt-3 space-y-2">
+                            <div>
+                                <label class="text-[11px] text-gray-500">Gemini API Key（僅存在這支手機/瀏覽器，不會上傳 Firebase，也不會寫進程式碼）</label>
+                                <input id="rcpt-key" type="password" autocomplete="off" class="fl-input" placeholder="AIza..." oninput="saveRcptSettings()">
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-gray-500">模型名稱</label>
+                                <input id="rcpt-model" class="fl-input" placeholder="gemini-3.8-flash" oninput="saveRcptSettings()">
+                            </div>
+                            <p class="text-[10px] text-gray-500 leading-relaxed">建議到 Google AI Studio 建立專屬金鑰，並在 Google Cloud Console 將金鑰限制為你的網站網域（HTTP referrer）。兩位成員各自在自己的裝置填入即可。注意：收據圖片會傳送到 Google Gemini API 處理，免費方案的資料可能用於改善產品，請避開含個資的收據欄位（如信用卡號）。</p>
+                        </div>
+                    </details>
+
+                    <div class="flex gap-2">
+                        <label class="flex-1 text-center cursor-pointer px-3 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-md">
+                            📸 拍照 / 選擇收據
+                            <input id="rcpt-file" type="file" accept="image/*" capture="environment" class="hidden" onchange="onReceiptFile(this)">
+                        </label>
+                        <label class="px-3 py-3 rounded-lg border border-gray-700 text-gray-300 text-sm cursor-pointer bg-black/30">
+                            🖼️ 相簿
+                            <input type="file" accept="image/*" class="hidden" onchange="onReceiptFile(this)">
+                        </label>
+                    </div>
+                    <div id="rcpt-preview-wrap" class="hidden mt-3 flex gap-3 items-start">
+                        <img id="rcpt-preview" class="w-24 h-24 object-cover rounded-lg border border-gray-700" alt="收據預覽">
+                        <div class="flex-1 text-xs text-gray-400" id="rcpt-status">已選擇圖片</div>
+                    </div>
+                    <div id="rcpt-result" class="hidden mt-3 space-y-2"></div>
+                </div>
+
+                <!-- 新增記帳表單 -->
+                <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800" id="expense-form-card">
                 <h3 class="font-bold text-gray-200 text-sm mb-4">✍️ 新增一筆花費</h3>
                 <form id="expense-form" class="space-y-4">
                     <div class="grid grid-cols-2 gap-3">
@@ -421,6 +661,7 @@
                     </table>
                     <div id="empty-state" class="hidden p-8 text-center text-gray-500 text-sm">尚無記帳紀錄</div>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -678,6 +919,48 @@
             }
         ];
 
+        // ================= 每日行程「專家提醒」(附加資料，不影響原行程內容) =================
+        const gSearch = q => 'https://www.google.com/search?q=' + encodeURIComponent(q);
+        const dayAlerts = {
+            1: [
+                { type: 'info', text: '04:00 橋頭搭計程車出發、約 04:40~04:50 抵達小港機場（春節期間），託運每人 23kg × 1 件，並預計使用 U.First 貴賓室；詳見行程頁「✈️ 航班」。' },
+                { type: 'info', text: '神戶牛排鐵板燒建議行前 2 週預約，並至「行前 ➔ 預約查詢」勾選完成。' },
+                { type: 'info', text: '神戶機場抵達後若班機延誤，東橫INN 俱樂部會員可先打電話告知抵達時間。' }
+            ],
+            2: [
+                { type: 'warn', text: '台灣春節連假 (2/4~2/10) 尾聲，華人旅客多：清水寺、伏見稻荷、先斗町人潮與排隊都會比一般平日多，餐廳建議預約或提早用餐。' },
+                { type: 'info', text: '四條出發往清水寺：可改搭計程車直達清水道/五條坂（兩人分攤約 ¥1,200~1,500），省下等公車 20~30 分鐘。' },
+                { type: 'info', text: '伏見稻荷返回市區：走到斜對面「京阪伏見稻荷站」搭京阪本線至「祇園四條」(約 10 分)，比回京都站轉乘順暢。' },
+                { type: 'warn', text: 'mont-bell 京都店 20:30 打烊、UNIQLO 21:00 打烊，晚餐請提早結束。' }
+            ],
+            3: [
+                { type: 'danger', text: '2/11 為日本「建國記念之日」國定假日，人潮較多；特急城崎號 (11:15) 為全車指定席，請於 2027/1/11 09:00 (台灣時間) 開放購票時準時劃位。', link: { label: '查看預約事項', go: 'booking' } },
+                { type: 'danger', text: '城崎外湯公休日提醒：「御所之湯」據資料為每週四公休，今日(週四)建議改泡「一之湯」或「鴻之湯」，御所之湯留到明日 (Day 4) 退房後。出發前請再以官方公告確認。', link: { label: '查外湯公休', url: gSearch('城崎温泉 外湯 定休日') } },
+                { type: 'warn', text: '城崎 2 月氣溫約 -1~4°C，路面易結冰，請穿防滑鞋；浴衣外出外加厚羽織。' }
+            ],
+            4: [
+                { type: 'info', text: '今日可補泡「御所之湯」(週五營業)，與 Day 3 的一之湯/鴻之湯湊齊外湯精華。' },
+                { type: 'warn', text: '濱風號 (14:14) 為全車指定席，請於 2027/1/12 09:00 (台灣時間) 劃位；若遇大雪請提早進站確認運行情報。', link: { label: '查看預約事項', go: 'booking' } }
+            ],
+            5: [
+                { type: 'danger', text: '鳴門漩渦需配合潮汐：以滿潮/乾潮前後約 1.5 小時最佳。請出發前一週與當天早上查詢潮見表，必要時對調「花さじき」與「渦之道」順序。', link: { label: '查潮見表', url: gSearch('鳴門 渦の道 渦潮 見頃 潮見表') } },
+                { type: 'warn', text: '取車時請加租 ETC 卡 (明石海峽大橋、大鳴門橋過路費較高)，並攜帶台灣駕照＋日文譯本。' },
+                { type: 'info', text: '道の駅 うずしお 週末午餐人潮多，建議 11:30 前抵達；館舍可能有整修，行前請確認營業狀況。', link: { label: '查營業資訊', url: gSearch('道の駅 うずしお 営業 玉ねぎ バーガー') } }
+            ],
+            6: [
+                { type: 'info', text: 'JR Pass 最後一天。Sports Zyuen 心齋橋 BIGSTEP 3F 營業至 20:00，請優先前往。' },
+                { type: 'info', text: '情人節週日，道頓堀餐廳排隊人潮多，建議先抽號碼牌再逛街。' }
+            ],
+            7: [
+                { type: 'warn', text: '平日三宮 ⇄ 三田 Outlet 巴士班次較疏 (約 45~60 分一班)：抵達後先拍下回程站牌時刻表，出發前也請確認 Outlet 休館日。', link: { label: '查巴士時刻', url: gSearch('神姫バス 三宮 三田プレミアム・アウトレット 時刻表') } },
+                { type: 'info', text: '免稅手續請在市區/Outlet 完成：神戶機場國際線免稅店規模小，Day 8 不宜寄望採買。' }
+            ],
+            8: [
+                { type: 'warn', text: '神戶機場免稅店規模較小，想買的化妝品/藥妝/電器請在 Day 5~7 買齊。' },
+                { type: 'info', text: '三宮 ➔ 神戶機場 Port Liner 約 18 分，起點建議 10:15 前搭乘；星宇航空可於起飛前網路報到，節省櫃台時間。' }
+            ]
+        };
+
         function renderItineraryCards(filteredDay = 'all') {
             const container = document.getElementById('itinerary-cards-container');
             container.innerHTML = '';
@@ -707,6 +990,14 @@
                     stayMapBtn = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.stayMapQuery)}" target="_blank" class="ml-2 inline-flex items-center gap-1 text-[11px] bg-blue-900/30 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full hover:bg-blue-900/50 transition-colors">📍地圖</a>`;
                 }
 
+                const alertIcon = { danger: '🚨', warn: '⚠️', info: '💡' };
+                const alertsHtml = (dayAlerts[data.day] || []).map(a => {
+                    let lk = '';
+                    if (a.link && a.link.url) lk = ` <a href="${a.link.url}" target="_blank" rel="noopener">${a.link.label} ↗</a>`;
+                    else if (a.link && a.link.go) lk = ` <a href="#" onclick="goBooking();return false;">${a.link.label} ➔</a>`;
+                    return `<div class="alert-chip ${a.type}"><span>${alertIcon[a.type] || '💡'}</span><span>${a.text}${lk}</span></div>`;
+                }).join('');
+
                 card.innerHTML = `
                     <div class="bg-gray-800 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-700">
                         <div class="flex items-center gap-2">
@@ -719,6 +1010,7 @@
                         <div class="bg-brand-900/20 border-l-2 border-brand-500 p-2 text-sm text-gray-300 flex items-start gap-1">
                             <span class="font-bold text-brand-400 whitespace-nowrap">📌 重點：</span><span>${data.keyPoint}</span>
                         </div>
+                        ${alertsHtml ? `<div class="space-y-2"><div class="text-[11px] font-bold text-gray-500">🧭 專家提醒</div>${alertsHtml}</div>` : ''}
                         <div>${itemsHtml}</div>
                         <div>
                             <label for="note-${data.day}" class="block text-[11px] font-semibold text-gray-500 mb-1">📝 D${data.day} 備註（預約代號、集合時間、提醒…）</label>
@@ -765,6 +1057,8 @@
                     ? "day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-brand-600 text-white shadow-sm border border-brand-500" 
                     : "day-filter-btn px-2.5 py-1 rounded text-xs font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700";
             });
+            const fc = document.getElementById('flight-card');
+            if (fc) fc.classList.toggle('hidden', day !== 'flight');
             renderItineraryCards(day);
         }
 
@@ -845,6 +1139,204 @@
             renderChecklistProgress();
         }
 
+        // ================= 日系配色主題切換 =================
+        const THEMES = [['sakura', '櫻'], ['matcha', '抹茶'], ['shukin', '朱金'], ['ai', '浅葱']];
+        function themeRgb(v, a) {
+            const raw = getComputedStyle(document.documentElement).getPropertyValue(v).trim().replace(/,/g, ' ').replace(/\s+/g, ' ');
+            const parts = raw.split(' ').join(',');
+            return a === undefined ? 'rgb(' + parts + ')' : 'rgba(' + parts + ',' + a + ')';
+        }
+        function themeHue() {
+            const [r, g, b] = getComputedStyle(document.documentElement).getPropertyValue('--b400').trim().split(/\s+/).map(Number);
+            const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+            if (!d) return 0;
+            let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+            return Math.round((h * 60 + 360) % 360);
+        }
+        function applyTheme(name) {
+            const t = THEMES.find(x => x[0] === name) || THEMES[0];
+            document.documentElement.setAttribute('data-theme', t[0]);
+            try { localStorage.setItem('kobe-theme', t[0]); } catch (e) {}
+            const btn = document.getElementById('theme-btn');
+            if (btn) btn.textContent = '🎨 ' + t[1];
+            const gA = document.getElementById('group-analytics');
+            if (gA && !gA.classList.contains('hidden') && typeof renderCharts === 'function') renderCharts();
+        }
+        function cycleTheme() {
+            const cur = document.documentElement.getAttribute('data-theme') || 'sakura';
+            const i = THEMES.findIndex(x => x[0] === cur);
+            applyTheme(THEMES[(i + 1) % THEMES.length][0]);
+        }
+        Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
+
+        // ================= 航班資訊欄位 (本機 + 雲端同步) =================
+        window.flightInfo = {};
+        try { window.flightInfo = JSON.parse(localStorage.getItem('kobe-flight') || '{}') || {}; } catch (e) { window.flightInfo = {}; }
+        function applyFlightToUI() {
+            const isAuth = !!window.firebaseUser;
+            const lockedBox = document.getElementById('flight-auth-locked');
+            const fieldsBox = document.getElementById('flight-auth-fields');
+            if (lockedBox) lockedBox.classList.toggle('hidden', isAuth);
+            if (fieldsBox) fieldsBox.classList.toggle('hidden', !isAuth);
+
+            document.querySelectorAll('input[data-fl]').forEach(inp => {
+                if (!isAuth) {
+                    inp.value = '';
+                    inp.disabled = true;
+                    return;
+                }
+                inp.disabled = false;
+                if (document.activeElement === inp) return;
+                const v = window.flightInfo[inp.getAttribute('data-fl')] ?? ({ bag: '每人 23kg × 1 件' })[inp.getAttribute('data-fl')] ?? '';
+                if (inp.value !== v) inp.value = v;
+            });
+        }
+        window.applyFlightFromCloud = function(data) {
+            ['pnr', 'bag', 'seat_out', 'seat_back'].forEach(k => { if (typeof data['fl_' + k] === 'string') window.flightInfo[k] = data['fl_' + k]; });
+            try { localStorage.setItem('kobe-flight', JSON.stringify(window.flightInfo)); } catch (e) {}
+            applyFlightToUI();
+        };
+        let flightSaveTimer = null;
+        function onFlightInput(key, value) {
+            window.flightInfo[key] = value;
+            try { localStorage.setItem('kobe-flight', JSON.stringify(window.flightInfo)); } catch (e) {}
+            clearTimeout(flightSaveTimer);
+            flightSaveTimer = setTimeout(() => {
+                if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseUser) {
+                    const ref = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'notes', 'shared');
+                    window.firebaseSetDoc(ref, { ['fl_' + key]: value }, { merge: true }).catch(() => {});
+                }
+            }, 800);
+        }
+        function goFlights() {
+            switchMainTab('group-itinerary');
+            switchSubTab('itinerary', 'group-itinerary');
+            filterDay('flight');
+            window.scrollTo(0, 0);
+            setTimeout(() => { const f = document.getElementById('flight-card'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+        }
+
+        // ================= 行前預約 / 查詢事項 + 倒數計日器 =================
+        const TRIP_START = new Date('2027-02-09T08:25:00+08:00');
+        const TRIP_END = new Date('2027-02-16T16:00:00+08:00');
+        const bookingItems = [
+            { id: 'bk-license', icon: '🪪', title: '台灣駕照日文譯本', desc: '至監理站申請駕照日文譯本 (Day 5 自駕必備，需與台灣駕照同時攜帶)。', deadline: '2026-12-31T23:59:00+08:00', cat: '證件' },
+            { id: 'bk-car', icon: '🚗', title: '豐田租車預約 + 加租 ETC 卡', desc: 'Day 5 三宮站前店 09:00 取車。預約時一併加租 ETC 卡（明石海峽大橋/大鳴門橋過路費高）。', deadline: '2026-12-31T23:59:00+08:00', cat: '預約', link: { label: '租車官網', url: gSearch('トヨタレンタカー 神戸三宮駅前店') } },
+            { id: 'bk-jrpass', icon: '🎫', title: '購買 JR 關西廣域周遊券 (5 日)', desc: '使用期間 D2~D6 (2/10~2/14)。購買後保存兌換憑證，現場兌換時需護照。', deadline: '2027-01-25T23:59:00+08:00', cat: '票券' },
+            { id: 'bk-steak', icon: '🥩', title: '神戶牛排鐵板燒預約', desc: 'Day 1 (2/9) 19:30 Mouriya / Steakland，建議提前 2 週預約並確認人數。', deadline: '2027-01-26T23:59:00+08:00', cat: '預約', link: { label: '查詢餐廳', url: gSearch('Mouriya 神戸 予約') } },
+            { id: 'bk-kinosaki', icon: '🚆', title: 'e5489 劃位：特急城崎號 (2/11 11:15 京都 ➔ 城崎)', desc: '2/11 為日本國定假日。1 個月前開放，台灣時間 2027/1/11 早上 09:00 準時搶票；全車指定席。', deadline: '2027-01-11T09:00:00+08:00', cat: '預約', link: { label: 'JR 西日本 e5489', url: gSearch('JR西日本 e5489 外國旅客 指定席 預約') } },
+            { id: 'bk-hamakaze', icon: '🚆', title: 'e5489 劃位：特急濱風號 (2/12 14:14 城崎 ➔ 三之宮)', desc: '台灣時間 2027/1/12 早上 09:00 開放，與城崎號一起搶票；建議同時預約。', deadline: '2027-01-12T09:00:00+08:00', cat: '預約', link: { label: 'JR 西日本 e5489', url: gSearch('JR西日本 e5489 外國旅客 指定席 預約') } },
+            { id: 'bk-snow', icon: '❄️', title: '2/3 決策：城崎天氣預報 ➔ 是否取消大江戶 Premium', desc: '2/3 23:59 前免費取消。預報大雪/暴風雪則取消並啟動 Plan B (改訂京都/大阪)。觀察期 1/31~2/2。', deadline: '2027-02-03T23:59:00+08:00', cat: '決策', link: { label: '看天氣預報', url: gSearch('豊岡 城崎 天気 週間予報') } },
+            { id: 'bk-vjw', icon: '📲', title: 'Visit Japan Web 填寫 (入境審查 + 海關)', desc: '出發前先完成並截圖 QR Code，兩人皆需。', deadline: '2027-02-05T23:59:00+08:00', cat: '證件', link: { label: '開啟 VJW', url: 'https://www.vjw.digital.go.jp/' } },
+            { id: 'bk-onsen', icon: '♨️', title: '查詢：城崎外湯公休日 / 營業時間', desc: '「御所之湯」據資料為週四公休 (Day 3 為週四)，建議 D3 泡一之湯/鴻之湯，D4 泡御所之湯。以官方公告為準。', deadline: '2027-02-06T23:59:00+08:00', cat: '查詢', link: { label: '查公休日', url: gSearch('城崎温泉 外湯 定休日 御所の湯') } },
+            { id: 'bk-tide', icon: '🌀', title: '查詢：鳴門漩渦潮見表 (Day 5 2/13)', desc: '滿潮/乾潮前後約 1.5 小時最佳；若落在上午或傍晚，調換「花さじき」與「渦之道」順序。', deadline: '2027-02-06T23:59:00+08:00', cat: '查詢', link: { label: '查潮見表', url: gSearch('鳴門 渦の道 渦潮 潮見表 2027年2月13日') } },
+            { id: 'bk-bus', icon: '🚌', title: '查詢：三宮 ⇄ 三田 Outlet 巴士時刻 + Outlet 休館日 (Day 7 2/15)', desc: '平日約 45~60 分一班，行前先存下去回程時刻表。', deadline: '2027-02-08T23:59:00+08:00', cat: '查詢', link: { label: '查時刻表', url: gSearch('神姫バス 三宮 三田プレミアム・アウトレット 時刻表') } },
+            { id: 'bk-esim', icon: '📱', title: '旅遊 eSIM 開通測試', desc: '出發前確認已安裝並可啟用，避免到日本才發現無法上網。', deadline: '2027-02-07T23:59:00+08:00', cat: '證件' },
+            { id: 'bk-checkin', icon: '✈️', title: '星宇航空 JX360 網路報到 / 選位', desc: '2/9 08:25 起飛。開放網路報到後即辦理，節省櫃台時間；回程 JX361 2/16 13:15。', deadline: '2027-02-08T08:25:00+08:00', cat: '預約', link: { label: '星宇航空', url: gSearch('星宇航空 網路報到') } }
+        ];
+        window.bookingStates = {};
+        try { window.bookingStates = JSON.parse(localStorage.getItem('kobe-booking') || '{}') || {}; } catch (e) { window.bookingStates = {}; }
+
+        function daysLeftInfo(deadlineIso) {
+            const diffMs = new Date(deadlineIso) - new Date();
+            if (diffMs < 0) return { cls: 'days-past', text: '已過截止' };
+            const d = Math.ceil(diffMs / 86400000);
+            if (d <= 7) return { cls: 'days-urgent', text: d <= 1 ? '今明截止' : `剩 ${d} 天` };
+            if (d <= 30) return { cls: 'days-soon', text: `剩 ${d} 天` };
+            return { cls: 'days-ok', text: `剩 ${d} 天` };
+        }
+        function fmtDeadline(iso) {
+            const d = new Date(iso);
+            const p = n => String(n).padStart(2, '0');
+            const hhmm = `${p(d.getHours())}:${p(d.getMinutes())}`;
+            return `${d.getFullYear()}/${p(d.getMonth() + 1)}/${p(d.getDate())} ${hhmm}`;
+        }
+
+        function renderBooking() {
+            const el = document.getElementById('booking-list');
+            if (!el) return;
+            const items = bookingItems.slice().sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+            el.innerHTML = items.map(it => {
+                const done = !!window.bookingStates[it.id];
+                const info = daysLeftInfo(it.deadline);
+                const lk = it.link ? `<a class="bk-link text-xs" href="${it.link.url}" target="_blank" rel="noopener">${it.link.label} ↗</a>` : '';
+                return `<label class="bk-item ${done ? 'done' : ''}">
+                    <input type="checkbox" ${done ? 'checked' : ''} onchange="toggleBooking('${it.id}', this.checked)">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="bk-title text-sm font-bold text-gray-100">${it.icon} ${it.title}</div>
+                            <span class="days-badge ${done ? 'days-ok' : info.cls}">${done ? '✔ 完成' : info.text}</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">${it.desc}</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-[11px] text-gray-500">
+                            <span class="px-1.5 py-0.5 rounded border border-gray-700 text-gray-400">${it.cat}</span>
+                            <span>⏰ ${fmtDeadline(it.deadline)}</span>${lk}
+                        </div>
+                    </div>
+                </label>`;
+            }).join('');
+            const total = bookingItems.length;
+            const doneCount = bookingItems.filter(i => window.bookingStates[i.id]).length;
+            document.getElementById('bk-progress').textContent = `${doneCount}/${total}`;
+            document.getElementById('bk-bar').style.width = Math.round(doneCount / total * 100) + '%';
+            renderNextDeadline();
+        }
+
+        function renderNextDeadline() {
+            const box = document.getElementById('cd-next');
+            if (!box) return;
+            const now = new Date();
+            const pending = bookingItems.filter(i => !window.bookingStates[i.id] && new Date(i.deadline) > now)
+                .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+            if (!pending.length) { box.innerHTML = '✅ 目前沒有待辦的預約事項'; return; }
+            const n = pending[0];
+            const info = daysLeftInfo(n.deadline);
+            box.innerHTML = `⏭️ <strong class="text-brand-300">下一個待辦：</strong>${n.icon} ${n.title} <span class="days-badge ${info.cls} ml-1">${info.text}</span> <span class="text-gray-500">(${fmtDeadline(n.deadline)})</span>`;
+        }
+
+        window.applyBookingStates = function(obj) {
+            window.bookingStates = Object.assign({}, window.bookingStates, obj || {});
+            try { localStorage.setItem('kobe-booking', JSON.stringify(window.bookingStates)); } catch (e) {}
+            renderBooking();
+        };
+
+        function toggleBooking(id, checked) {
+            window.bookingStates[id] = checked;
+            try { localStorage.setItem('kobe-booking', JSON.stringify(window.bookingStates)); } catch (e) {}
+            renderBooking();
+            if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseAppId && window.firebaseUser) {
+                const ref = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'checklist', 'shared');
+                window.firebaseSetDoc(ref, { booking: { [id]: checked } }, { merge: true }).catch(() => {});
+            }
+        }
+
+        function goBooking() {
+            switchMainTab('group-pretrip');
+            switchSubTab('booking', 'group-pretrip');
+        }
+
+        function tickCountdown() {
+            const now = new Date();
+            const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+            const phase = document.getElementById('cd-phase');
+            let diff = TRIP_START - now;
+            if (diff <= 0) {
+                if (now < TRIP_END) {
+                    const day = Math.min(8, Math.floor((now - TRIP_START) / 86400000) + 1);
+                    if (phase) phase.textContent = `旅程進行中 · Day ${day}`;
+                    diff = TRIP_END - now;
+                } else {
+                    if (phase) phase.textContent = '旅程已結束 🎉';
+                    diff = 0;
+                }
+            } else if (phase) { phase.textContent = '倒數中'; }
+            const s = Math.floor(diff / 1000);
+            set('cd-d', Math.floor(s / 86400));
+            set('cd-h', String(Math.floor(s % 86400 / 3600)).padStart(2, '0'));
+            set('cd-m', String(Math.floor(s % 3600 / 60)).padStart(2, '0'));
+            set('cd-s', String(s % 60).padStart(2, '0'));
+        }
+
         // ================= 智慧預設邏輯 =================
         function applySmartDefaults() {
             const today = new Date();
@@ -920,7 +1412,7 @@
             const tripDays = DAY_KEYS.filter(k => k !== '行前');
             const labels = DAY_KEYS;
             const data = labels.map(k => Math.round(totals[k]));
-            const colors = labels.map(k => (budget && k !== '行前' && totals[k] > budget) ? '#ef4444' : '#f59e0b');
+            const colors = labels.map(k => (budget && k !== '行前' && totals[k] > budget) ? '#ef4444' : themeRgb('--b400'));
 
             if (dailyChartInstance) dailyChartInstance.destroy();
             const datasets = [{ type: 'bar', label: '當日花費', data, backgroundColor: colors, borderRadius: 4 }];
@@ -968,14 +1460,14 @@
             const ctx1 = document.getElementById('intensityChart');
             if(ctx1) {
                 if (intensityChartInstance) intensityChartInstance.destroy();
-                intensityChartInstance = new Chart(ctx1.getContext('2d'), { type: 'line', data: { labels: ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'], datasets: [{ label: '體力消耗', data: [4, 9, 3, 4, 6, 8, 8, 3], borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false } });
+                intensityChartInstance = new Chart(ctx1.getContext('2d'), { type: 'line', data: { labels: ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'], datasets: [{ label: '體力消耗', data: [4, 9, 3, 4, 6, 8, 8, 3], borderColor: themeRgb('--b400'), backgroundColor: themeRgb('--b400', 0.12), fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false } });
             }
             const ctx2 = document.getElementById('transportChart');
             if(ctx2) {
                 if (transportChartInstance) transportChartInstance.destroy();
                 transportChartInstance = new Chart(ctx2.getContext('2d'), {
                     type: 'doughnut',
-                    data: { labels: ['JR Pass 特急/新快速', '租車自駕', '高速/神姬巴士', 'Port Liner 機場接駁', '地鐵與市營公車'], datasets: [{ data: [45, 20, 15, 10, 10], backgroundColor: ['#1F2937', '#D97706', '#059669', '#3B82F6', '#9333EA'], borderColor: '#111827', borderWidth: 2 }] },
+                    data: { labels: ['JR Pass 特急/新快速', '租車自駕', '高速/神姬巴士', 'Port Liner 機場接駁', '地鐵與市營公車'], datasets: [{ data: [45, 20, 15, 10, 10], backgroundColor: [themeRgb('--b400'), themeRgb('--acc2c'), themeRgb('--acc3c'), themeRgb('--b600'), themeRgb('--b200')], borderColor: '#000', borderWidth: 2 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
                 });
             }
@@ -985,7 +1477,7 @@
                 const rate = parseFloat(document.getElementById('current-rate').value) || 0.2150;
                 const cat = {}; let hasData = false;
                 currentExpenses.forEach(exp => { if (exp.split === 'shared') { hasData = true; cat[exp.category] = (cat[exp.category] || 0) + (exp.currency === 'JPY' ? exp.amount * rate : exp.amount); } });
-                expenseChartInstance = new Chart(ctx3.getContext('2d'), { type: 'pie', data: { labels: hasData ? Object.keys(cat) : ['無資料'], datasets: [{ data: hasData ? Object.values(cat).map(v => Math.round(v)) : [1], backgroundColor: hasData ? Object.keys(cat).map((_, i) => `hsl(${(i * 360 / Object.keys(cat).length) % 360}, 60%, 50%)`) : ['#374151'], borderColor: '#111827', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } } } });
+                expenseChartInstance = new Chart(ctx3.getContext('2d'), { type: 'pie', data: { labels: hasData ? Object.keys(cat) : ['無資料'], datasets: [{ data: hasData ? Object.values(cat).map(v => Math.round(v)) : [1], backgroundColor: hasData ? Object.keys(cat).map((_, i) => `hsl(${(themeHue() + i * 360 / Object.keys(cat).length) % 360}, 45%, 62%)`) : ['#374151'], borderColor: '#000', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } } } });
             }
         }
 
@@ -993,6 +1485,12 @@
             applySmartDefaults();
             restoreLocalChecklist();
             fetchExchangeRate();
+            applyTheme(document.documentElement.getAttribute('data-theme') || 'sakura');
+            applyFlightToUI();
+            renderBooking();
+            tickCountdown();
+            setInterval(tickCountdown, 1000);
+            setInterval(renderBooking, 3600000);
 
             // 每日預算：存在本機，變動時重畫圖表
             const budgetEl = document.getElementById('daily-budget');
@@ -1035,6 +1533,8 @@
         window.firebaseDB = db; window.firebaseDoc = doc; window.firebaseSetDoc = setDoc; window.firebaseAppId = 'roy-ian-kobe-trip-2027';
         const appId = window.firebaseAppId;
         const allowedEmails = ['wx9950a@gmail.com', 'coolyi19860311@gmail.com'];
+        // 登入者 ➔ 記帳預設代墊人
+        const memberByEmail = { 'wx9950a@gmail.com': 'Roy', 'coolyi19860311@gmail.com': 'Ian' };
         
         let currentUser = null; window.currentExpenses = []; window.firebaseUser = null;
         let unsubscribers = [];
@@ -1067,6 +1567,16 @@
                 loginBtn.innerHTML = LOGIN_BTN_HTML;
                 setSyncStatus('連線中...', 'bg-yellow-900/50 text-yellow-500 border-yellow-800 animate-pulse');
 
+                const accLocked = document.getElementById('accounting-auth-locked');
+                const accContent = document.getElementById('accounting-auth-content');
+                if (accLocked) accLocked.classList.add('hidden');
+                if (accContent) accContent.classList.remove('hidden');
+                if (typeof applyFlightToUI === 'function') applyFlightToUI();
+                if (!editingExpenseId) setPayer(currentMember());
+                const badge = document.getElementById('rcpt-user-badge');
+                if (badge) badge.textContent = '👤 ' + currentMember() + '（' + user.email + '）';
+                loadRcptSettings();
+
                 unsubscribers.push(onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), (snapshot) => {
                     const offline = snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites;
                     setSyncStatus(offline ? '📴 離線資料' : '✅ 已同步', offline ? 'bg-gray-800 text-gray-300 border-gray-600' : 'bg-emerald-900/50 text-emerald-400 border-emerald-800');
@@ -1082,6 +1592,7 @@
 
                 unsubscribers.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'checklist', 'shared'), (docSnap) => {
                     if (docSnap.exists()) {
+                        if (docSnap.data().booking && window.applyBookingStates) window.applyBookingStates(docSnap.data().booking);
                         const states = docSnap.data().states || [];
                         document.querySelectorAll('.chk-item').forEach((cb, idx) => { if (states[idx] !== undefined) cb.checked = states[idx]; });
                         renderChecklistProgress(); // 只更新畫面，不再寫回雲端（避免無限迴圈）
@@ -1093,6 +1604,7 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         for (let d = 1; d <= 8; d++) { if (typeof data['d' + d] === 'string') window.tripNotes[d] = data['d' + d]; }
+                        if (window.applyFlightFromCloud) window.applyFlightFromCloud(data);
                         try { localStorage.setItem('kobe-notes', JSON.stringify(window.tripNotes)); } catch (e) {}
                         applyNotesToUI();
                     }
@@ -1103,6 +1615,16 @@
                 authEl.classList.remove('hidden'); loginBtn.classList.remove('hidden'); logoutBtn.classList.add('hidden');
                 loginBtn.innerHTML = LOGIN_BTN_HTML;
                 setSyncStatus('未登入', 'bg-gray-800 text-gray-400 border-gray-700');
+
+                const accLocked = document.getElementById('accounting-auth-locked');
+                const accContent = document.getElementById('accounting-auth-content');
+                if (accLocked) accLocked.classList.remove('hidden');
+                if (accContent) accContent.classList.add('hidden');
+
+                window.flightInfo = {};
+                try { localStorage.removeItem('kobe-flight'); } catch (e) {}
+                if (typeof applyFlightToUI === 'function') applyFlightToUI();
+
                 window.currentExpenses = []; renderExpenses(); calculateSettlement();
             }
         });
@@ -1178,7 +1700,7 @@
             // 恢復預設值
             document.getElementById('exp-currency').value = 'JPY';
             document.getElementById('exp-paymethod').value = 'Cash';
-            document.getElementById('exp-payer').value = 'Roy';
+            setPayer(currentMember());
             document.getElementById('exp-split').value = 'shared';
             document.getElementById('exp-private-for').value = 'Roy';
             togglePrivateFor();
@@ -1205,6 +1727,7 @@
                 paidBy: document.getElementById('exp-payer').value, split: document.getElementById('exp-split').value,
                 privateFor: document.getElementById('exp-split').value === 'private' ? document.getElementById('exp-private-for').value : null
             };
+            if (window.pendingReceipt) newExpense.receipt = window.pendingReceipt;
 
             try { 
                 if (editingExpenseId) {
@@ -1213,6 +1736,7 @@
                 } else {
                     newExpense.timestamp = Date.now();
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), newExpense);
+                    if (window.clearReceiptPanel) window.clearReceiptPanel();
                     document.getElementById('exp-desc').value = ''; document.getElementById('exp-amount').value = '';
                     btn.innerHTML = "➕ 寫入雲端帳本"; 
                 }
@@ -1223,6 +1747,199 @@
             }
             btn.disabled = false;
         });
+
+
+        // ================= 使用者判斷 + 收據掃描自動記帳 =================
+        function currentMember() { return (currentUser && memberByEmail[currentUser.email]) || 'Roy'; }
+        function setRadio(name, value, hiddenId) {
+            const r = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+            if (r) r.checked = true;
+            const h = document.getElementById(hiddenId); if (h) h.value = value;
+        }
+        function setPayer(name) { setRadio('payer_rad', name, 'exp-payer'); }
+
+        const RCPT_CATS = ['早餐','午餐','晚餐','宵夜','點心','飲品','伴手禮','住宿費','租車費','過路費/油/停車','門票','藥妝','其他'];
+        const DEFAULT_MODEL = 'gemini-3.8-flash';
+        window.pendingReceipt = null;
+        let rcptBusy = false;
+
+        function loadRcptSettings() {
+            try {
+                const k = document.getElementById('rcpt-key'), m = document.getElementById('rcpt-model');
+                if (k && !k.value) k.value = localStorage.getItem('kobe-gemini-key') || '';
+                if (m && !m.value) m.value = localStorage.getItem('kobe-gemini-model') || DEFAULT_MODEL;
+                refreshRcptKeyState();
+            } catch (e) {}
+        }
+        function refreshRcptKeyState() {
+            const st = document.getElementById('rcpt-key-state'); if (!st) return;
+            const has = !!(localStorage.getItem('kobe-gemini-key'));
+            st.textContent = has ? '✅ 已設定' : '尚未設定金鑰';
+            st.className = 'text-[10px] ml-1 ' + (has ? 'text-emerald-400' : 'text-amber-400');
+        }
+        window.saveRcptSettings = () => {
+            try {
+                localStorage.setItem('kobe-gemini-key', document.getElementById('rcpt-key').value.trim());
+                localStorage.setItem('kobe-gemini-model', document.getElementById('rcpt-model').value.trim() || DEFAULT_MODEL);
+            } catch (e) {}
+            refreshRcptKeyState();
+        };
+
+        // 縮圖壓縮：降低上傳量與費用，並統一轉成 JPEG
+        function resizeImage(file, maxSide = 1600, quality = 0.85) {
+            return new Promise((resolve, reject) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+                    const c = document.createElement('canvas');
+                    c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+                    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                    const dataUrl = c.toDataURL('image/jpeg', quality);
+                    URL.revokeObjectURL(url);
+                    resolve({ dataUrl, base64: dataUrl.split(',')[1] });
+                };
+                img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('無法讀取圖片')); };
+                img.src = url;
+            });
+        }
+
+        const RCPT_PROMPT = [
+            '你是日本收據辨識與記帳助手。請辨識圖片中的日本收據，只輸出一個 JSON 物件（不要 markdown、不要說明文字）。',
+            'JSON 格式：{"is_receipt":true,"store_ja":"","store_zh":"","date":"YYYY-MM-DD 或 null","time":"HH:MM 或 null","currency":"JPY","payment_method":"Cash|Card|PayPay|Unknown","tax_mode":"inclusive|exclusive|mixed|tax_free","tax_free":false,"items":[{"name_ja":"","name_zh":"","qty":1,"amount_incl_tax":0,"tax_rate":10,"is_discount":false}],"total_paid":0,"category":"","notes":""}',
+            '規則：',
+            '1. 金額一律為日圓整數，不含 ¥ 與逗號。',
+            '2. 內稅(税込)收據：品項金額直接使用。外稅(税抜)收據：請把每個品項換算為含稅金額 amount_incl_tax = round(稅前金額 × (1+稅率))，若僅有合計稅額則依稅率合理分配。',
+            '3. 稅率：外帶食品、超市/超商食品飲料（含 ※ ＊ 軽 標記）為 8%；酒類、店內用餐、日用品為 10%；免稅品為 0。tax_rate 填 8、10 或 0。',
+            '4. 折扣、値引、割引、クーポン、ポイント利用、商品券：獨立列為品項並設 is_discount=true，amount_incl_tax 為負數。',
+            '5. 免稅(Tax Free / 免税)收據：tax_free=true，tax_mode=tax_free，品項與合計用免稅後的實付金額，tax_rate=0。',
+            '6. total_paid 為顧客實際支付金額（合計/お支払い額），不要取預收款(お預り)或找零(お釣り)。',
+            '7. 所有品項 amount_incl_tax 加總必須等於 total_paid；若不相符請重新檢視，無法吻合時在 notes 說明差異原因。',
+            '8. qty 預設 1；amount_incl_tax 為該行小計（單價×數量，已含折扣後）。',
+            '9. name_zh 為繁體中文翻譯；品牌或專有名詞保留原文並附中文意譯；看不清楚填「（無法辨識）」。',
+            '10. date 請轉為西元 YYYY-MM-DD（令和9年=2027年、令和8年=2026年）。',
+            '11. payment_method：現金→Cash；信用卡/クレジット/交通系IC→Card；PayPay/QR 支付→PayPay；無法判斷→Unknown。',
+            '12. category 只能從以下擇一：' + RCPT_CATS.join('、') + '。餐飲請依消費時間判斷早餐/午餐/晚餐/宵夜，咖啡飲料用「飲品」，零食甜點用「點心」，藥妝店用「藥妝」。',
+            '13. 收據上的信用卡號、會員號、電話等個資一律不要輸出。',
+            '14. 若圖片不是收據，輸出 {"is_receipt":false}。',
+            '15. 無法確定的欄位填 null，不要臆測。'
+        ].join('\n');
+
+        function parseJsonLoose(text) {
+            let t = String(text || '').trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+            const a = t.indexOf('{'), b = t.lastIndexOf('}');
+            if (a >= 0 && b > a) t = t.slice(a, b + 1);
+            return JSON.parse(t);
+        }
+
+        async function callGeminiReceipt(base64) {
+            const key = (localStorage.getItem('kobe-gemini-key') || '').trim();
+            const model = (localStorage.getItem('kobe-gemini-model') || DEFAULT_MODEL).trim();
+            if (!key) { document.getElementById('rcpt-settings').open = true; throw new Error('請先在「AI 設定」填入 Gemini API Key'); }
+            const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ inline_data: { mime_type: 'image/jpeg', data: base64 } }, { text: RCPT_PROMPT }] }],
+                    generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+                })
+            });
+            if (!res.ok) {
+                let msg = 'HTTP ' + res.status;
+                try { const j = await res.json(); msg += '：' + (j.error && j.error.message || ''); } catch (e) {}
+                if (res.status === 400 || res.status === 403) msg += '（請確認金鑰、模型名稱與網域限制）';
+                if (res.status === 429) msg += '（額度或頻率超限，稍後再試）';
+                throw new Error(msg);
+            }
+            const data = await res.json();
+            const parts = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts || [];
+            const text = parts.map(x => x.text || '').join('');
+            if (!text) throw new Error('AI 沒有回傳內容，請重拍或換個角度');
+            return parseJsonLoose(text);
+        }
+
+        window.onReceiptFile = async (inp) => {
+            const file = inp.files && inp.files[0];
+            inp.value = '';
+            if (!file || rcptBusy) return;
+            rcptBusy = true;
+            const status = document.getElementById('rcpt-status');
+            document.getElementById('rcpt-preview-wrap').classList.remove('hidden');
+            document.getElementById('rcpt-result').classList.add('hidden');
+            try {
+                status.innerHTML = '<span class="animate-pulse">🔍 壓縮圖片中...</span>';
+                const { dataUrl, base64 } = await resizeImage(file);
+                document.getElementById('rcpt-preview').src = dataUrl;
+                status.innerHTML = '<span class="animate-pulse">🤖 AI 辨識中，約 5~15 秒...</span>';
+                const r = await callGeminiReceipt(base64);
+                if (r.is_receipt === false) { status.innerHTML = '<span class="text-amber-400">這張圖片看起來不是收據，請重新拍攝。</span>'; return; }
+                handleReceiptResult(r);
+                status.innerHTML = '<span class="text-emerald-400">✅ 辨識完成，已帶入下方表單</span>';
+            } catch (e) {
+                console.error(e);
+                status.innerHTML = '<span class="text-red-400">❌ ' + escapeHtml(e.message || '辨識失敗') + '</span>';
+            } finally { rcptBusy = false; }
+        };
+
+        function handleReceiptResult(r) {
+            const items = (Array.isArray(r.items) ? r.items : []).map(it => ({
+                n: String(it.name_zh || it.name_ja || '').slice(0, 60),
+                ja: String(it.name_ja || '').slice(0, 60),
+                q: Number(it.qty) || 1,
+                a: Math.round(Number(it.amount_incl_tax) || 0),
+                r: Number(it.tax_rate) || 0,
+                d: !!it.is_discount || (Number(it.amount_incl_tax) || 0) < 0
+            }));
+            const sum = items.reduce((t, x) => t + x.a, 0);
+            const total = Math.round(Number(r.total_paid) || sum);
+            const diff = sum - total;
+            const store = String(r.store_zh || r.store_ja || '').slice(0, 40);
+            const taxFree = !!r.tax_free || r.tax_mode === 'tax_free';
+
+            window.pendingReceipt = {
+                store, storeJa: String(r.store_ja || '').slice(0, 60), date: r.date || null, taxFree,
+                total, items: items.map(x => ({ n: x.n, ja: x.ja, q: x.q, a: x.a }))
+            };
+
+            // 帶入既有記帳表單
+            const m = String(r.date || '').match(/^2027-02-(\d{2})$/);
+            if (m && +m[1] >= 9 && +m[1] <= 16) document.getElementById('exp-day').value = 'D' + (+m[1] - 8);
+            const cat = RCPT_CATS.includes(r.category) ? r.category : '其他';
+            document.getElementById('exp-category').value = cat;
+            const names = items.filter(x => !x.d).slice(0, 3).map(x => x.n).filter(Boolean).join('、');
+            document.getElementById('exp-desc').value = (store + (names ? '：' + names : '') + (items.length > 3 ? ' 等' : '') + (taxFree ? '（免稅）' : '')).slice(0, 80);
+            document.getElementById('exp-amount').value = total > 0 ? total : '';
+            setRadio('curr_rad', r.currency === 'TWD' ? 'TWD' : 'JPY', 'exp-currency');
+            const pm = ['Cash', 'Card', 'PayPay'].includes(r.payment_method) ? r.payment_method : 'Cash';
+            setRadio('paymethod_rad', pm, 'exp-paymethod');
+            setPayer(currentMember());
+
+            renderReceiptResult(r, items, total, diff, taxFree, store);
+        }
+
+        function renderReceiptResult(r, items, total, diff, taxFree, store) {
+            const box = document.getElementById('rcpt-result');
+            const rows = items.map(x => '<div class="flex justify-between gap-2 py-1 border-b border-gray-800/60 ' + (x.d ? 'text-rose-400' : 'text-gray-300') + '"><span class="min-w-0"><span class="block truncate">' + escapeHtml(x.n || '（無法辨識）') + (x.q > 1 ? ' ×' + x.q : '') + '</span>' + (x.ja && x.ja !== x.n ? '<span class="block text-[10px] text-gray-500 truncate">' + escapeHtml(x.ja) + '</span>' : '') + '</span><span class="font-mono whitespace-nowrap">' + (x.r ? '<span class="text-[9px] text-gray-500 mr-1">' + x.r + '%</span>' : '') + '¥' + x.a.toLocaleString() + '</span></div>').join('');
+            const warn = Math.abs(diff) > 1
+                ? '<div class="alert-chip danger"><span>🚨</span><span>品項加總 ¥' + (total + diff).toLocaleString() + ' 與收據合計 ¥' + total.toLocaleString() + ' 差 ¥' + diff.toLocaleString() + '，請對照原收據核對（金額已帶入表單，可手動修改）。</span></div>'
+                : '<div class="alert-chip info"><span>✅</span><span>品項加總與合計相符（¥' + total.toLocaleString() + '）。</span></div>';
+            box.innerHTML =
+                '<div class="rounded-lg border border-gray-700 bg-black/30 p-3">' +
+                '<div class="flex items-center justify-between mb-1"><div class="text-sm font-bold text-gray-100">' + escapeHtml(store || '（未辨識店名）') + '</div><div class="text-[11px] text-gray-400 font-mono">' + escapeHtml(r.date || '無日期') + (r.time ? ' ' + escapeHtml(r.time) : '') + '</div></div>' +
+                (taxFree ? '<div class="text-[11px] text-brand-300 mb-1">🛂 免稅收據</div>' : '') +
+                '<div class="text-xs max-h-48 overflow-y-auto">' + (rows || '<div class="text-gray-500 py-2">未辨識到品項</div>') + '</div>' +
+                '<div class="flex justify-between mt-2 text-sm font-bold"><span class="text-gray-300">實付合計</span><span class="font-mono aurora-text">¥' + total.toLocaleString() + '</span></div>' +
+                '</div>' + warn +
+                (r.notes ? '<div class="alert-chip"><span>📝</span><span>' + escapeHtml(r.notes) + '</span></div>' : '') +
+                '<div class="flex gap-2"><button type="button" onclick="document.getElementById(\'expense-form-card\').scrollIntoView({behavior:\'smooth\',block:\'center\'})" class="flex-1 py-2 rounded-lg bg-brand-600 text-white text-xs font-bold">⬇️ 前往確認並寫入帳本</button><button type="button" onclick="clearReceiptPanel()" class="px-3 py-2 rounded-lg border border-gray-700 text-gray-300 text-xs">清除</button></div>';
+            box.classList.remove('hidden');
+        }
+
+        window.clearReceiptPanel = () => {
+            window.pendingReceipt = null;
+            const box = document.getElementById('rcpt-result'); if (box) { box.innerHTML = ''; box.classList.add('hidden'); }
+            const pw = document.getElementById('rcpt-preview-wrap'); if (pw) pw.classList.add('hidden');
+        };
 
         window.deleteExpenseRecord = async (id) => { if (currentUser) try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id)); } catch(e) {} };
 
@@ -1236,11 +1953,16 @@
             window.currentExpenses.forEach(exp => {
                 const typeHtml = exp.split === 'shared' ? `<span class="text-emerald-400">均分</span>` : `<div class="leading-tight"><span class="text-gray-400">私人</span><br><span class="text-[9px] text-gray-500">${escapeHtml(exp.privateFor)}</span></div>`;
                 const payIcon = payIcons[exp.payMethod] || '💵';
+                let rcptHtml = '';
+                if (exp.receipt && Array.isArray(exp.receipt.items) && exp.receipt.items.length) {
+                    const rows = exp.receipt.items.map(it => `<div class="flex justify-between gap-2 ${it.a < 0 ? 'text-rose-400' : 'text-gray-400'}"><span class="truncate">${escapeHtml(it.n)}${it.q > 1 ? ' ×' + escapeHtml(it.q) : ''}</span><span class="font-mono whitespace-nowrap">${Number(it.a).toLocaleString()}</span></div>`).join('');
+                    rcptHtml = `<details class="mt-1"><summary class="text-[10px] text-brand-300 cursor-pointer">🧾 收據明細 (${exp.receipt.items.length})${exp.receipt.taxFree ? ' · 免稅' : ''}</summary><div class="mt-1 space-y-0.5 text-[10px] min-w-[180px]">${exp.receipt.store ? '<div class="text-gray-300">' + escapeHtml(exp.receipt.store) + '</div>' : ''}${rows}</div></details>`;
+                }
                 const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/50 hover:bg-gray-800 transition-colors";
                 tr.innerHTML = `
                     <td class="p-3 text-gray-500">${escapeHtml(exp.day)}</td>
                     <td class="p-3 text-gray-300 font-bold">${escapeHtml(exp.category)}</td>
-                    <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></td>
+                    <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span>${rcptHtml}</td>
                     <td class="p-3 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount.toLocaleString()} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
                     <td class="p-3 text-center text-${exp.paidBy==='Roy'?'blue':'purple'}-400 font-bold">${exp.paidBy}</td>
                     <td class="p-3 text-center">${typeHtml}</td>
@@ -1254,6 +1976,12 @@
         }
 
         window.calculateSettlement = function() {
+            if (!currentUser) {
+                document.getElementById('jpy-settlement').innerHTML = '<span class="text-xs text-gray-500">🔒 請先登入</span>';
+                document.getElementById('twd-settlement').innerHTML = '<span class="text-xs text-gray-500">🔒 請先登入</span>';
+                document.getElementById('consolidated-settlement').innerHTML = '<span class="text-xs text-gray-500">🔒 請先登入 Google 帳號</span>';
+                return;
+            }
             let jpy=0, twd=0;
             window.currentExpenses.forEach(exp => {
                 let amt = exp.amount; let isJpy = exp.currency === 'JPY';
