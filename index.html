@@ -551,6 +551,7 @@
                             <li><b class="text-gray-300">金額</b>：正數，可含 ¥、$、逗號。<b class="text-gray-300">幣別</b>預設 JPY（可填 TWD/台幣）。</li>
                             <li><b class="text-gray-300">付款方式</b>：現金/刷卡/PayPay，預設現金。<b class="text-gray-300">代墊者</b>：Roy/Ian，預設為目前登入者。</li>
                             <li><b class="text-gray-300">分攤方式</b>：均分/私人，預設均分；私人需填「私人對象」。</li>
+                            <li><b class="text-gray-300">圖檔檔名</b>：選填（如 IMG_0123.jpg、Receipt_01.png），供後續人工對照原始收據照片。</li>
                             <li>檔案支援 UTF-8 與 Big5（Excel 常見）編碼；與現有帳目相同者會標示「疑似重複」並預設不匯入。</li>
                         </ul>
                     </details>
@@ -572,6 +573,7 @@
                         </div>
                     </div>
                     <input type="text" id="exp-desc" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500" placeholder="備註 (選填，如: 章魚燒)...">
+                    <input type="text" id="exp-image" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500 mt-2" placeholder="圖檔檔名 (選填，供人工校對，如: IMG_0123.jpg)..." autocomplete="off">
                     
                     <div class="grid grid-cols-3 gap-3">
                         <div class="col-span-2">
@@ -1435,10 +1437,10 @@
             const list = window.currentExpenses || [];
             if (!list.length) { alert('目前沒有可匯出的記帳紀錄'); return; }
             const esc = v => { const s = String(v ?? ''); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-            const header = ['日期', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'];
+            const header = ['日期', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象', '圖檔檔名'];
             const rows = list.slice().sort((a, b) => (expDateOf(a) || '').localeCompare(expDateOf(b) || '') || (a.timestamp || 0) - (b.timestamp || 0)).map(e => [
                 expDateOf(e), e.category, e.desc || '', e.amount, e.currency, e.payMethod || 'Cash', e.paidBy,
-                e.split === 'shared' ? '均分' : '私人', e.privateFor || ''
+                e.split === 'shared' ? '均分' : '私人', e.privateFor || '', e.image || ''
             ]);
             const csv = '\ufeff' + [header, ...rows].map(r => r.map(esc).join(',')).join('\r\n'); // BOM 讓 Excel 正確顯示中文
             const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
@@ -1653,6 +1655,7 @@
             document.getElementById('exp-date').value = expDateOf(exp) || todayISO();
             document.getElementById('exp-category').value = exp.category;
             document.getElementById('exp-desc').value = exp.desc || '';
+            document.getElementById('exp-image').value = exp.image || '';
             document.getElementById('exp-amount').value = exp.amount;
             
             document.querySelector(`input[name="curr_rad"][value="${exp.currency}"]`).checked = true;
@@ -1693,6 +1696,7 @@
             const keepDay = document.getElementById('exp-date').value; // reset() 會清空日期，先記下來
             document.getElementById('expense-form').reset();
             document.getElementById('exp-date').value = keepDay || todayISO();
+            document.getElementById('exp-image').value = '';
             
             // 恢復預設值
             document.getElementById('exp-currency').value = 'JPY';
@@ -1717,6 +1721,7 @@
             const originalText = btn.innerHTML;
             btn.innerHTML = "處理中..."; btn.disabled = true;
             
+            const imgVal = (document.getElementById('exp-image').value || '').trim();
             const newExpense = {
                 date: document.getElementById('exp-date').value || todayISO(), category: document.getElementById('exp-category').value,
                 desc: document.getElementById('exp-desc').value, amount: parseFloat(document.getElementById('exp-amount').value),
@@ -1728,12 +1733,14 @@
             try { 
                 if (editingExpenseId) {
                     newExpense.day = deleteField(); // 移除舊的 Dx 欄位
+                    if (imgVal) newExpense.image = imgVal; else newExpense.image = deleteField();
                     await window.firebaseSetDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', editingExpenseId), newExpense, { merge: true });
                     window.cancelEditExpense();
                 } else {
+                    if (imgVal) newExpense.image = imgVal;
                     newExpense.timestamp = Date.now();
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), newExpense);
-                    document.getElementById('exp-desc').value = ''; document.getElementById('exp-amount').value = '';
+                    document.getElementById('exp-desc').value = ''; document.getElementById('exp-image').value = ''; document.getElementById('exp-amount').value = '';
                     btn.innerHTML = "➕ 寫入雲端帳本"; 
                 }
             } catch(e) {
@@ -1791,7 +1798,8 @@
             pay: ['付款方式', '付款', 'paymethod', 'payment', 'pay'],
             payer: ['代墊者', '代墊', '付款人', 'paidby', 'payer'],
             split: ['分攤方式', '分攤', 'split'],
-            privateFor: ['私人對象', '私人', 'privatefor']
+            privateFor: ['私人對象', '私人', 'privatefor'],
+            image: ['圖檔檔名', '圖檔', '照片檔名', '照片', '檔名', '圖片', 'image', 'photo', 'filename', 'file', 'img']
         };
         window.csvRows = [];
 
@@ -1889,12 +1897,14 @@
                 const pfRaw = get('privateFor').toLowerCase();
                 const privateFor = isPrivate ? (/roy/.test(pfRaw) ? 'Roy' : /ian/.test(pfRaw) ? 'Ian' : paidBy) : null;
                 if (isPrivate && !pfRaw) msgs.push('私人對象未填，預設為代墊者本人');
+                const image = get('image').trim();
 
                 const rec = {
                     date, category, desc: get('desc').slice(0, 120), amount: isFinite(amount) ? Math.round(amount * 100) / 100 : 0,
                     currency, payMethod, paidBy, split: isPrivate ? 'private' : 'shared', privateFor,
                     timestamp: baseTs + n, source: 'csv'
                 };
+                if (image) rec.image = image.slice(0, 80);
                 if (status === 'ok') {
                     const sig = csvExpenseSig(rec);
                     if (existing.has(sig) || seen.has(sig)) { status = 'dup'; msgs.push('疑似重複'); }
@@ -1938,10 +1948,11 @@
             const items = rows.map((r, i) => {
                 const icon = r.status === 'err' ? '❌' : r.status === 'dup' ? '♻️' : '✅';
                 const dis = r.status === 'err' ? 'disabled' : '';
+                const imgBadge = r.rec.image ? ' · 📷 ' + escapeHtml(r.rec.image) : '';
                 return '<label class="flex gap-2 items-start py-2 border-b border-gray-800/60 text-xs ' + (r.status === 'err' ? 'opacity-50' : '') + '">' +
                     '<input type="checkbox" ' + (r.checked ? 'checked' : '') + ' ' + dis + ' onchange="toggleCsvRow(' + i + ', this.checked)" class="mt-0.5 w-4 h-4 accent-emerald-500 flex-none">' +
                     '<div class="min-w-0 flex-1"><div class="flex justify-between gap-2"><span class="text-gray-200 truncate">' + icon + ' ' + escapeHtml(r.rec.desc || '（無備註）') + '</span><span class="font-mono text-gray-100 whitespace-nowrap">' + escapeHtml(fmt(r)) + '</span></div>' +
-                    '<div class="text-[10px] text-gray-500">' + escapeHtml(fmtMD(r.rec.date)) + ' · ' + escapeHtml(r.rec.category) + ' · ' + escapeHtml(r.rec.payMethod) + ' · 代墊 ' + escapeHtml(r.rec.paidBy) + ' · ' + (r.rec.split === 'shared' ? '均分' : '私人(' + escapeHtml(r.rec.privateFor) + ')') + '</div>' +
+                    '<div class="text-[10px] text-gray-500">' + escapeHtml(fmtMD(r.rec.date)) + ' · ' + escapeHtml(r.rec.category) + ' · ' + escapeHtml(r.rec.payMethod) + ' · 代墊 ' + escapeHtml(r.rec.paidBy) + ' · ' + (r.rec.split === 'shared' ? '均分' : '私人(' + escapeHtml(r.rec.privateFor) + ')') + imgBadge + '</div>' +
                     (r.msgs.length ? '<div class="text-[10px] text-amber-400">' + r.msgs.map(escapeHtml).join('；') + '</div>' : '') + '</div></label>';
             }).join('');
             box.innerHTML =
@@ -1989,9 +2000,9 @@
 
         window.downloadCsvTemplate = () => {
             const rows = [
-                ['日期', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'],
-                ['2027/02/09', '晚餐', '神戶牛排', 12000, 'JPY', '刷卡', 'Roy', '均分', ''],
-                ['2027/02/10', '點心', '抹茶霜淇淋', 600, 'JPY', '現金', 'Ian', '私人', 'Ian']
+                ['日期', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象', '圖檔檔名'],
+                ['2027/02/09', '晚餐', '神戶牛排', 12000, 'JPY', '刷卡', 'Roy', '均分', '', 'IMG_0123.jpg'],
+                ['2027/02/10', '點心', '抹茶霜淇淋', 600, 'JPY', '現金', 'Ian', '私人', 'Ian', '']
             ];
             const csv = '\ufeff' + rows.map(r => r.join(',')).join('\r\n');
             const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
@@ -2013,11 +2024,15 @@
             window.currentExpenses.forEach(exp => {
                 const typeHtml = exp.split === 'shared' ? `<span class="text-emerald-400">均分</span>` : `<div class="leading-tight"><span class="text-gray-400">私人</span><br><span class="text-[9px] text-gray-500">${escapeHtml(exp.privateFor)}</span></div>`;
                 const payIcon = payIcons[exp.payMethod] || '💵';
+                const imageBadge = exp.image ? `<div class="text-[10px] text-brand-300 font-mono mt-0.5 flex items-center gap-1 opacity-90 truncate max-w-[180px]" title="${escapeHtml(exp.image)}"><span>📷</span><span class="truncate">${escapeHtml(exp.image)}</span></div>` : '';
                 const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/50 hover:bg-gray-800 transition-colors";
                 tr.innerHTML = `
                     <td class="p-3 text-gray-500">${escapeHtml(fmtMD(expDateOf(exp)))}</td>
                     <td class="p-3 text-gray-300 font-bold">${escapeHtml(exp.category)}</td>
-                    <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></td>
+                    <td class="p-3 text-gray-200 leading-tight">
+                        <div>${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></div>
+                        ${imageBadge}
+                    </td>
                     <td class="p-3 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount.toLocaleString()} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
                     <td class="p-3 text-center text-${exp.paidBy==='Roy'?'blue':'purple'}-400 font-bold">${exp.paidBy}</td>
                     <td class="p-3 text-center">${typeHtml}</td>

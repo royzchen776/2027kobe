@@ -1,5 +1,5 @@
 // 離線快取：App 外殼（本站檔案 + 必要 CDN 腳本）採「先用快取、背景更新」
-const CACHE = 'kobe-trip-v9';
+const CACHE = 'kobe-trip-v10';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 const CDN_HOSTS = ['cdn.tailwindcss.com', 'cdn.jsdelivr.net', 'www.gstatic.com'];
 
