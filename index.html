@@ -529,44 +529,32 @@
 
             <!-- 登入後可見區域 -->
             <div id="accounting-auth-content" class="hidden space-y-6">
-                <!-- 📷 收據掃描自動記帳 (Gemini 多模態辨識) -->
+                <!-- 📥 CSV 匯入 -->
                 <div class="bg-cardbg rounded-xl p-5 shadow-md border border-gray-800 glow-ring">
                     <div class="flex items-center justify-between mb-2">
-                        <h3 class="font-bold text-sm aurora-text">📷 掃描收據自動記帳</h3>
-                        <span id="rcpt-user-badge" class="text-[10px] px-2 py-0.5 rounded-full border border-gray-700 text-gray-300"></span>
+                        <h3 class="font-bold text-sm aurora-text">📥 匯入 CSV 帳目</h3>
+                        <span id="csv-user-badge" class="text-[10px] px-2 py-0.5 rounded-full border border-gray-700 text-gray-300"></span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed mb-3">拍下或選擇日本收據，AI 會辨識店名、日期、品項（日翻中）、內外稅與折扣，並自動帶入下方記帳表單；確認後再寫入雲端帳本。</p>
-
-                    <details id="rcpt-settings" class="mb-3 rounded-lg border border-gray-700 bg-black/30 px-3 py-2">
-                        <summary class="text-xs text-gray-300 cursor-pointer select-none">⚙️ AI 設定 <span id="rcpt-key-state" class="text-[10px] text-amber-400 ml-1">尚未設定金鑰</span></summary>
-                        <div class="mt-3 space-y-2">
-                            <div>
-                                <label class="text-[11px] text-gray-500">Gemini API Key（一人設定，透過 Firebase 自動同步給同行者）</label>
-                                <input id="rcpt-key" type="password" autocomplete="off" class="fl-input" placeholder="AIza..." oninput="saveRcptSettings()">
-                            </div>
-                            <div>
-                                <label class="text-[11px] text-gray-500">模型名稱</label>
-                                <input id="rcpt-model" class="fl-input" placeholder="gemini-3.8-flash" oninput="saveRcptSettings()">
-                            </div>
-                            <p class="text-[10px] text-gray-500 leading-relaxed">金鑰將儲存於受白名單保護的 Firestore 安全路徑。一人輸入後，兩人的手機登入都會自動同步生效，免去重複設定。</p>
-                        </div>
-                    </details>
-
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-3">上傳當日彙整好的 CSV，先預覽、確認後再批次寫入雲端帳本。欄位順序不拘，只要標題列包含：<span class="text-gray-200">天別/日期、分類、備註、金額</span>；其餘（幣別、付款方式、代墊者、分攤方式、私人對象）可省略，缺少時使用預設值。</p>
                     <div class="flex gap-2">
                         <label class="flex-1 text-center cursor-pointer px-3 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-md">
-                            📸 拍照 / 選擇收據
-                            <input id="rcpt-file" type="file" accept="image/*" capture="environment" class="hidden" onchange="onReceiptFile(this)">
+                            📂 選擇 CSV 檔案
+                            <input id="csv-file" type="file" accept=".csv,text/csv,text/plain" class="hidden" onchange="onCsvFile(this)">
                         </label>
-                        <label class="px-3 py-3 rounded-lg border border-gray-700 text-gray-300 text-sm cursor-pointer bg-black/30">
-                            🖼️ 相簿
-                            <input type="file" accept="image/*" class="hidden" onchange="onReceiptFile(this)">
-                        </label>
+                        <button type="button" onclick="downloadCsvTemplate()" class="px-3 py-3 rounded-lg border border-gray-700 text-gray-300 text-sm bg-black/30">⬇️ 範本</button>
                     </div>
-                    <div id="rcpt-preview-wrap" class="hidden mt-3 flex gap-3 items-start">
-                        <img id="rcpt-preview" class="w-24 h-24 object-cover rounded-lg border border-gray-700" alt="收據預覽">
-                        <div class="flex-1 text-xs text-gray-400" id="rcpt-status">已選擇圖片</div>
-                    </div>
-                    <div id="rcpt-result" class="hidden mt-3 space-y-2"></div>
+                    <details class="mt-3 rounded-lg border border-gray-700 bg-black/30 px-3 py-2">
+                        <summary class="text-xs text-gray-300 cursor-pointer select-none">📖 欄位與預設值說明</summary>
+                        <ul class="mt-2 text-[11px] text-gray-400 space-y-1 leading-relaxed list-disc pl-4">
+                            <li><b class="text-gray-300">天別</b>：D1~D8、行前，或直接填日期（2027/02/09 ➔ D1）。</li>
+                            <li><b class="text-gray-300">分類</b>：早餐/午餐/晚餐/宵夜/點心/飲品/伴手禮/住宿費/租車費/過路費/油/停車/門票/藥妝/其他，不在清單內歸為「其他」。</li>
+                            <li><b class="text-gray-300">金額</b>：正數，可含 ¥、$、逗號。<b class="text-gray-300">幣別</b>預設 JPY（可填 TWD/台幣）。</li>
+                            <li><b class="text-gray-300">付款方式</b>：現金/刷卡/PayPay，預設現金。<b class="text-gray-300">代墊者</b>：Roy/Ian，預設為目前登入者。</li>
+                            <li><b class="text-gray-300">分攤方式</b>：均分/私人，預設均分；私人需填「私人對象」。</li>
+                            <li>檔案支援 UTF-8 與 Big5（Excel 常見）編碼；與現有帳目相同者會標示「疑似重複」並預設不匯入。</li>
+                        </ul>
+                    </details>
+                    <div id="csv-result" class="hidden mt-3 space-y-2"></div>
                 </div>
 
                 <!-- 新增記帳表單 -->
@@ -641,7 +629,7 @@
                     <h3 class="font-bold text-gray-200 text-sm">🧾 花費明細</h3>
                     <div class="flex items-center gap-2">
                         <button type="button" onclick="exportExpensesCSV()" class="text-[11px] px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded transition-colors">⬇️ 匯出 CSV</button>
-                        <span id="sync-status" class="text-[10px] px-2 py-1 bg-gray-800 text-gray-400 border border-gray-700 rounded-full">未登入</span>
+                        <span id="sync-status" onclick="showSyncError()" class="text-[10px] px-2 py-1 bg-gray-800 text-gray-400 border border-gray-700 rounded-full">未登入</span>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -1510,7 +1498,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         // 使用 Popup 登入，避開跨網域 sessionStorage 阻擋問題
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, addDoc, deleteDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, addDoc, deleteDoc, doc, setDoc, onSnapshot, writeBatch, deleteField } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDU7OIhhr1Yl8X7NjuyOOEPrD3TQgHLNfE",
@@ -1522,10 +1510,10 @@
         // 啟用 Firestore 離線持久化：沒網路時仍可讀取先前同步過的帳本，恢復連線後自動補送
         let db;
         try {
-            db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+            db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }), experimentalAutoDetectLongPolling: true });
         } catch (e) {
             console.warn('離線快取初始化失敗，改用一般模式', e);
-            db = initializeFirestore(app, {});
+            db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
         }
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
@@ -1573,9 +1561,8 @@
                 if (accContent) accContent.classList.remove('hidden');
                 if (typeof applyFlightToUI === 'function') applyFlightToUI();
                 if (!editingExpenseId) setPayer(currentMember());
-                const badge = document.getElementById('rcpt-user-badge');
+                const badge = document.getElementById('csv-user-badge');
                 if (badge) badge.textContent = '👤 ' + currentMember() + '（' + user.email + '）';
-                loadRcptSettings();
 
                 unsubscribers.push(onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), (snapshot) => {
                     const offline = snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites;
@@ -1587,7 +1574,7 @@
                     if (!document.getElementById('group-analytics').classList.contains('hidden')) renderCharts();
                 }, (err) => {
                     console.error('帳本同步失敗', err);
-                    setSyncStatus('⚠️ 同步失敗', 'bg-red-900/50 text-red-400 border-red-800');
+                    setSyncStatus(explainSyncError(err), 'bg-red-900/50 text-red-400 border-red-800');
                 }));
 
                 unsubscribers.push(onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'checklist', 'shared'), (docSnap) => {
@@ -1605,7 +1592,10 @@
                         const data = docSnap.data();
                         for (let d = 1; d <= 8; d++) { if (typeof data['d' + d] === 'string') window.tripNotes[d] = data['d' + d]; }
                         if (window.applyFlightFromCloud) window.applyFlightFromCloud(data);
-                        if (window.applyAiSettingsFromCloud) window.applyAiSettingsFromCloud(data);
+                        if (data.gemini_key !== undefined || data.gemini_model !== undefined) { // 已移除收據掃描功能：清除先前存放的金鑰
+                            setDoc(docSnap.ref, { gemini_key: deleteField(), gemini_model: deleteField() }, { merge: true }).catch(() => {});
+                            try { localStorage.removeItem('kobe-gemini-key'); localStorage.removeItem('kobe-gemini-model'); } catch (e) {}
+                        }
                         try { localStorage.setItem('kobe-notes', JSON.stringify(window.tripNotes)); } catch (e) {}
                         applyNotesToUI();
                     }
@@ -1728,7 +1718,6 @@
                 paidBy: document.getElementById('exp-payer').value, split: document.getElementById('exp-split').value,
                 privateFor: document.getElementById('exp-split').value === 'private' ? document.getElementById('exp-private-for').value : null
             };
-            if (window.pendingReceipt) newExpense.receipt = window.pendingReceipt;
 
             try { 
                 if (editingExpenseId) {
@@ -1737,7 +1726,6 @@
                 } else {
                     newExpense.timestamp = Date.now();
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), newExpense);
-                    if (window.clearReceiptPanel) window.clearReceiptPanel();
                     document.getElementById('exp-desc').value = ''; document.getElementById('exp-amount').value = '';
                     btn.innerHTML = "➕ 寫入雲端帳本"; 
                 }
@@ -1750,7 +1738,7 @@
         });
 
 
-        // ================= 使用者判斷 + 收據掃描自動記帳 =================
+        // ================= 使用者判斷 + CSV 匯入 + 同步診斷 =================
         function currentMember() { return (currentUser && memberByEmail[currentUser.email]) || 'Roy'; }
         function setRadio(name, value, hiddenId) {
             const r = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
@@ -1758,215 +1746,258 @@
             const h = document.getElementById(hiddenId); if (h) h.value = value;
         }
         function setPayer(name) { setRadio('payer_rad', name, 'exp-payer'); }
+        try { localStorage.removeItem('kobe-gemini-key'); localStorage.removeItem('kobe-gemini-model'); } catch (e) {}
 
-        const RCPT_CATS = ['早餐','午餐','晚餐','宵夜','點心','飲品','伴手禮','住宿費','租車費','過路費/油/停車','門票','藥妝','其他'];
-        const DEFAULT_MODEL = 'gemini-3.8-flash';
-        window.pendingReceipt = null;
-        let rcptBusy = false;
-
-        function loadRcptSettings() {
-            try {
-                const k = document.getElementById('rcpt-key'), m = document.getElementById('rcpt-model');
-                if (k && !k.value) k.value = localStorage.getItem('kobe-gemini-key') || '';
-                if (m && !m.value) m.value = localStorage.getItem('kobe-gemini-model') || DEFAULT_MODEL;
-                refreshRcptKeyState();
-            } catch (e) {}
+        // ---- 同步失敗診斷 ----
+        window.lastSyncError = null;
+        function explainSyncError(err) {
+            const code = (err && err.code) || 'unknown';
+            window.lastSyncError = { code, message: err && err.message || '' };
+            if (code === 'permission-denied') return '🔒 無權限 (點我看原因)';
+            if (code === 'unavailable') return '📴 無法連線 (點我看原因)';
+            if (code === 'not-found' || code === 'failed-precondition') return '⚠️ 資料庫設定異常 (點我)';
+            if (code === 'unauthenticated') return '🔑 請重新登入';
+            return '⚠️ 同步失敗 (點我看原因)';
         }
-        window.applyAiSettingsFromCloud = function(data) {
-            if (data && typeof data.gemini_key === 'string' && data.gemini_key) {
-                const k = document.getElementById('rcpt-key');
-                if (k) k.value = data.gemini_key;
-                try { localStorage.setItem('kobe-gemini-key', data.gemini_key); } catch (e) {}
-            }
-            if (data && typeof data.gemini_model === 'string' && data.gemini_model) {
-                const m = document.getElementById('rcpt-model');
-                if (m) m.value = data.gemini_model;
-                try { localStorage.setItem('kobe-gemini-model', data.gemini_model); } catch (e) {}
-            }
-            refreshRcptKeyState();
+        window.showSyncError = () => {
+            const e = window.lastSyncError;
+            if (!e) { alert('目前沒有同步錯誤。'); return; }
+            const tips = {
+                'permission-denied': '沒有讀寫權限。請確認：\n1. Firebase Console ➔ Firestore Database ➔ 規則(Rules) 已貼上專案內 firestore.rules 並按「發布」。\n2. 規則白名單的 Email 與你登入的 Google 帳號完全一致（且 Email 已驗證）。\n3. 規則路徑為 artifacts/roy-ian-kobe-trip-2027/public/data/{document=**}。',
+                'unavailable': '無法連到 Firestore。請檢查網路/VPN/廣告攔截；已啟用自動長輪詢以改善行動網路與內建瀏覽器的連線。若仍失敗，請用 Safari/Chrome 開啟。',
+                'not-found': '找不到資料庫。請到 Firebase Console ➔ Firestore Database ➔ 建立資料庫（Native 模式）。',
+                'failed-precondition': 'Firestore 設定不完整（可能尚未建立資料庫或索引）。請到 Firebase Console 確認 Firestore 已建立。',
+                'unauthenticated': '登入已失效，請登出後重新登入。'
+            };
+            alert('同步錯誤代碼：' + e.code + '\n\n' + (tips[e.code] || '請把此代碼與下方訊息提供給維護者。') + '\n\n原始訊息：' + e.message);
         };
-        function refreshRcptKeyState() {
-            const st = document.getElementById('rcpt-key-state'); if (!st) return;
-            const has = !!(localStorage.getItem('kobe-gemini-key'));
-            st.textContent = has ? '✅ 已同步設定' : '尚未設定金鑰';
-            st.className = 'text-[10px] ml-1 ' + (has ? 'text-emerald-400' : 'text-amber-400');
-        }
-        let rcptSaveTimer = null;
-        window.saveRcptSettings = () => {
-            const kVal = (document.getElementById('rcpt-key').value || '').trim();
-            const mVal = (document.getElementById('rcpt-model').value || '').trim() || DEFAULT_MODEL;
-            try {
-                localStorage.setItem('kobe-gemini-key', kVal);
-                localStorage.setItem('kobe-gemini-model', mVal);
-            } catch (e) {}
-            refreshRcptKeyState();
 
-            clearTimeout(rcptSaveTimer);
-            rcptSaveTimer = setTimeout(() => {
-                if (window.firebaseSetDoc && window.firebaseDoc && window.firebaseDB && window.firebaseAppId && window.firebaseUser) {
-                    const ref = window.firebaseDoc(window.firebaseDB, 'artifacts', window.firebaseAppId, 'public', 'data', 'notes', 'shared');
-                    window.firebaseSetDoc(ref, {
-                        gemini_key: kVal,
-                        gemini_model: mVal
-                    }, { merge: true }).catch((err) => console.error('AI 設定同步至 Firebase 失敗', err));
+        // ---- CSV 匯入 ----
+        const CSV_CATS = ['早餐','午餐','晚餐','宵夜','點心','飲品','伴手禮','住宿費','租車費','過路費/油/停車','門票','藥妝','其他'];
+        const CSV_ALIASES = {
+            day: ['天別', 'day', '天數', '日次'],
+            date: ['日期', 'date', '時間', 'timestamp', 'datetime', 'time'],
+            category: ['分類', '類別', '類型', 'category'],
+            desc: ['備註', '說明', '品名', '項目', '店名', 'desc', 'description', 'note', 'memo', 'name', 'item'],
+            amount: ['金額', 'amount', 'price', 'total', '合計', '總額'],
+            currency: ['幣別', '貨幣', 'currency'],
+            pay: ['付款方式', '付款', 'paymethod', 'payment', 'pay'],
+            payer: ['代墊者', '代墊', '付款人', 'paidby', 'payer'],
+            split: ['分攤方式', '分攤', 'split'],
+            privateFor: ['私人對象', '私人', 'privatefor']
+        };
+        window.csvRows = [];
+
+        function csvNorm(h) { return String(h || '').replace(/^\uFEFF/, '').trim().toLowerCase().replace(/[\s_\-]/g, ''); }
+
+        function parseCSV(text) {
+            text = text.replace(/^\uFEFF/, '');
+            const first = text.split(/\r?\n/)[0] || '';
+            const counts = { ',': (first.match(/,/g) || []).length, '\t': (first.match(/\t/g) || []).length, ';': (first.match(/;/g) || []).length };
+            const delim = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0] || ',';
+            const rows = []; let row = [], cur = '', q = false;
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                if (q) {
+                    if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
+                    else cur += ch;
+                } else if (ch === '"') q = true;
+                else if (ch === delim) { row.push(cur); cur = ''; }
+                else if (ch === '\n' || ch === '\r') {
+                    if (ch === '\r' && text[i + 1] === '\n') i++;
+                    row.push(cur); cur = '';
+                    if (row.some(c => c.trim() !== '')) rows.push(row);
+                    row = [];
+                } else cur += ch;
+            }
+            row.push(cur);
+            if (row.some(c => c.trim() !== '')) rows.push(row);
+            return rows;
+        }
+
+        function csvDayFrom(dayRaw, dateRaw) {
+            const d = String(dayRaw || '').trim();
+            if (d) {
+                if (/^行前/.test(d)) return '行前';
+                let m = d.match(/^(?:d|day)?\s*(\d)$/i);
+                if (m && +m[1] >= 1 && +m[1] <= 8) return 'D' + m[1];
+            }
+            const src = String(dateRaw || '').trim() || d;
+            let m = src.match(/(\d{4})[\/\-.年](\d{1,2})[\/\-.月](\d{1,2})/);
+            let y = m ? +m[1] : 2027, mo = m ? +m[2] : 0, da = m ? +m[3] : 0;
+            if (!m) { m = src.match(/(\d{1,2})[\/\-.月](\d{1,2})/); if (m) { mo = +m[1]; da = +m[2]; } }
+            if (mo && da) {
+                if (y === 2027 && mo === 2 && da >= 9 && da <= 16) return 'D' + (da - 8);
+                if (y < 2027 || (y === 2027 && (mo < 2 || (mo === 2 && da < 9)))) return '行前';
+            }
+            return null;
+        }
+
+        function csvTimestamp(dateRaw, fallback) {
+            const t = String(dateRaw || '').trim();
+            if (/\d{4}[\/\-.]\d{1,2}[\/\-.]\d{1,2}/.test(t)) {
+                const v = Date.parse(t.replace(/\./g, '-').replace(/\//g, '-').replace(' ', 'T'));
+                if (!isNaN(v)) return v;
+            }
+            return fallback;
+        }
+
+        function csvExpenseSig(e) { return [e.day, e.category, String(e.desc || '').trim(), Number(e.amount), e.currency, e.paidBy].join('|'); }
+
+        function buildCsvRows(table) {
+            if (table.length < 2) throw new Error('檔案沒有資料列（需要標題列 + 至少一筆資料）');
+            const header = table[0].map(csvNorm);
+            const idx = {};
+            Object.keys(CSV_ALIASES).forEach(k => {
+                const i = header.findIndex(h => CSV_ALIASES[k].some(a => csvNorm(a) === h));
+                if (i >= 0) idx[k] = i;
+            });
+            if (idx.amount === undefined) throw new Error('找不到「金額」欄位，請確認標題列（可先下載範本）');
+            const existing = new Set((window.currentExpenses || []).map(csvExpenseSig));
+            const seen = new Set();
+            const me = currentMember();
+            const baseTs = Date.now();
+            const defaultDay = document.getElementById('exp-day').value || 'D1';
+            const out = [];
+            table.slice(1).forEach((r, n) => {
+                const get = k => (idx[k] !== undefined ? String(r[idx[k]] ?? '').trim() : '');
+                const msgs = []; let status = 'ok';
+                const amount = parseFloat(get('amount').replace(/[^\d.\-]/g, ''));
+                if (!isFinite(amount) || amount <= 0) { status = 'err'; msgs.push('金額無效'); }
+
+                let day = csvDayFrom(get('day'), get('date'));
+                if (!day) { day = defaultDay; msgs.push('天別無法判斷，使用 ' + day); }
+
+                let category = get('category');
+                if (!CSV_CATS.includes(category)) {
+                    const hit = CSV_CATS.find(c => category && (c.includes(category) || category.includes(c.split('/')[0])));
+                    if (hit) category = hit; else { if (category) msgs.push('分類「' + category + '」改為其他'); category = '其他'; }
                 }
-            }, 800);
-        };
 
-        // 縮圖壓縮：降低上傳量與費用，並統一轉成 JPEG
-        function resizeImage(file, maxSide = 1600, quality = 0.85) {
-            return new Promise((resolve, reject) => {
-                const url = URL.createObjectURL(file);
-                const img = new Image();
-                img.onload = () => {
-                    const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
-                    const c = document.createElement('canvas');
-                    c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
-                    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-                    const dataUrl = c.toDataURL('image/jpeg', quality);
-                    URL.revokeObjectURL(url);
-                    resolve({ dataUrl, base64: dataUrl.split(',')[1] });
+                const curRaw = get('currency').toUpperCase();
+                const currency = /TWD|NT|台|臺/.test(curRaw) ? 'TWD' : 'JPY';
+
+                const payRaw = get('pay').toLowerCase();
+                const payMethod = /paypay/.test(payRaw) ? 'PayPay' : /card|刷卡|信用|卡/.test(payRaw) ? 'Card' : 'Cash';
+
+                const payerRaw = get('payer').toLowerCase();
+                const paidBy = /roy/.test(payerRaw) ? 'Roy' : /ian/.test(payerRaw) ? 'Ian' : me;
+
+                const splitRaw = get('split').toLowerCase();
+                const isPrivate = /private|私/.test(splitRaw);
+                const pfRaw = get('privateFor').toLowerCase();
+                const privateFor = isPrivate ? (/roy/.test(pfRaw) ? 'Roy' : /ian/.test(pfRaw) ? 'Ian' : paidBy) : null;
+                if (isPrivate && !pfRaw) msgs.push('私人對象未填，預設為代墊者本人');
+
+                const rec = {
+                    day, category, desc: get('desc').slice(0, 120), amount: isFinite(amount) ? Math.round(amount * 100) / 100 : 0,
+                    currency, payMethod, paidBy, split: isPrivate ? 'private' : 'shared', privateFor,
+                    timestamp: csvTimestamp(get('date'), baseTs + n), source: 'csv'
                 };
-                img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('無法讀取圖片')); };
-                img.src = url;
+                if (status === 'ok') {
+                    const sig = csvExpenseSig(rec);
+                    if (existing.has(sig) || seen.has(sig)) { status = 'dup'; msgs.push('疑似重複'); }
+                    seen.add(sig);
+                }
+                out.push({ rec, status, msgs, checked: status === 'ok' });
             });
+            return out;
         }
 
-        const RCPT_PROMPT = [
-            '你是日本收據辨識與記帳助手。請辨識圖片中的日本收據，只輸出一個 JSON 物件（不要 markdown、不要說明文字）。',
-            'JSON 格式：{"is_receipt":true,"store_ja":"","store_zh":"","date":"YYYY-MM-DD 或 null","time":"HH:MM 或 null","currency":"JPY","payment_method":"Cash|Card|PayPay|Unknown","tax_mode":"inclusive|exclusive|mixed|tax_free","tax_free":false,"items":[{"name_ja":"","name_zh":"","qty":1,"amount_incl_tax":0,"tax_rate":10,"is_discount":false}],"total_paid":0,"category":"","notes":""}',
-            '規則：',
-            '1. 金額一律為日圓整數，不含 ¥ 與逗號。',
-            '2. 內稅(税込)收據：品項金額直接使用。外稅(税抜)收據：請把每個品項換算為含稅金額 amount_incl_tax = round(稅前金額 × (1+稅率))，若僅有合計稅額則依稅率合理分配。',
-            '3. 稅率：外帶食品、超市/超商食品飲料（含 ※ ＊ 軽 標記）為 8%；酒類、店內用餐、日用品為 10%；免稅品為 0。tax_rate 填 8、10 或 0。',
-            '4. 折扣、値引、割引、クーポン、ポイント利用、商品券：獨立列為品項並設 is_discount=true，amount_incl_tax 為負數。',
-            '5. 免稅(Tax Free / 免税)收據：tax_free=true，tax_mode=tax_free，品項與合計用免稅後的實付金額，tax_rate=0。',
-            '6. total_paid 為顧客實際支付金額（合計/お支払い額），不要取預收款(お預り)或找零(お釣り)。',
-            '7. 所有品項 amount_incl_tax 加總必須等於 total_paid；若不相符請重新檢視，無法吻合時在 notes 說明差異原因。',
-            '8. qty 預設 1；amount_incl_tax 為該行小計（單價×數量，已含折扣後）。',
-            '9. name_zh 為繁體中文翻譯；品牌或專有名詞保留原文並附中文意譯；看不清楚填「（無法辨識）」。',
-            '10. date 請轉為西元 YYYY-MM-DD（令和9年=2027年、令和8年=2026年）。',
-            '11. payment_method：現金→Cash；信用卡/クレジット/交通系IC→Card；PayPay/QR 支付→PayPay；無法判斷→Unknown。',
-            '12. category 只能從以下擇一：' + RCPT_CATS.join('、') + '。餐飲請依消費時間判斷早餐/午餐/晚餐/宵夜，咖啡飲料用「飲品」，零食甜點用「點心」，藥妝店用「藥妝」。',
-            '13. 收據上的信用卡號、會員號、電話等個資一律不要輸出。',
-            '14. 若圖片不是收據，輸出 {"is_receipt":false}。',
-            '15. 無法確定的欄位填 null，不要臆測。'
-        ].join('\n');
-
-        function parseJsonLoose(text) {
-            let t = String(text || '').trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
-            const a = t.indexOf('{'), b = t.lastIndexOf('}');
-            if (a >= 0 && b > a) t = t.slice(a, b + 1);
-            return JSON.parse(t);
+        async function readCsvFile(file) {
+            const buf = await file.arrayBuffer();
+            try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+            catch (e) { return new TextDecoder('big5').decode(buf); }
         }
 
-        async function callGeminiReceipt(base64) {
-            const key = (localStorage.getItem('kobe-gemini-key') || '').trim();
-            const model = (localStorage.getItem('kobe-gemini-model') || DEFAULT_MODEL).trim();
-            if (!key) { document.getElementById('rcpt-settings').open = true; throw new Error('請先在「AI 設定」填入 Gemini API Key'); }
-            const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ inline_data: { mime_type: 'image/jpeg', data: base64 } }, { text: RCPT_PROMPT }] }],
-                    generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
-                })
-            });
-            if (!res.ok) {
-                let msg = 'HTTP ' + res.status;
-                try { const j = await res.json(); msg += '：' + (j.error && j.error.message || ''); } catch (e) {}
-                if (res.status === 400 || res.status === 403) msg += '（請確認金鑰、模型名稱與網域限制）';
-                if (res.status === 429) msg += '（額度或頻率超限，稍後再試）';
-                throw new Error(msg);
-            }
-            const data = await res.json();
-            const parts = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts || [];
-            const text = parts.map(x => x.text || '').join('');
-            if (!text) throw new Error('AI 沒有回傳內容，請重拍或換個角度');
-            return parseJsonLoose(text);
-        }
-
-        window.onReceiptFile = async (inp) => {
+        window.onCsvFile = async (inp) => {
             const file = inp.files && inp.files[0];
             inp.value = '';
-            if (!file || rcptBusy) return;
-            rcptBusy = true;
-            const status = document.getElementById('rcpt-status');
-            document.getElementById('rcpt-preview-wrap').classList.remove('hidden');
-            document.getElementById('rcpt-result').classList.add('hidden');
+            if (!file) return;
+            const box = document.getElementById('csv-result');
+            box.classList.remove('hidden');
             try {
-                status.innerHTML = '<span class="animate-pulse">🔍 壓縮圖片中...</span>';
-                const { dataUrl, base64 } = await resizeImage(file);
-                document.getElementById('rcpt-preview').src = dataUrl;
-                status.innerHTML = '<span class="animate-pulse">🤖 AI 辨識中，約 5~15 秒...</span>';
-                const r = await callGeminiReceipt(base64);
-                if (r.is_receipt === false) { status.innerHTML = '<span class="text-amber-400">這張圖片看起來不是收據，請重新拍攝。</span>'; return; }
-                handleReceiptResult(r);
-                status.innerHTML = '<span class="text-emerald-400">✅ 辨識完成，已帶入下方表單</span>';
+                const text = await readCsvFile(file);
+                window.csvRows = buildCsvRows(parseCSV(text));
+                renderCsvPreview(file.name);
             } catch (e) {
                 console.error(e);
-                status.innerHTML = '<span class="text-red-400">❌ ' + escapeHtml(e.message || '辨識失敗') + '</span>';
-            } finally { rcptBusy = false; }
+                window.csvRows = [];
+                box.innerHTML = '<div class="alert-chip danger"><span>❌</span><span>' + escapeHtml(e.message || '讀取失敗') + '</span></div>';
+            }
         };
 
-        function handleReceiptResult(r) {
-            const items = (Array.isArray(r.items) ? r.items : []).map(it => ({
-                n: String(it.name_zh || it.name_ja || '').slice(0, 60),
-                ja: String(it.name_ja || '').slice(0, 60),
-                q: Number(it.qty) || 1,
-                a: Math.round(Number(it.amount_incl_tax) || 0),
-                r: Number(it.tax_rate) || 0,
-                d: !!it.is_discount || (Number(it.amount_incl_tax) || 0) < 0
-            }));
-            const sum = items.reduce((t, x) => t + x.a, 0);
-            const total = Math.round(Number(r.total_paid) || sum);
-            const diff = sum - total;
-            const store = String(r.store_zh || r.store_ja || '').slice(0, 40);
-            const taxFree = !!r.tax_free || r.tax_mode === 'tax_free';
-
-            window.pendingReceipt = {
-                store, storeJa: String(r.store_ja || '').slice(0, 60), date: r.date || null, taxFree,
-                total, items: items.map(x => ({ n: x.n, ja: x.ja, q: x.q, a: x.a }))
-            };
-
-            // 帶入既有記帳表單
-            const m = String(r.date || '').match(/^2027-02-(\d{2})$/);
-            if (m && +m[1] >= 9 && +m[1] <= 16) document.getElementById('exp-day').value = 'D' + (+m[1] - 8);
-            const cat = RCPT_CATS.includes(r.category) ? r.category : '其他';
-            document.getElementById('exp-category').value = cat;
-            const names = items.filter(x => !x.d).slice(0, 3).map(x => x.n).filter(Boolean).join('、');
-            document.getElementById('exp-desc').value = (store + (names ? '：' + names : '') + (items.length > 3 ? ' 等' : '') + (taxFree ? '（免稅）' : '')).slice(0, 80);
-            document.getElementById('exp-amount').value = total > 0 ? total : '';
-            setRadio('curr_rad', r.currency === 'TWD' ? 'TWD' : 'JPY', 'exp-currency');
-            const pm = ['Cash', 'Card', 'PayPay'].includes(r.payment_method) ? r.payment_method : 'Cash';
-            setRadio('paymethod_rad', pm, 'exp-paymethod');
-            setPayer(currentMember());
-
-            renderReceiptResult(r, items, total, diff, taxFree, store);
-        }
-
-        function renderReceiptResult(r, items, total, diff, taxFree, store) {
-            const box = document.getElementById('rcpt-result');
-            const rows = items.map(x => '<div class="flex justify-between gap-2 py-1 border-b border-gray-800/60 ' + (x.d ? 'text-rose-400' : 'text-gray-300') + '"><span class="min-w-0"><span class="block truncate">' + escapeHtml(x.n || '（無法辨識）') + (x.q > 1 ? ' ×' + x.q : '') + '</span>' + (x.ja && x.ja !== x.n ? '<span class="block text-[10px] text-gray-500 truncate">' + escapeHtml(x.ja) + '</span>' : '') + '</span><span class="font-mono whitespace-nowrap">' + (x.r ? '<span class="text-[9px] text-gray-500 mr-1">' + x.r + '%</span>' : '') + '¥' + x.a.toLocaleString() + '</span></div>').join('');
-            const warn = Math.abs(diff) > 1
-                ? '<div class="alert-chip danger"><span>🚨</span><span>品項加總 ¥' + (total + diff).toLocaleString() + ' 與收據合計 ¥' + total.toLocaleString() + ' 差 ¥' + diff.toLocaleString() + '，請對照原收據核對（金額已帶入表單，可手動修改）。</span></div>'
-                : '<div class="alert-chip info"><span>✅</span><span>品項加總與合計相符（¥' + total.toLocaleString() + '）。</span></div>';
+        function renderCsvPreview(fileName) {
+            const box = document.getElementById('csv-result');
+            const rows = window.csvRows;
+            const cnt = { ok: 0, dup: 0, err: 0 };
+            rows.forEach(r => cnt[r.status]++);
+            const sel = rows.filter(r => r.checked).length;
+            const fmt = r => r.rec.amount.toLocaleString() + ' ' + r.rec.currency;
+            const items = rows.map((r, i) => {
+                const icon = r.status === 'err' ? '❌' : r.status === 'dup' ? '♻️' : '✅';
+                const dis = r.status === 'err' ? 'disabled' : '';
+                return '<label class="flex gap-2 items-start py-2 border-b border-gray-800/60 text-xs ' + (r.status === 'err' ? 'opacity-50' : '') + '">' +
+                    '<input type="checkbox" ' + (r.checked ? 'checked' : '') + ' ' + dis + ' onchange="toggleCsvRow(' + i + ', this.checked)" class="mt-0.5 w-4 h-4 accent-emerald-500 flex-none">' +
+                    '<div class="min-w-0 flex-1"><div class="flex justify-between gap-2"><span class="text-gray-200 truncate">' + icon + ' ' + escapeHtml(r.rec.desc || '（無備註）') + '</span><span class="font-mono text-gray-100 whitespace-nowrap">' + escapeHtml(fmt(r)) + '</span></div>' +
+                    '<div class="text-[10px] text-gray-500">' + escapeHtml(r.rec.day) + ' · ' + escapeHtml(r.rec.category) + ' · ' + escapeHtml(r.rec.payMethod) + ' · 代墊 ' + escapeHtml(r.rec.paidBy) + ' · ' + (r.rec.split === 'shared' ? '均分' : '私人(' + escapeHtml(r.rec.privateFor) + ')') + '</div>' +
+                    (r.msgs.length ? '<div class="text-[10px] text-amber-400">' + r.msgs.map(escapeHtml).join('；') + '</div>' : '') + '</div></label>';
+            }).join('');
             box.innerHTML =
                 '<div class="rounded-lg border border-gray-700 bg-black/30 p-3">' +
-                '<div class="flex items-center justify-between mb-1"><div class="text-sm font-bold text-gray-100">' + escapeHtml(store || '（未辨識店名）') + '</div><div class="text-[11px] text-gray-400 font-mono">' + escapeHtml(r.date || '無日期') + (r.time ? ' ' + escapeHtml(r.time) : '') + '</div></div>' +
-                (taxFree ? '<div class="text-[11px] text-brand-300 mb-1">🛂 免稅收據</div>' : '') +
-                '<div class="text-xs max-h-48 overflow-y-auto">' + (rows || '<div class="text-gray-500 py-2">未辨識到品項</div>') + '</div>' +
-                '<div class="flex justify-between mt-2 text-sm font-bold"><span class="text-gray-300">實付合計</span><span class="font-mono aurora-text">¥' + total.toLocaleString() + '</span></div>' +
-                '</div>' + warn +
-                (r.notes ? '<div class="alert-chip"><span>📝</span><span>' + escapeHtml(r.notes) + '</span></div>' : '') +
-                '<div class="flex gap-2"><button type="button" onclick="document.getElementById(\'expense-form-card\').scrollIntoView({behavior:\'smooth\',block:\'center\'})" class="flex-1 py-2 rounded-lg bg-brand-600 text-white text-xs font-bold">⬇️ 前往確認並寫入帳本</button><button type="button" onclick="clearReceiptPanel()" class="px-3 py-2 rounded-lg border border-gray-700 text-gray-300 text-xs">清除</button></div>';
-            box.classList.remove('hidden');
+                '<div class="flex items-center justify-between mb-1"><div class="text-sm font-bold text-gray-100 truncate">📄 ' + escapeHtml(fileName) + '</div><div class="text-[11px] text-gray-400">共 ' + rows.length + ' 筆</div></div>' +
+                '<div class="text-[11px] text-gray-400 mb-2">✅ 可匯入 ' + cnt.ok + ' · ♻️ 疑似重複 ' + cnt.dup + ' · ❌ 無效 ' + cnt.err + '</div>' +
+                '<div class="max-h-72 overflow-y-auto">' + items + '</div></div>' +
+                '<div class="flex gap-2"><button id="csv-import-btn" type="button" onclick="confirmCsvImport()" class="flex-1 py-2.5 rounded-lg bg-brand-600 text-white text-xs font-bold disabled:opacity-40" ' + (sel ? '' : 'disabled') + '>⬆️ 匯入 ' + sel + ' 筆到雲端帳本</button><button type="button" onclick="clearCsvPanel()" class="px-3 py-2 rounded-lg border border-gray-700 text-gray-300 text-xs">取消</button></div>';
         }
 
-        window.clearReceiptPanel = () => {
-            window.pendingReceipt = null;
-            const box = document.getElementById('rcpt-result'); if (box) { box.innerHTML = ''; box.classList.add('hidden'); }
-            const pw = document.getElementById('rcpt-preview-wrap'); if (pw) pw.classList.add('hidden');
+        window.toggleCsvRow = (i, checked) => {
+            if (window.csvRows[i]) window.csvRows[i].checked = checked;
+            const sel = window.csvRows.filter(r => r.checked).length;
+            const b = document.getElementById('csv-import-btn');
+            if (b) { b.textContent = '⬆️ 匯入 ' + sel + ' 筆到雲端帳本'; b.disabled = !sel; }
+        };
+
+        window.confirmCsvImport = async () => {
+            if (!currentUser) { alert('請先登入。'); return; }
+            const picked = window.csvRows.filter(r => r.checked && r.status !== 'err');
+            if (!picked.length) return;
+            const btn = document.getElementById('csv-import-btn');
+            if (btn) { btn.disabled = true; btn.textContent = '寫入中...'; }
+            try {
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'expenses');
+                for (let i = 0; i < picked.length; i += 400) {
+                    const batch = writeBatch(db);
+                    picked.slice(i, i + 400).forEach(r => batch.set(doc(colRef), r.rec));
+                    await batch.commit();
+                }
+                document.getElementById('csv-result').innerHTML = '<div class="alert-chip info"><span>✅</span><span>已匯入 ' + picked.length + ' 筆帳目，可在下方「花費明細」查看。</span></div>';
+                window.csvRows = [];
+            } catch (e) {
+                console.error(e);
+                alert('匯入失敗：' + (e.code || '') + ' ' + (e.message || '') + '\n（若為 permission-denied，請參考右側同步狀態標籤的說明）');
+                if (btn) { btn.disabled = false; btn.textContent = '⬆️ 重試匯入'; }
+            }
+        };
+
+        window.clearCsvPanel = () => {
+            window.csvRows = [];
+            const box = document.getElementById('csv-result');
+            box.innerHTML = ''; box.classList.add('hidden');
+        };
+
+        window.downloadCsvTemplate = () => {
+            const rows = [
+                ['時間', '天別', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'],
+                ['2027/02/09 19:30', 'D1', '晚餐', '神戶牛排', 12000, 'JPY', '刷卡', 'Roy', '均分', ''],
+                ['2027/02/10 12:00', 'D2', '點心', '抹茶霜淇淋', 600, 'JPY', '現金', 'Ian', '私人', 'Ian']
+            ];
+            const csv = '\ufeff' + rows.map(r => r.join(',')).join('\r\n');
+            const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+            const a = document.createElement('a');
+            a.href = url; a.download = 'kobe-trip-import-template.csv';
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
         };
 
         window.deleteExpenseRecord = async (id) => { if (currentUser) try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id)); } catch(e) {} };
@@ -1981,16 +2012,11 @@
             window.currentExpenses.forEach(exp => {
                 const typeHtml = exp.split === 'shared' ? `<span class="text-emerald-400">均分</span>` : `<div class="leading-tight"><span class="text-gray-400">私人</span><br><span class="text-[9px] text-gray-500">${escapeHtml(exp.privateFor)}</span></div>`;
                 const payIcon = payIcons[exp.payMethod] || '💵';
-                let rcptHtml = '';
-                if (exp.receipt && Array.isArray(exp.receipt.items) && exp.receipt.items.length) {
-                    const rows = exp.receipt.items.map(it => `<div class="flex justify-between gap-2 ${it.a < 0 ? 'text-rose-400' : 'text-gray-400'}"><span class="truncate">${escapeHtml(it.n)}${it.q > 1 ? ' ×' + escapeHtml(it.q) : ''}</span><span class="font-mono whitespace-nowrap">${Number(it.a).toLocaleString()}</span></div>`).join('');
-                    rcptHtml = `<details class="mt-1"><summary class="text-[10px] text-brand-300 cursor-pointer">🧾 收據明細 (${exp.receipt.items.length})${exp.receipt.taxFree ? ' · 免稅' : ''}</summary><div class="mt-1 space-y-0.5 text-[10px] min-w-[180px]">${exp.receipt.store ? '<div class="text-gray-300">' + escapeHtml(exp.receipt.store) + '</div>' : ''}${rows}</div></details>`;
-                }
                 const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/50 hover:bg-gray-800 transition-colors";
                 tr.innerHTML = `
                     <td class="p-3 text-gray-500">${escapeHtml(exp.day)}</td>
                     <td class="p-3 text-gray-300 font-bold">${escapeHtml(exp.category)}</td>
-                    <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span>${rcptHtml}</td>
+                    <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></td>
                     <td class="p-3 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount.toLocaleString()} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
                     <td class="p-3 text-center text-${exp.paidBy==='Roy'?'blue':'purple'}-400 font-bold">${exp.paidBy}</td>
                     <td class="p-3 text-center">${typeHtml}</td>
