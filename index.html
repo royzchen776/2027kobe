@@ -535,7 +535,7 @@
                         <h3 class="font-bold text-sm aurora-text">📥 匯入 CSV 帳目</h3>
                         <span id="csv-user-badge" class="text-[10px] px-2 py-0.5 rounded-full border border-gray-700 text-gray-300"></span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed mb-3">上傳當日彙整好的 CSV，先預覽、確認後再批次寫入雲端帳本。欄位順序不拘，只要標題列包含：<span class="text-gray-200">天別/日期、分類、備註、金額</span>；其餘（幣別、付款方式、代墊者、分攤方式、私人對象）可省略，缺少時使用預設值。</p>
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-3">上傳當日彙整好的 CSV，先預覽、確認後再批次寫入雲端帳本。欄位順序不拘，只要標題列包含：<span class="text-gray-200">日期、分類、備註、金額</span>；其餘（幣別、付款方式、代墊者、分攤方式、私人對象）可省略，缺少時使用預設值。</p>
                     <div class="flex gap-2">
                         <label class="flex-1 text-center cursor-pointer px-3 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-md">
                             📂 選擇 CSV 檔案
@@ -546,7 +546,7 @@
                     <details class="mt-3 rounded-lg border border-gray-700 bg-black/30 px-3 py-2">
                         <summary class="text-xs text-gray-300 cursor-pointer select-none">📖 欄位與預設值說明</summary>
                         <ul class="mt-2 text-[11px] text-gray-400 space-y-1 leading-relaxed list-disc pl-4">
-                            <li><b class="text-gray-300">天別</b>：D1~D8、行前，或直接填日期（2027/02/09 ➔ D1）。</li>
+                            <li><b class="text-gray-300">日期</b>：2027/02/09、2027-02-09 或 2/9 皆可（只填月/日時，1~2 月視為 2027 年，其餘視為 2026 年）；舊格式 D1~D8 也能讀取。缺少或無法判斷時使用表單上的日期。</li>
                             <li><b class="text-gray-300">分類</b>：早餐/午餐/晚餐/宵夜/點心/飲品/伴手禮/住宿費/租車費/過路費/油/停車/門票/藥妝/其他，不在清單內歸為「其他」。</li>
                             <li><b class="text-gray-300">金額</b>：正數，可含 ¥、$、逗號。<b class="text-gray-300">幣別</b>預設 JPY（可填 TWD/台幣）。</li>
                             <li><b class="text-gray-300">付款方式</b>：現金/刷卡/PayPay，預設現金。<b class="text-gray-300">代墊者</b>：Roy/Ian，預設為目前登入者。</li>
@@ -563,9 +563,7 @@
                 <form id="expense-form" class="space-y-4">
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <select id="exp-day" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500">
-                                <option value="D1">D1 (2/09)</option><option value="D2">D2 (2/10)</option><option value="D3">D3 (2/11)</option><option value="D4">D4 (2/12)</option><option value="D5">D5 (2/13)</option><option value="D6">D6 (2/14)</option><option value="D7">D7 (2/15)</option><option value="D8">D8 (2/16)</option><option value="行前">行前準備</option>
-                            </select>
+                            <input type="date" id="exp-date" required class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500" style="min-height:44px">
                         </div>
                         <div>
                             <select id="exp-category" class="w-full text-sm p-2.5 bg-black border border-gray-700 text-gray-200 rounded outline-none focus:border-brand-500">
@@ -636,7 +634,7 @@
                     <table class="w-full text-left border-collapse min-w-[500px]">
                         <thead>
                             <tr class="bg-gray-800/80 text-gray-400 border-b border-gray-700 text-[10px] uppercase">
-                                <th class="p-3 w-10">天別</th>
+                                <th class="p-3 w-14">日期</th>
                                 <th class="p-3 w-16">分類</th>
                                 <th class="p-3">備註 / 付款</th>
                                 <th class="p-3 text-right w-24">金額</th>
@@ -734,12 +732,12 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-400 mb-1">🇹🇼 中文輸入</label>
-                        <textarea id="trans-input" rows="3" class="w-full p-3 bg-black border border-gray-700 text-gray-200 rounded-lg text-sm focus:border-brand-500 outline-none" placeholder="在此輸入中文..."></textarea>
+                        <textarea id="trans-input" rows="4" class="w-full resize-y p-3 bg-black border border-gray-700 text-gray-200 rounded-lg text-sm focus:border-brand-500 outline-none" placeholder="在此輸入中文..."></textarea>
                         <button onclick="doTranslate()" class="w-full mt-2 bg-brand-600 hover:bg-brand-500 text-white font-bold py-2.5 rounded-lg shadow-md border border-brand-500 transition-colors"><span id="trans-btn-text">🔄 翻譯成日文</span></button>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-400 mb-1">🇯🇵 日文結果 (大字體出示用)</label>
-                        <div id="trans-output" class="w-full min-h-[140px] p-4 bg-gray-800/80 border-2 border-brand-700 rounded-lg text-2xl sm:text-3xl font-bold text-gray-100 flex items-center justify-center text-center overflow-y-auto tracking-wide leading-relaxed shadow-inner">
+                        <div id="trans-output" class="w-full min-h-[48dvh] max-h-[75dvh] p-4 bg-gray-800/80 border-2 border-brand-700 rounded-lg text-2xl sm:text-3xl font-bold text-gray-100 flex items-center justify-center text-center overflow-y-auto tracking-wide leading-relaxed shadow-inner">
                             <span class="text-gray-600 text-sm font-normal tracking-normal">翻譯結果會顯示在這裡</span>
                         </div>
                     </div>
@@ -1331,19 +1329,15 @@
             const y = today.getFullYear(), m = today.getMonth() + 1, d = today.getDate();
             let targetMain = 'group-itinerary'; 
             let targetItineraryDay = 'all';
-            let targetExpense = '行前';
 
             if (y === 2027 && m === 2 && d >= 9 && d <= 16) {
                 targetItineraryDay = d - 8; 
-                targetExpense = 'D' + (d - 8);
-            } else if (y > 2027 || (y === 2027 && m > 2) || (y===2027 && m===2 && d>16)) {
-                targetExpense = 'D8';
             }
 
             switchMainTab(targetMain);
             filterDay(targetItineraryDay);
-            const expSelect = document.getElementById('exp-day');
-            if (expSelect) expSelect.value = targetExpense;
+            const expDateEl = document.getElementById('exp-date');
+            if (expDateEl && !expDateEl.value) expDateEl.value = todayISO();
         }
 
         // 翻譯機
@@ -1377,7 +1371,18 @@
         document.getElementById('current-rate').addEventListener('input', () => { if (typeof calculateSettlement === 'function') calculateSettlement(); });
 
         // ================= 每日花費 vs 預算 =================
-        const DAY_KEYS = ['行前', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'];
+        // 記帳只保留「日期」(YYYY-MM-DD)；舊資料若只有 day (D1~D8) 會自動換算成日期
+        const TRIP_DATES = ['2027-02-09', '2027-02-10', '2027-02-11', '2027-02-12', '2027-02-13', '2027-02-14', '2027-02-15', '2027-02-16'];
+        function expDateOf(exp) {
+            if (exp && typeof exp.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(exp.date)) return exp.date;
+            const m = String((exp && exp.day) || '').match(/^D([1-8])$/);
+            return m ? TRIP_DATES[+m[1] - 1] : '';
+        }
+        function fmtMD(date) { return date ? date.slice(5).replace('-', '/') : '行前'; }
+        function todayISO() {
+            const d = new Date(), p = n => String(n).padStart(2, '0');
+            return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+        }
         let dailyChartInstance = null;
 
         function getDailyBudget() {
@@ -1390,21 +1395,23 @@
             const canvas = document.getElementById('dailyChart');
             if (!canvas) return;
             const rate = parseFloat(document.getElementById('current-rate').value) || 0.2150;
-            const totals = {}; DAY_KEYS.forEach(k => totals[k] = 0);
+            const bucket = d => (!d || d < TRIP_DATES[0]) ? '行前' : d;
+            const totals = { '行前': 0 }; TRIP_DATES.forEach(k => totals[k] = 0);
             (window.currentExpenses || []).forEach(exp => {
                 const twd = exp.currency === 'JPY' ? exp.amount * rate : exp.amount;
-                if (totals[exp.day] === undefined) totals[exp.day] = 0;
-                totals[exp.day] += twd;
+                const k = bucket(expDateOf(exp));
+                totals[k] = (totals[k] || 0) + twd;
             });
             const budget = getDailyBudget();
-            const tripDays = DAY_KEYS.filter(k => k !== '行前');
-            const labels = DAY_KEYS;
-            const data = labels.map(k => Math.round(totals[k]));
-            const colors = labels.map(k => (budget && k !== '行前' && totals[k] > budget) ? '#ef4444' : themeRgb('--b400'));
+            const keys = ['行前', ...TRIP_DATES, ...Object.keys(totals).filter(k => k !== '行前' && !TRIP_DATES.includes(k)).sort()];
+            const tripDays = keys.filter(k => k !== '行前');
+            const labels = keys.map(k => k === '行前' ? '行前' : fmtMD(k));
+            const data = keys.map(k => Math.round(totals[k]));
+            const colors = keys.map(k => (budget && k !== '行前' && totals[k] > budget) ? '#ef4444' : themeRgb('--b400'));
 
             if (dailyChartInstance) dailyChartInstance.destroy();
             const datasets = [{ type: 'bar', label: '當日花費', data, backgroundColor: colors, borderRadius: 4 }];
-            if (budget) datasets.push({ type: 'line', label: '每日預算', data: labels.map(k => k === '行前' ? null : budget), borderColor: '#10b981', borderDash: [6, 4], pointRadius: 0, spanGaps: true });
+            if (budget) datasets.push({ type: 'line', label: '每日預算', data: keys.map(k => k === '行前' ? null : budget), borderColor: '#10b981', borderDash: [6, 4], pointRadius: 0, spanGaps: true });
             dailyChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'bar',
                 data: { labels, datasets },
@@ -1428,10 +1435,9 @@
             const list = window.currentExpenses || [];
             if (!list.length) { alert('目前沒有可匯出的記帳紀錄'); return; }
             const esc = v => { const s = String(v ?? ''); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-            const header = ['時間', '天別', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'];
-            const rows = list.slice().sort((a, b) => a.timestamp - b.timestamp).map(e => [
-                e.timestamp ? new Date(e.timestamp).toLocaleString('zh-TW', { hour12: false }) : '',
-                e.day, e.category, e.desc || '', e.amount, e.currency, e.payMethod || 'Cash', e.paidBy,
+            const header = ['日期', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'];
+            const rows = list.slice().sort((a, b) => (expDateOf(a) || '').localeCompare(expDateOf(b) || '') || (a.timestamp || 0) - (b.timestamp || 0)).map(e => [
+                expDateOf(e), e.category, e.desc || '', e.amount, e.currency, e.payMethod || 'Cash', e.paidBy,
                 e.split === 'shared' ? '均分' : '私人', e.privateFor || ''
             ]);
             const csv = '\ufeff' + [header, ...rows].map(r => r.map(esc).join(',')).join('\r\n'); // BOM 讓 Excel 正確顯示中文
@@ -1569,7 +1575,7 @@
                     setSyncStatus(offline ? '📴 離線資料' : '✅ 已同步', offline ? 'bg-gray-800 text-gray-300 border-gray-600' : 'bg-emerald-900/50 text-emerald-400 border-emerald-800');
                     window.currentExpenses = [];
                     snapshot.forEach((d) => window.currentExpenses.push({ id: d.id, ...d.data() }));
-                    window.currentExpenses.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    window.currentExpenses.sort((a, b) => (expDateOf(b) || '').localeCompare(expDateOf(a) || '') || (b.timestamp || 0) - (a.timestamp || 0));
                     renderExpenses(); calculateSettlement();
                     if (!document.getElementById('group-analytics').classList.contains('hidden')) renderCharts();
                 }, (err) => {
@@ -1644,7 +1650,7 @@
             const exp = window.currentExpenses.find(e => e.id === id);
             if (!exp) return;
             
-            document.getElementById('exp-day').value = exp.day;
+            document.getElementById('exp-date').value = expDateOf(exp) || todayISO();
             document.getElementById('exp-category').value = exp.category;
             document.getElementById('exp-desc').value = exp.desc || '';
             document.getElementById('exp-amount').value = exp.amount;
@@ -1684,9 +1690,9 @@
 
         window.cancelEditExpense = () => {
             editingExpenseId = null;
-            const keepDay = document.getElementById('exp-day').value; // reset() 會把天別打回 D1，先記下來
+            const keepDay = document.getElementById('exp-date').value; // reset() 會清空日期，先記下來
             document.getElementById('expense-form').reset();
-            document.getElementById('exp-day').value = keepDay;
+            document.getElementById('exp-date').value = keepDay || todayISO();
             
             // 恢復預設值
             document.getElementById('exp-currency').value = 'JPY';
@@ -1712,7 +1718,7 @@
             btn.innerHTML = "處理中..."; btn.disabled = true;
             
             const newExpense = {
-                day: document.getElementById('exp-day').value, category: document.getElementById('exp-category').value,
+                date: document.getElementById('exp-date').value || todayISO(), category: document.getElementById('exp-category').value,
                 desc: document.getElementById('exp-desc').value, amount: parseFloat(document.getElementById('exp-amount').value),
                 currency: document.getElementById('exp-currency').value, payMethod: document.getElementById('exp-paymethod').value,
                 paidBy: document.getElementById('exp-payer').value, split: document.getElementById('exp-split').value,
@@ -1721,6 +1727,7 @@
 
             try { 
                 if (editingExpenseId) {
+                    newExpense.day = deleteField(); // 移除舊的 Dx 欄位
                     await window.firebaseSetDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', editingExpenseId), newExpense, { merge: true });
                     window.cancelEditExpense();
                 } else {
@@ -1815,34 +1822,28 @@
             return rows;
         }
 
-        function csvDayFrom(dayRaw, dateRaw) {
-            const d = String(dayRaw || '').trim();
-            if (d) {
-                if (/^行前/.test(d)) return '行前';
-                let m = d.match(/^(?:d|day)?\s*(\d)$/i);
-                if (m && +m[1] >= 1 && +m[1] <= 8) return 'D' + m[1];
-            }
-            const src = String(dateRaw || '').trim() || d;
-            let m = src.match(/(\d{4})[\/\-.年](\d{1,2})[\/\-.月](\d{1,2})/);
-            let y = m ? +m[1] : 2027, mo = m ? +m[2] : 0, da = m ? +m[3] : 0;
-            if (!m) { m = src.match(/(\d{1,2})[\/\-.月](\d{1,2})/); if (m) { mo = +m[1]; da = +m[2]; } }
-            if (mo && da) {
-                if (y === 2027 && mo === 2 && da >= 9 && da <= 16) return 'D' + (da - 8);
-                if (y < 2027 || (y === 2027 && (mo < 2 || (mo === 2 && da < 9)))) return '行前';
-            }
-            return null;
+        function csvDateFrom(dayRaw, dateRaw) {
+            const pad = n => String(n).padStart(2, '0');
+            const pick = (src) => {
+                src = String(src || '').trim(); if (!src) return null;
+                let y, mo, da, m = src.match(/(\d{4})[\/\-.年](\d{1,2})[\/\-.月](\d{1,2})/);
+                if (m) { y = +m[1]; mo = +m[2]; da = +m[3]; }
+                else {
+                    m = src.match(/^(\d{1,2})[\/\-.月](\d{1,2})/);
+                    if (!m) return null;
+                    mo = +m[1]; da = +m[2]; y = mo >= 3 ? 2026 : 2027;
+                }
+                if (mo < 1 || mo > 12 || da < 1 || da > 31) return null;
+                return y + '-' + pad(mo) + '-' + pad(da);
+            };
+            const r = pick(dateRaw); if (r) return r;
+            const d = String(dayRaw || '').trim() || String(dateRaw || '').trim();
+            const dm = d.match(/^(?:d|day)?\s*([1-8])$/i);
+            if (dm) return TRIP_DATES[+dm[1] - 1];
+            return pick(d);
         }
 
-        function csvTimestamp(dateRaw, fallback) {
-            const t = String(dateRaw || '').trim();
-            if (/\d{4}[\/\-.]\d{1,2}[\/\-.]\d{1,2}/.test(t)) {
-                const v = Date.parse(t.replace(/\./g, '-').replace(/\//g, '-').replace(' ', 'T'));
-                if (!isNaN(v)) return v;
-            }
-            return fallback;
-        }
-
-        function csvExpenseSig(e) { return [e.day, e.category, String(e.desc || '').trim(), Number(e.amount), e.currency, e.paidBy].join('|'); }
+        function csvExpenseSig(e) { return [expDateOf(e), e.category, String(e.desc || '').trim(), Number(e.amount), e.currency, e.paidBy].join('|'); }
 
         function buildCsvRows(table) {
             if (table.length < 2) throw new Error('檔案沒有資料列（需要標題列 + 至少一筆資料）');
@@ -1857,7 +1858,7 @@
             const seen = new Set();
             const me = currentMember();
             const baseTs = Date.now();
-            const defaultDay = document.getElementById('exp-day').value || 'D1';
+            const defaultDate = document.getElementById('exp-date').value || todayISO();
             const out = [];
             table.slice(1).forEach((r, n) => {
                 const get = k => (idx[k] !== undefined ? String(r[idx[k]] ?? '').trim() : '');
@@ -1865,8 +1866,8 @@
                 const amount = parseFloat(get('amount').replace(/[^\d.\-]/g, ''));
                 if (!isFinite(amount) || amount <= 0) { status = 'err'; msgs.push('金額無效'); }
 
-                let day = csvDayFrom(get('day'), get('date'));
-                if (!day) { day = defaultDay; msgs.push('天別無法判斷，使用 ' + day); }
+                let date = csvDateFrom(get('day'), get('date'));
+                if (!date) { date = defaultDate; msgs.push('日期無法判斷，使用 ' + date); }
 
                 let category = get('category');
                 if (!CSV_CATS.includes(category)) {
@@ -1890,9 +1891,9 @@
                 if (isPrivate && !pfRaw) msgs.push('私人對象未填，預設為代墊者本人');
 
                 const rec = {
-                    day, category, desc: get('desc').slice(0, 120), amount: isFinite(amount) ? Math.round(amount * 100) / 100 : 0,
+                    date, category, desc: get('desc').slice(0, 120), amount: isFinite(amount) ? Math.round(amount * 100) / 100 : 0,
                     currency, payMethod, paidBy, split: isPrivate ? 'private' : 'shared', privateFor,
-                    timestamp: csvTimestamp(get('date'), baseTs + n), source: 'csv'
+                    timestamp: baseTs + n, source: 'csv'
                 };
                 if (status === 'ok') {
                     const sig = csvExpenseSig(rec);
@@ -1940,7 +1941,7 @@
                 return '<label class="flex gap-2 items-start py-2 border-b border-gray-800/60 text-xs ' + (r.status === 'err' ? 'opacity-50' : '') + '">' +
                     '<input type="checkbox" ' + (r.checked ? 'checked' : '') + ' ' + dis + ' onchange="toggleCsvRow(' + i + ', this.checked)" class="mt-0.5 w-4 h-4 accent-emerald-500 flex-none">' +
                     '<div class="min-w-0 flex-1"><div class="flex justify-between gap-2"><span class="text-gray-200 truncate">' + icon + ' ' + escapeHtml(r.rec.desc || '（無備註）') + '</span><span class="font-mono text-gray-100 whitespace-nowrap">' + escapeHtml(fmt(r)) + '</span></div>' +
-                    '<div class="text-[10px] text-gray-500">' + escapeHtml(r.rec.day) + ' · ' + escapeHtml(r.rec.category) + ' · ' + escapeHtml(r.rec.payMethod) + ' · 代墊 ' + escapeHtml(r.rec.paidBy) + ' · ' + (r.rec.split === 'shared' ? '均分' : '私人(' + escapeHtml(r.rec.privateFor) + ')') + '</div>' +
+                    '<div class="text-[10px] text-gray-500">' + escapeHtml(fmtMD(r.rec.date)) + ' · ' + escapeHtml(r.rec.category) + ' · ' + escapeHtml(r.rec.payMethod) + ' · 代墊 ' + escapeHtml(r.rec.paidBy) + ' · ' + (r.rec.split === 'shared' ? '均分' : '私人(' + escapeHtml(r.rec.privateFor) + ')') + '</div>' +
                     (r.msgs.length ? '<div class="text-[10px] text-amber-400">' + r.msgs.map(escapeHtml).join('；') + '</div>' : '') + '</div></label>';
             }).join('');
             box.innerHTML =
@@ -1988,9 +1989,9 @@
 
         window.downloadCsvTemplate = () => {
             const rows = [
-                ['時間', '天別', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'],
-                ['2027/02/09 19:30', 'D1', '晚餐', '神戶牛排', 12000, 'JPY', '刷卡', 'Roy', '均分', ''],
-                ['2027/02/10 12:00', 'D2', '點心', '抹茶霜淇淋', 600, 'JPY', '現金', 'Ian', '私人', 'Ian']
+                ['日期', '分類', '備註', '金額', '幣別', '付款方式', '代墊者', '分攤方式', '私人對象'],
+                ['2027/02/09', '晚餐', '神戶牛排', 12000, 'JPY', '刷卡', 'Roy', '均分', ''],
+                ['2027/02/10', '點心', '抹茶霜淇淋', 600, 'JPY', '現金', 'Ian', '私人', 'Ian']
             ];
             const csv = '\ufeff' + rows.map(r => r.join(',')).join('\r\n');
             const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
@@ -2014,7 +2015,7 @@
                 const payIcon = payIcons[exp.payMethod] || '💵';
                 const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/50 hover:bg-gray-800 transition-colors";
                 tr.innerHTML = `
-                    <td class="p-3 text-gray-500">${escapeHtml(exp.day)}</td>
+                    <td class="p-3 text-gray-500">${escapeHtml(fmtMD(expDateOf(exp)))}</td>
                     <td class="p-3 text-gray-300 font-bold">${escapeHtml(exp.category)}</td>
                     <td class="p-3 text-gray-200 leading-tight">${escapeHtml(exp.desc)} <span class="text-[10px] ml-1 bg-gray-900 px-1 rounded border border-gray-700">${payIcon}</span></td>
                     <td class="p-3 text-right font-mono font-bold ${exp.currency==='JPY'?'text-blue-400':'text-amber-400'}">${exp.amount.toLocaleString()} <span class="text-[9px] font-normal text-gray-500">${exp.currency}</span></td>
